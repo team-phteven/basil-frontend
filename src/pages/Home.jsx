@@ -14,7 +14,7 @@ import Image from "react-bootstrap/Image";
 const Home = () => {
 
     return (
-        <Container as="main" className="mt-5 mx-3">
+        <Container as="main" className="mt-5 mx-auto px-4">
             <Row>
                 <Col xs={5} md={2} className="mt-5 mx-auto">
                     <Image rounded fluid src="BasilLogo.png"></Image>
