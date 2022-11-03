@@ -1,0 +1,16 @@
+// custom variables
+$primary: #957ACD;
+$secondary: #75C15A;
+
+// Nav tabs
+$nav-tabs-border-color:             #957ACD;
+// $nav-tabs-border-width:             $border-width;
+$nav-tabs-border-radius:            0;
+$nav-tabs-link-hover-border-color:  #957ACD;
+$nav-tabs-link-active-color:        white;
+$nav-tabs-link-active-bg:           #957ACD;
+$nav-tabs-link-active-border-color: #957ACD;
+
+
+// import bootstrap
+@import '../node_modules/bootstrap/scss/bootstrap'
