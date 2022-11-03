@@ -115,7 +115,7 @@ function SignUpForm() {
                     <Form.Group
                         as={Col}
                         md={6}
-                        className="p-0 pe-2 mb-4"
+                        className="p-0 pe-xs-0 pe-md-2 mb-4"
                         onChange={handleInput}
                         value={formFields.firstName}
                     >
@@ -130,7 +130,7 @@ function SignUpForm() {
                     <Form.Group
                         as={Col}
                         md={6}
-                        className="p-0 ps-2 mb-4"
+                        className="p-0 ps-xs-0 ps-md-2 mb-4"
                         onChange={handleInput}
                         value={formFields.lastName}
                     >
