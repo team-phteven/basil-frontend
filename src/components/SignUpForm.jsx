@@ -10,7 +10,6 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
-
 function SignUpForm() {
     // navigate instance (for page reload)
     const navigate = useNavigate();
@@ -60,6 +59,10 @@ function SignUpForm() {
             );
             // store new user in local storage
             localStorage.setItem("storedUser", JSON.stringify(data));
+            localStorage.setItem(
+                "welcomeBack",
+                JSON.stringify({ email: email, name: data.name })
+            );
             setLoading(false);
             // refresh page
             navigate(0);

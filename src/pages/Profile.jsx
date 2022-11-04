@@ -1,7 +1,17 @@
+import Button from 'react-bootstrap/Button'
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
+
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        localStorage.removeItem("storedUser");
+        navigate(0);
+    }
+
   return (
-    <div>Profile</div>
+    <Button onClick={handleClick}>Log Out</Button>
   )
 }
 

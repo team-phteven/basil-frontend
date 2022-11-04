@@ -21,6 +21,7 @@ const PasswordFloatingLabelToggle = (props) => {
                     id={props.uniqueId}
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
+                    required
                 />
             </Form.FloatingLabel>
             <InputGroup.Text onClick={toggleShowPassword}>
