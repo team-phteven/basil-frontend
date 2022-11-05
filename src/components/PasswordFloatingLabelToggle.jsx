@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import InputGroup from "react-bootstrap/InputGroup";
 import Form from "react-bootstrap/Form";
 import { useState } from "react";
@@ -15,19 +15,27 @@ const PasswordFloatingLabelToggle = (props) => {
     };
 
     return (
-        <InputGroup size="lg">
-            <Form.FloatingLabel label="Password">
-                <Form.Control
-                    id={props.uniqueId}
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Password"
-                    required
-                />
-            </Form.FloatingLabel>
-            <InputGroup.Text onClick={toggleShowPassword}>
-                {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
-            </InputGroup.Text>
-        </InputGroup>
+        <>
+            <InputGroup size="lg">
+                <Form.FloatingLabel label="Password">
+                    <Form.Control
+                        id={props.uniqueId}
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Password"
+                        isInvalid={!!props.error}
+                    />
+                    <Form.Control.Feedback tooltip type="invalid">
+                        {props.error}
+                    </Form.Control.Feedback>
+                </Form.FloatingLabel>
+                <InputGroup.Text
+                    onClick={toggleShowPassword}
+                    style={{ position: "static" }}
+                >
+                    {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
+                </InputGroup.Text>
+            </InputGroup>
+        </>
     );
 };
 

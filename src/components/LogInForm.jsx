@@ -14,10 +14,7 @@ function LogInForm() {
     // navigate instance (for page reload)
     const navigate = useNavigate();
     // state for form errors
-    // const [formErrors, setFormErrors] = useState({
-    //     email: "",
-    //     password: "",
-    // });
+    const [formErrors, setFormErrors] = useState({});
     // welcome back state
     const [welcomeBack, setWelcomeBack] = useState({
         email: "",
@@ -43,6 +40,16 @@ function LogInForm() {
         }
     }, []);
 
+    const validateForm = () => {
+        const { email, password } = formFields;
+        const newErrors = {};
+
+        if (!email || email === '') newErrors.email = "Please enter your email"
+        if (!password || password === '') newErrors.password = "Please enter a password"
+
+        return newErrors;
+    }
+
     // deconstruct formFields
     const { email, password } = formFields;
 
@@ -50,8 +57,15 @@ function LogInForm() {
     const handleSubmit = async (e) => {
         // prevent page refresh
         e.preventDefault();
-        console.log(`${process.env.REACT_APP_BASE_URL}`)
         setLoading(true);
+        const errors = validateForm();
+
+        if (Object.keys(errors).length > 0) {
+            setFormErrors(errors)
+            setLoading(false)
+            return
+        }
+
         try {
             // create new user session
             const { data } = await axios
@@ -59,11 +73,6 @@ function LogInForm() {
                     email,
                     password,
                 }).catch((error) => {
-                    const error_code = JSON.stringify(
-                        error.response.data.error
-                    );
-                    console.log(error_code);
-                    // s://basilchat-back-staging.herokuapp.comfilterFormError(error_code);
                     setLoading(false);
                     return;
                 })
@@ -73,7 +82,7 @@ function LogInForm() {
                 "welcomeBack",
                 JSON.stringify({ email: email, name: data.name })
             );
-                setLoading(false)
+            setLoading(false)
             // refresh page
             navigate(0);
         } catch (error) {
@@ -81,32 +90,7 @@ function LogInForm() {
         }
     };
 
-    // const filterFormError = (errors) => {
-    //     errors.map((error) => {
-    //         switch (error) {
-    //             case "WEAK_PASSWORD":
-    //                 setFormErrors({
-    //                     ...formErrors,
-    //                     password:
-    //                         "Must be > 8 characters long and contain at least a number, symbol, lowercase & uppercase letter.",
-    //                 });
-    //                 break;
-    //             case "EMAIL_FORMAT":
-    //                 setFormErrors({
-    //                     ...formErrors,
-    //                     email: "Must be in email address format e.g. example@mail.com",
-    //                 });
-    //                 break;
-    //             case "WRONG_CREDENTIALS":
-    //                 setFormErrors({
-    //                     ...formErrors,
-    //                     form: "This combination of email and password does not exist."
-    //                 });
-    //                 break;
-    //         }
-    //     });
-    // };
-
+  
     // create controlled inputs for form
     const handleInput = (e) => {
         const keyString = e.target.id;
@@ -134,8 +118,15 @@ function LogInForm() {
                                 value={formFields.email}
                                 onChange={handleInput}
                                 placeholder="Email"
-                                required
+                                isInvalid={!!formErrors.email}
+                                isValid={(Object.keys(formErrors).length > 0) && !formErrors.email}
                             />
+                            <Form.Control.Feedback tooltip type="invalid">
+                                {formErrors.email}
+                            </Form.Control.Feedback>
+                            <Form.Control.Feedback tooltip type="valid">
+                                All good!
+                            </Form.Control.Feedback>
                         </Form.FloatingLabel>
                     </Form.Group>
                 </Row>
@@ -145,8 +136,12 @@ function LogInForm() {
                         className="p-0 mb-4"
                         onChange={handleInput}
                         value={formFields.password}
+                        isInvalid={!!formErrors.password}
                     >
-                        <PasswordFloatingLabelToggle uniqueId={"in-password"} />
+                        <PasswordFloatingLabelToggle
+                            error={formErrors.password}
+                            uniqueId={"in-password"}
+                        />
                     </Form.Group>
                 </Row>
                 <Row>
@@ -154,7 +149,7 @@ function LogInForm() {
                         <Button
                             variant="primary"
                             type="submit"
-                            className="w-100 text-white"
+                            className="w-100 text-white mt-3"
                             disabled={loading ? true : false}
                         >
                             Submit
