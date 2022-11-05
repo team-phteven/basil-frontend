@@ -1,5 +1,5 @@
 // packages
-import {useState} from 'react'
+import { useState } from "react";
 // custom components
 import FormTabs from "../components/FormTabs";
 // BS components
@@ -9,7 +9,6 @@ import Row from "react-bootstrap/Row";
 import Image from "react-bootstrap/Image";
 
 const Home = () => {
-
     return (
         <Container as="main" className="mx-auto px-4">
             <Row>
