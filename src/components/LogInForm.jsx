@@ -14,10 +14,10 @@ function LogInForm() {
     // navigate instance (for page reload)
     const navigate = useNavigate();
     // state for form errors
-    const [formErrors, setFormErrors] = useState({
-        email: "",
-        password: "",
-    });
+    // const [formErrors, setFormErrors] = useState({
+    //     email: "",
+    //     password: "",
+    // });
     // welcome back state
     const [welcomeBack, setWelcomeBack] = useState({
         email: "",
@@ -54,7 +54,7 @@ function LogInForm() {
         try {
             // create new user session
             const { data } = await axios
-                .post("http://localhost:5000/api/users/log-in", {
+                .post(`${process.env.REACT_APP_BASE_URL}:5000/api/users/log-in`, {
                     email,
                     password,
                 }).catch((error) => {
@@ -62,7 +62,7 @@ function LogInForm() {
                         error.response.data.error
                     );
                     console.log(error_code)
-                    filterFormError(error_code);
+                    // filterFormError(error_code);
                     setLoading(false);
                     return;
                 })
@@ -80,31 +80,31 @@ function LogInForm() {
         }
     };
 
-    const filterFormError = (errors) => {
-        errors.map((error) => {
-            switch (error) {
-                case "WEAK_PASSWORD":
-                    setFormErrors({
-                        ...formErrors,
-                        password:
-                            "Must be > 8 characters long and contain at least a number, symbol, lowercase & uppercase letter.",
-                    });
-                    break;
-                case "EMAIL_FORMAT":
-                    setFormErrors({
-                        ...formErrors,
-                        email: "Must be in email address format e.g. example@mail.com",
-                    });
-                    break;
-                case "WRONG_CREDENTIALS":
-                    setFormErrors({
-                        ...formErrors,
-                        form: "This combination of email and password does not exist."
-                    });
-                    break;
-            }
-        });
-    };
+    // const filterFormError = (errors) => {
+    //     errors.map((error) => {
+    //         switch (error) {
+    //             case "WEAK_PASSWORD":
+    //                 setFormErrors({
+    //                     ...formErrors,
+    //                     password:
+    //                         "Must be > 8 characters long and contain at least a number, symbol, lowercase & uppercase letter.",
+    //                 });
+    //                 break;
+    //             case "EMAIL_FORMAT":
+    //                 setFormErrors({
+    //                     ...formErrors,
+    //                     email: "Must be in email address format e.g. example@mail.com",
+    //                 });
+    //                 break;
+    //             case "WRONG_CREDENTIALS":
+    //                 setFormErrors({
+    //                     ...formErrors,
+    //                     form: "This combination of email and password does not exist."
+    //                 });
+    //                 break;
+    //         }
+    //     });
+    // };
 
     // create controlled inputs for form
     const handleInput = (e) => {

@@ -54,7 +54,7 @@ function SignUpForm() {
         try {
             // create new user
             const { data } = await axios.post(
-                "http://localhost:5000/api/users/sign-up",
+                `${process.env.REACT_APP_BASE_URL}:5000/api/users/sign-up`,
                 { firstName, lastName, email, password, avatar }
             );
             // store new user in local storage
