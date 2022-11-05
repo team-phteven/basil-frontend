@@ -50,19 +50,20 @@ function LogInForm() {
     const handleSubmit = async (e) => {
         // prevent page refresh
         e.preventDefault();
+        console.log(`${process.env.REACT_APP_BASE_URL}`)
         setLoading(true);
         try {
             // create new user session
             const { data } = await axios
-                .post(`${process.env.REACT_APP_BASE_URL}:5000/api/users/log-in`, {
+                .post(`${process.env.REACT_APP_BASE_URL}/api/users/log-in`, {
                     email,
                     password,
                 }).catch((error) => {
                     const error_code = JSON.stringify(
                         error.response.data.error
                     );
-                    console.log(error_code)
-                    // filterFormError(error_code);
+                    console.log(error_code);
+                    // s://basilchat-back-staging.herokuapp.comfilterFormError(error_code);
                     setLoading(false);
                     return;
                 })
