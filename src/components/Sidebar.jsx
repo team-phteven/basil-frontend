@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Nav, Tab } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
+import Conversations from "../components/Conversations";
+import Contacts from "./Contacts";
 
 const CONVERSATIONS_KEY = "conversations";
 const CONTACTS_KEY = "contacts";
@@ -28,10 +30,13 @@ const Sidebar = () => {
                     <Nav.Item>
                         <Nav.Link eventKey={CONTACTS_KEY}>Contacts</Nav.Link>
                     </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link eventKey={ACCOUNT_KEY}>Account</Nav.Link>
-                    </Nav.Item>
                 </Nav>
+                <Tab.Pane eventKey={CONVERSATIONS_KEY}>
+                    <Conversations />
+                </Tab.Pane>
+                <Tab.Pane eventKey={CONTACTS_KEY}>
+                    <Contacts />
+                </Tab.Pane>
             </Tab.Container>
             <Button onClick={handleClick}>Log Out</Button>
         </div>
