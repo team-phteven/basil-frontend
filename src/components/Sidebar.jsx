@@ -1,9 +1,8 @@
-import { Container, Tab, Nav } from "react-bootstrap";
+import React from "react";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
 
-const Profile = () => {
+const Sidebar = () => {
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -13,12 +12,9 @@ const Profile = () => {
 
     return (
         <div>
-            <Button onClick={handleClick}>Log Out</Button>
-            <Container>
-                <Sidebar />
-            </Container>
+            <p style={{ color: "red" }}>Hello</p>
         </div>
     );
 };
 
-export default Profile;
+export default Sidebar;
