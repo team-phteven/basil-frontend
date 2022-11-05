@@ -13,8 +13,8 @@ const Home = () => {
     return (
         <Container as="main" className="mx-auto px-4">
             <Row>
-                <Col xs={5} md={2} className="mt-5 mx-auto">
-                    <Image rounded fluid src="BasilLogo2.png"></Image>
+                <Col xs={4} sm={3} md={3} lg={2} className="mt-5 mx-auto">
+                    <Image rounded fluid src="BasilLogo2.svg"></Image>
                 </Col>
             </Row>
             <Row>
