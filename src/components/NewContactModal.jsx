@@ -7,13 +7,12 @@ const NewContactModal = ({ closeModal }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(storedUser.token);
 
         const response = await fetch(
             "http://localhost:5000/api/users/add-request",
             {
-                method: "POST",
-                body: JSON.stringify(emailRef.current.value),
+                method: "PUT",
+                body: JSON.stringify({ email: emailRef.current.value }),
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${storedUser.token}`,
