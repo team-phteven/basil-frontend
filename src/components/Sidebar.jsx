@@ -9,7 +9,6 @@ import NewConversationModal from "./NewConversationModal";
 
 const CONVERSATIONS_KEY = "conversations";
 const CONTACTS_KEY = "contacts";
-const ACCOUNT_KEY = "account";
 
 const Sidebar = () => {
     const navigate = useNavigate();
