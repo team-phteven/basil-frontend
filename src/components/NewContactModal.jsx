@@ -3,9 +3,26 @@ import { Modal, Form, Button } from "react-bootstrap";
 
 const NewContactModal = ({ closeModal }) => {
     const emailRef = useRef();
-    const handleSubmit = (e) => {
-        e.prevent.default();
+    const storedUser = JSON.parse(localStorage.getItem("storedUser"));
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(storedUser.token);
+
+        const response = await fetch(
+            "http://localhost:5000/api/users/add-request",
+            {
+                method: "POST",
+                body: JSON.stringify(emailRef.current.value),
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${storedUser.token}`,
+                },
+            }
+        );
+
+        const json = await response.json();
+        console.log(json);
         // requestContact(idRef.current.value, nameRef.current.value);
         closeModal();
     };

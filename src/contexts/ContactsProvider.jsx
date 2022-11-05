@@ -6,16 +6,10 @@ export function useContacts() {
 }
 
 export function ContactsProvider({ children }) {
-    // const [contacts, setContacts] = useLocalStorage("contacts", []);
-
-    function createContact(id, name) {
-        setContacts((prevContacts) => {
-            return [...prevContacts, { id, name }];
-        });
-    }
+    // const [requestsMade, setRequestsMade] = useState([]);
 
     return (
-        <ContactsContext.Provider value={{ contacts, createContact }}>
+        <ContactsContext.Provider value={{}}>
             {children}
         </ContactsContext.Provider>
     );
