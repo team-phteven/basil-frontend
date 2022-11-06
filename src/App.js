@@ -14,7 +14,7 @@ function App() {
     }, []);
 
     const profile = (
-        <ContactsProvider>
+        <ContactsProvider storedUser={user}>
             <Profile />
         </ContactsProvider>
     );

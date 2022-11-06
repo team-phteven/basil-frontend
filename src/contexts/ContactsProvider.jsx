@@ -7,29 +7,14 @@ export function useContacts() {
     return useContext(ContactsContext);
 }
 
-export function ContactsProvider({ children }) {
+// passing in storedUser from App
+export function ContactsProvider({ children, storedUser }) {
     // const [requestsMade, setRequestsMade] = useState([]);
-
-    const [incomingRequests, setIncomingRequests] = useState([]);
-
-    useEffect(() => {
-        const getRequests = async () => {
-            const response = await fetch(
-                "http://localhost:5000/api/users/add-request",
-                {
-                    method: "PUT",
-                    body: JSON.stringify({ email: emailRef.current.value }),
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${storedUser.token}`,
-                    },
-                }
-            );
-        };
-    }, []);
+    // const storedUser = JSON.parse(localStorage.getItem("storedUser"));
+    // const [incomingRequests, setIncomingRequests] = useState([]);
 
     return (
-        <ContactsContext.Provider value={{}}>
+        <ContactsContext.Provider value={{ storedUser }}>
             {children}
         </ContactsContext.Provider>
     );
