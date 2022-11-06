@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import { ContactsProvider } from "./contexts/ContactsProvider";
+import { ConversationsProvider } from "./contexts/ConversationsProvider.jsx";
 
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
@@ -14,9 +15,11 @@ function App() {
     }, []);
 
     const profile = (
-        <ContactsProvider storedUser={user}>
-            <Profile />
-        </ContactsProvider>
+        <ConversationsProvider storedUser={user}>
+            <ContactsProvider storedUser={user}>
+                <Profile />
+            </ContactsProvider>
+        </ConversationsProvider>
     );
 
     return <div className="App bg-dark">{user ? profile : <Home />}</div>;

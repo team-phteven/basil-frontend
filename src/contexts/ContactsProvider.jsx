@@ -9,7 +9,6 @@ export function useContacts() {
 
 // passing in storedUser from App
 export function ContactsProvider({ children, storedUser }) {
-    // const [requestsMade, setRequestsMade] = useState([]);
     // const storedUser = JSON.parse(localStorage.getItem("storedUser"));
     // const [incomingRequests, setIncomingRequests] = useState([]);
 
