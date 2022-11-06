@@ -1,9 +1,10 @@
 import React, { useRef } from "react";
+import { useContacts } from "../contexts/ContactsProvider";
 import { Modal, Form, Button } from "react-bootstrap";
 
 const NewContactModal = ({ closeModal }) => {
     const emailRef = useRef();
-    const storedUser = JSON.parse(localStorage.getItem("storedUser"));
+    const { storedUser } = useContacts();
 
     const handleSubmit = async (e) => {
         e.preventDefault();

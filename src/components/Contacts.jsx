@@ -22,16 +22,45 @@ const Contacts = () => {
         getRequests();
     }, []);
 
+    const handleAccept = async (id) => {
+        console.log(id);
+        try {
+            const response = await fetch(
+                "http://localhost:5000/api/users/accept-request",
+                {
+                    method: "PUT",
+                    body: JSON.stringify({
+                        contactId: id,
+                        isGroupConversation: false,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${storedUser.token}`,
+                    },
+                }
+            );
+            const json = await response.json();
+            console.log(json);
+        } catch (e) {
+            console.log(e.message);
+        }
+    };
+
     return (
         <div style={{ color: "red" }}>
             <p>Conversation Requests</p>
             <ListGroup>
-                {incomingRequests.map((user) => {
+                {incomingRequests.map((user, index) => {
                     return (
-                        <ListGroup.Item>
+                        <ListGroup.Item key={index}>
                             <span className="me-1">{user.email}</span>
                             <ButtonGroup size="sm">
-                                <Button variant="secondary">Accept</Button>
+                                <Button
+                                    onClick={() => handleAccept(user._id)}
+                                    variant="secondary"
+                                >
+                                    Accept
+                                </Button>
                                 <Button variant="warning">Reject</Button>
                             </ButtonGroup>
                         </ListGroup.Item>

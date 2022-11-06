@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { ListGroup } from "react-bootstrap";
+import { ListGroup, Button } from "react-bootstrap";
 import { useConversations } from "../contexts/ConversationsProvider";
 
 const Conversations = () => {
     const [conversations, setConversations] = useState([]);
     // const storedUser = JSON.parse(localStorage.getItem("storedUser"));
-    const { storedUser } = useConversations();
+    const {
+        storedUser,
+        selectedConversationIndex,
+        setSelectedConversationIndex,
+    } = useConversations();
+
     useEffect(() => {
         const getConversations = async () => {
             const response = await fetch(
@@ -24,12 +29,17 @@ const Conversations = () => {
     return (
         <div style={{ color: "red" }}>
             <ListGroup>
-                {conversations.map((conversation) => {
+                {conversations.map((conversation, index) => {
                     const otherUser = conversation.users.find((user) => {
-                        return user._id !== storedUser._id;
+                        return user.email !== storedUser.email;
                     });
                     return (
-                        <ListGroup.Item>
+                        <ListGroup.Item
+                            action
+                            onClick={() => setSelectedConversationIndex(index)}
+                            active={index === selectedConversationIndex}
+                            key={conversation._id}
+                        >
                             <span className="me-1">{otherUser.firstName}</span>
                         </ListGroup.Item>
                     );
