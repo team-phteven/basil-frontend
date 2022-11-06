@@ -7,7 +7,6 @@ const Contacts = () => {
     const { storedUser } = useContacts();
     useEffect(() => {
         console.log("use effect called");
-        console.log(storedUser);
         const getRequests = async () => {
             const response = await fetch(
                 "http://localhost:5000/api/users/get-requests",
@@ -23,7 +22,15 @@ const Contacts = () => {
         getRequests();
     }, []);
 
-    return <div style={{ color: "red" }}>requests</div>;
+    return (
+        <div style={{ color: "red" }}>
+            {incomingRequests.length}
+            {incomingRequests.map((user, index) => {
+                console.log(user);
+                return <p>{user.firstName}</p>;
+            })}
+        </div>
+    );
 };
 
 export default Contacts;
