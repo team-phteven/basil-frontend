@@ -48,12 +48,16 @@ const ConversationList = () => {
                 );
     }, [selectedConversation])
 
+    const selectConversation = (conversation) => {
+        setSelectedConversation(conversation)
+    }
+
     return (
         <Col className="d-flex flex-column">
 
             {/* SELECTED CONVERSATION */}
 
-            {selectedConversation && <ConversationSlab conversation={selectedConversation} selected={true}/>}
+            {selectedConversation && <ConversationSlab conversation={selectedConversation} selected/>}
 
             {/* ALL OTHER CONVERSATIONS */}
             
@@ -68,9 +72,9 @@ const ConversationList = () => {
                     {otherConversations && 
                     otherConversations.map((conversation, index) => (
                         <ConversationSlab
+                            onClick={selectConversation}
                             key={index}
                             conversation={conversation}
-                            selected={false}
                         />
                     ))}
 

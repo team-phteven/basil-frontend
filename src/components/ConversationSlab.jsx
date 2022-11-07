@@ -3,7 +3,7 @@ import Col from "react-bootstrap/Col";
 import Avatar from "./Avatar";
 import { useUser } from "../contexts/UserProvider";
 
-export const ConversationSlab = ({conversation, selected}) => {
+export const ConversationSlab = ({conversation, selected, onClick}) => {
 
     const isSelected = selected ? true : false;
 
@@ -15,8 +15,9 @@ export const ConversationSlab = ({conversation, selected}) => {
 
     return (
         <Row
-            style={{ height: "100px" }}
+            style={{ cursor: "pointer", height: "100px" }}
             className="p-2 m-0 d-flex justify-items-start"
+            onClick={onClick ? () => onClick(conversation) : null}
         >
             <Col>
                 <Avatar url={otherUser.avatar} />
