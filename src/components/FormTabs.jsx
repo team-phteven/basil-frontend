@@ -1,6 +1,6 @@
 // Custom components
 import LogInForm from "./Auth/LogInForm";
-import SignUpForm from "./SignUpForm";
+import SignUpForm from "./Auth/SignUpForm";
 // BS components
 import Col from "react-bootstrap/Col";
 import Tab from "react-bootstrap/Tab";

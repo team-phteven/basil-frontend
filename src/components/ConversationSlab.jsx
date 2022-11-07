@@ -1,11 +1,10 @@
+import styled from "styled-components"
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Avatar from "./Avatar";
 import { useUser } from "../contexts/UserProvider";
 
 export const ConversationSlab = ({conversation, selected, onClick}) => {
-
-    const isSelected = selected ? true : false;
 
     const { localUser } = useUser();
 
@@ -14,13 +13,15 @@ export const ConversationSlab = ({conversation, selected, onClick}) => {
     });
 
     return (
-        <Row
-            style={{ cursor: "pointer", height: "100px" }}
+        <Slab
             className="p-2 m-0 d-flex justify-items-start"
             onClick={onClick ? () => onClick(conversation) : null}
         >
             <Col>
-                <Avatar url={otherUser.avatar} />
+                <Avatar
+                    url={otherUser.avatar}
+                    bgc={selected ? "#f8f9fa" : "#ffc107"}
+                />
             </Col>
             <Col>
                 <Row>
@@ -30,6 +31,14 @@ export const ConversationSlab = ({conversation, selected, onClick}) => {
                     <p className="text-muted">2 unread messages</p>
                 </Row>
             </Col>
-        </Row>
+        </Slab>
     );
 };
+
+const Slab = styled(Row)`
+    cursor: pointer;
+    height: 100px;
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+`;

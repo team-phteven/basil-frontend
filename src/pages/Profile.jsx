@@ -19,12 +19,13 @@ const Profile = () => {
 
     return (
         <Container as="main" className="mx-0 p-0 vh-100 bg-light" fluid>
-            <Row className="h-100 m-0 p-0">
+            <Row className="h-100 m-0 p-0 d-flex flex-row">
                 {/* CONVERSATIONS COLUMN */}
 
                 <Col
+                    md={3}
                     style={{ boxSizing: "border-box" }}
-                    className="bg-transparent w-100 m-0 p-0 d-flex flex-column"
+                    className="bg-transparent m-0 p-0 d-flex flex-column"
                 >
                     <Row className="flex-grow-1">
                         <ConversationList />
@@ -42,9 +43,9 @@ const Profile = () => {
                     </Row>
                 </Col>
                 {/* CHAT COLUMN */}
-                <Col className="w-100 m-0 p-0 bg-transparent"></Col>
+                <Col className="m-0 p-0 bg-transparent flex-grow-1"></Col>
                 {/* IN-CHAT CONTACTS */}
-                <Col className="bg-secondary w-100 m-0 p-0"></Col>
+                <Col md={2} className="bg-secondary m-0 p-0"></Col>
             </Row>
         </Container>
     );
