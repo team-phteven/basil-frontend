@@ -11,6 +11,11 @@ $nav-tabs-link-active-color:        white;
 $nav-tabs-link-active-bg:           #8A4FEC;
 $nav-tabs-link-active-border-color: #8A4FEC;
 
+* {
+    margin: 0;
+    padding: 0;
+}
 
 // import bootstrap
 @import '../node_modules/bootstrap/scss/bootstrap'
+

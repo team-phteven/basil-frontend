@@ -10,6 +10,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
+
 function LogInForm() {
     // navigate instance (for page reload)
     const navigate = useNavigate();

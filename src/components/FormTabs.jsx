@@ -1,5 +1,5 @@
 // Custom components
-import LogInForm from "./LogInForm";
+import LogInForm from "./Auth/LogInForm";
 import SignUpForm from "./SignUpForm";
 // BS components
 import Col from "react-bootstrap/Col";
