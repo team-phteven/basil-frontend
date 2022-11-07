@@ -1,7 +1,7 @@
-html .App * {
+/* html .App * {
     margin: 0;
     padding: 0;
-}
+} */
 
 body {
     margin: 0;
@@ -13,4 +13,9 @@ body {
     display: flex;
     padding: 0;
     margin: 0;
+}
+
+.App p {
+    margin: 0;
+    padding: 0;
 }

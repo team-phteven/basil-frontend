@@ -14,16 +14,16 @@ export const ConversationSlab = ({conversation, selected, onClick}) => {
 
     return (
         <Slab
-            className="p-2 m-0 d-flex justify-items-start"
+            className="p-2 m-0 d-flex flex-row align-items-center"
             onClick={onClick ? () => onClick(conversation) : null}
         >
-            <Col>
+            <Col sm={4}>
                 <Avatar
                     url={otherUser.avatar}
                     bgc={selected ? "#f8f9fa" : "#ffc107"}
                 />
             </Col>
-            <Col>
+            <Col className="flex-grow-1">
                 <Row>
                     {otherUser.firstName} {otherUser.lastName}
                 </Row>

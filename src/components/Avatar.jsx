@@ -12,14 +12,14 @@ const Avatar = ({ url, bgc }) => {
 };
 
 const AvatarWrapper = styled.div`
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     position: relative;
 `
 
 const ProfilePic = styled.div`
-    width: 80px;
-    height: 80px;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
     background-size: cover;
     background-image: ${props => props.url};
