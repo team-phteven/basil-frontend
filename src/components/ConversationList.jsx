@@ -60,15 +60,22 @@ const ConversationList = () => {
 
     const getMessages = async () => {
         // GET MESSAGES FOR SELECTED CONVERSATION AND STORE THEM IN STATE
+        console.log("get messages called");
+        console.log(selectedConversation._id);
         const config = {
+            method: "GET",
             headers: {
                 Authorization: `Bearer ${localUser.token}`,
             },
         };
         const { data } = await axios
-            .get(`${process.env.REACT_APP_BASE_URL}/api/messages`, config, {
-                conversationId: selectedConversation._id,
-            })
+            .get(
+                `${process.env.REACT_APP_BASE_URL}/api/messages/${selectedConversation._id}`,
+                config
+                // {
+                //     conversationId: selectedConversation._id,
+                // }
+            )
             .catch((error) => {
                 const error_code = JSON.stringify(error.response.data.error);
                 console.log(error_code);
