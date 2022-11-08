@@ -10,8 +10,16 @@ export function ConversationsProvider({ children }) {
 
     const [conversations, setConversations] = useState([])
     const [selectedConversation, setSelectedConversation] = useState(null);
+    const [selectedConversationMessages, setSelectedConversationMessages] = useState([]);
 
-    const values={ conversations,  setConversations, selectedConversation, setSelectedConversation}
+    const values = {
+        conversations,
+        setConversations,
+        selectedConversation,
+        setSelectedConversation,
+        selectedConversationMessages,
+        setSelectedConversationMessages,
+    };
 
     return (
         <ConversationsContext.Provider value={values}>

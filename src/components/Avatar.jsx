@@ -1,10 +1,11 @@
+import { Popover } from "bootstrap";
 import styled from "styled-components"
 
-const Avatar = ({ url, bgc }) => {
+const Avatar = ({ url, bgc, size }) => {
     return (
-        <AvatarWrapper>
+        <AvatarWrapper size={size}>
             <ProfilePic
-                url={`url('${url ? url : "avatar.png"}')`}
+                url={`url('${url ? url : "face.jpeg"}')`}
             ></ProfilePic>
             <StatusLight bgc={bgc} />
         </AvatarWrapper>
@@ -12,10 +13,12 @@ const Avatar = ({ url, bgc }) => {
 };
 
 const AvatarWrapper = styled.div`
-    width: 60px;
-    height: 60px;
+    width: ${(props) => props.size || "60px"};
+    height: ${(props) => props.size || "60px"};
     position: relative;
-`
+    margin: 0;
+    padding: 0;
+`;
 
 const ProfilePic = styled.div`
     width: 100%;

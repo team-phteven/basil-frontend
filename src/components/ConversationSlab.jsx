@@ -1,11 +1,10 @@
-import styled from "styled-components"
+import styled from "styled-components";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Avatar from "./Avatar";
 import { useUser } from "../contexts/UserProvider";
 
-export const ConversationSlab = ({conversation, selected, onClick}) => {
-
+export const ConversationSlab = ({ conversation, selected, onClick }) => {
     const { localUser } = useUser();
 
     const otherUser = conversation.users.find((user) => {
@@ -14,8 +13,9 @@ export const ConversationSlab = ({conversation, selected, onClick}) => {
 
     return (
         <Slab
-            className="p-2 m-0 d-flex flex-row align-items-center"
+            className="p-0 m-0"
             onClick={onClick ? () => onClick(conversation) : null}
+            hover={selected ? "transparent" : "rgba(0, 0, 0, 0.1)"}
         >
             <Col sm={4}>
                 <Avatar
@@ -38,7 +38,10 @@ export const ConversationSlab = ({conversation, selected, onClick}) => {
 const Slab = styled(Row)`
     cursor: pointer;
     height: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: ${(props) => props.hover};
     }
 `;
