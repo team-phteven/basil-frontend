@@ -3,8 +3,31 @@ import Avatar from "./Avatar";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { MdCheckCircle, MdRemoveCircle } from "react-icons/md";
+import axios from "axios";
 
-const Request = ({ request }) => {
+const Request = ({ request, localUser }) => {
+    const handleAccept = async (acceptedId) => {
+        console.log("HANDLE ACCEPT CALLED! ---------");
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${localUser.token}`,
+            },
+        };
+
+        const { data } = await axios
+            .post(
+                `${process.env.REACT_APP_BASE_URL}/api/conversations`,
+                { users: [acceptedId] },
+                config
+            )
+            .catch((error) => {
+                const error_code = JSON.stringify(error.response.data.error);
+                console.log(error_code);
+                return;
+            });
+    };
+
     return (
         <StyledRow>
             <Col
@@ -27,7 +50,10 @@ const Request = ({ request }) => {
             >
                 <Row>
                     <RejectButton className="m-1"></RejectButton>
-                    <AcceptButton className="m-1"></AcceptButton>
+                    <AcceptButton
+                        onClick={() => handleAccept(localUser._id)}
+                        className="m-1"
+                    ></AcceptButton>
                 </Row>
             </Col>
         </StyledRow>
@@ -38,8 +64,8 @@ const AcceptButton = styled.div`
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: rgb(0,255,0);
-`
+    background-color: rgb(0, 255, 0);
+`;
 const RejectButton = styled.div`
     width: 30px;
     height: 30px;

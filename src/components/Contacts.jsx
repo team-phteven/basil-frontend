@@ -40,7 +40,11 @@ const Contacts = () => {
                     <h4>Message Requests</h4>
                     {messageRequests ? (
                         messageRequests.map((request, index) => (
-                            <Request key={index} request={request} />
+                            <Request
+                                key={index}
+                                request={request}
+                                localUser={localUser}
+                            />
                         ))
                     ) : (
                         <span>No message requests</span>
