@@ -9,6 +9,7 @@ import { useConversations } from "../contexts/ConversationsProvider";
 import { useUser } from "../contexts/UserProvider";
 import Request from "./Request";
 import Stack from "react-bootstrap/Stack";
+import axios from "axios";
 
 const Contacts = () => {
     const { conversations } = useConversations();
@@ -23,7 +24,24 @@ const Contacts = () => {
     };
 
     const handleClick = async () => {
-        setInput("");
+        console.log("handle input called!-----");
+        const config = {
+            headers: {
+                Authorization: `Bearer ${localUser.token}`,
+            },
+        };
+        console.log("input:" + input);
+        const { data } = await axios
+            .put(
+                `${process.env.REACT_APP_BASE_URL}/api/users/add-request`,
+                { email: input },
+                config
+            )
+            .catch((error) => {
+                const error_code = JSON.stringify(error.response.data.error);
+                console.log(error_code);
+                return;
+            });
     };
 
     return (
