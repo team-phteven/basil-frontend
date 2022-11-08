@@ -1,15 +1,14 @@
 // custom variables
-$primary: #8A4FEC;
-$secondary: #45EA56;
+$primary: #8a4fec;
 
 // Nav tabs
-$nav-tabs-border-color:             #8A4FEC;
+$nav-tabs-border-color: #8a4fec;
 // $nav-tabs-border-width:             $border-width;
-$nav-tabs-border-radius:            0;
-$nav-tabs-link-hover-border-color:  #8A4FEC;
-$nav-tabs-link-active-color:        white;
-$nav-tabs-link-active-bg:           #8A4FEC;
-$nav-tabs-link-active-border-color: #8A4FEC;
+$nav-tabs-border-radius: 0;
+$nav-tabs-link-hover-border-color: #8a4fec;
+$nav-tabs-link-active-color: white;
+$nav-tabs-link-active-bg: #8a4fec;
+$nav-tabs-link-active-border-color: #8a4fec;
 
 * {
     margin: 0;
@@ -17,5 +16,4 @@ $nav-tabs-link-active-border-color: #8A4FEC;
 }
 
 // import bootstrap
-@import '../node_modules/bootstrap/scss/bootstrap'
-
+@import "../node_modules/bootstrap/scss/bootstrap";
