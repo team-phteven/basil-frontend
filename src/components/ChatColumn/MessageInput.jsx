@@ -27,7 +27,6 @@ const MessageInput = ({ selectedConversation, localUser }) => {
     };
 
     const sendMessage = async () => {
-        console.log("sendMessage called: ------");
         const newMessage = {
             content: inputMessage,
             conversationId: selectedConversation._id,
@@ -39,7 +38,6 @@ const MessageInput = ({ selectedConversation, localUser }) => {
             },
         };
 
-        console.log("localUser.token:    " + localUser.token);
         const { data } = await axios
             .post(
                 `${process.env.REACT_APP_BASE_URL}/api/messages`,
