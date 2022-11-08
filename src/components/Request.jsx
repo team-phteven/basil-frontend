@@ -7,8 +7,6 @@ import axios from "axios";
 
 const Request = ({ request, localUser }) => {
     const handleAccept = async (acceptedId) => {
-        console.log("HANDLE ACCEPT CALLED! ---------");
-
         const config = {
             headers: {
                 Authorization: `Bearer ${localUser.token}`,

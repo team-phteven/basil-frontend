@@ -60,8 +60,6 @@ const ConversationList = () => {
 
     const getMessages = async () => {
         // GET MESSAGES FOR SELECTED CONVERSATION AND STORE THEM IN STATE
-        console.log("getMessages called: -----");
-        console.log("selectedConversation: -----" + selectedConversation._id);
         const config = {
             headers: {
                 Authorization: `Bearer ${localUser.token}`,

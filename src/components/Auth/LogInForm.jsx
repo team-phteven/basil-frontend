@@ -10,7 +10,6 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
-
 function LogInForm() {
     // navigate instance (for page reload)
     const navigate = useNavigate();
@@ -51,7 +50,6 @@ function LogInForm() {
     const handleSubmit = async (e) => {
         // prevent page refresh
         e.preventDefault();
-        console.log(`${process.env.REACT_APP_BASE_URL}`)
         setLoading(true);
         try {
             // create new user session
@@ -59,7 +57,8 @@ function LogInForm() {
                 .post(`${process.env.REACT_APP_BASE_URL}/api/users/log-in`, {
                     email,
                     password,
-                }).catch((error) => {
+                })
+                .catch((error) => {
                     const error_code = JSON.stringify(
                         error.response.data.error
                     );
@@ -67,14 +66,14 @@ function LogInForm() {
                     // s://basilchat-back-staging.herokuapp.comfilterFormError(error_code);
                     setLoading(false);
                     return;
-                })
+                });
             // store new user session in local storage
             localStorage.setItem("storedUser", JSON.stringify(data));
             localStorage.setItem(
                 "welcomeBack",
                 JSON.stringify({ email: email, name: data.name })
             );
-                setLoading(false)
+            setLoading(false);
             // refresh page
             navigate(0);
         } catch (error) {
