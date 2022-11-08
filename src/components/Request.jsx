@@ -51,7 +51,7 @@ const Request = ({ request, localUser }) => {
                 <Row>
                     <RejectButton className="m-1"></RejectButton>
                     <AcceptButton
-                        onClick={() => handleAccept(localUser._id)}
+                        onClick={() => handleAccept(request._id)}
                         className="m-1"
                     ></AcceptButton>
                 </Row>

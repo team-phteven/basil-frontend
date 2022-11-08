@@ -56,10 +56,6 @@ const ConversationList = () => {
             })
         );
         if (selectedConversation) getMessages();
-        console.log(
-            "setOtherConversations : --- otherConversations:" +
-                otherConversations
-        );
     }, [selectedConversation]);
 
     const getMessages = async () => {

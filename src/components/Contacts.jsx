@@ -23,13 +23,8 @@ const Contacts = () => {
     };
 
     const handleClick = async () => {
-        console.log(input);
         setInput("");
     };
-
-    useEffect(() => {
-        console.log(conversations);
-    }, [conversations]);
 
     return (
         <ContactsCol className="p-2 bg-black text-white">

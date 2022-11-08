@@ -7,8 +7,6 @@ import { useUser } from "../contexts/UserProvider";
 export const ConversationSlab = ({ conversation, selected, onClick }) => {
     const { localUser } = useUser();
 
-    console.log("CONVERSATION---------" + conversation);
-
     const otherUser = conversation.users.find((user) => {
         return user.email !== localUser.email;
     });

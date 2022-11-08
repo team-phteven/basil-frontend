@@ -7,8 +7,8 @@ import Profile from "./pages/Profile";
 import axios from "axios";
 
 function App() {
-
-    const { setLocalUser, localUser, messageRequests, setMessageRequests } = useUser()
+    const { setLocalUser, localUser, messageRequests, setMessageRequests } =
+        useUser();
     // Set local user
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem("storedUser"));
@@ -17,7 +17,7 @@ function App() {
 
     useEffect(() => {
         if (localUser) getMessageRequests();
-    }, [localUser])
+    }, [localUser]);
 
     const getMessageRequests = async () => {
         const config = {
@@ -31,23 +31,17 @@ function App() {
                 config
             )
             .catch((error) => {
-                const error_code = JSON.stringify(
-                    error.response.data.error
-                );
+                const error_code = JSON.stringify(error.response.data.error);
                 console.log(error_code);
                 return;
             });
         setMessageRequests(data);
     };
 
-    useEffect(() => {
-        console.log(messageRequests)
-    }, [messageRequests])
-
     return (
         <div className="App bg-dark">
             <ConversationsProvider>
-            {localUser ? <Profile /> : <Home />}
+                {localUser ? <Profile /> : <Home />}
             </ConversationsProvider>
         </div>
     );
