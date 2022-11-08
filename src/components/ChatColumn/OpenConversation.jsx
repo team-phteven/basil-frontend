@@ -1,10 +1,5 @@
 import React from "react";
-import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
-import styled from "styled-components";
 import MessageInput from "./MessageInput";
 import { useConversations } from "../../contexts/ConversationsProvider";
 import { useUser } from "../../contexts/UserProvider";

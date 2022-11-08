@@ -9,9 +9,15 @@ export function useUser() {
 export function UserProvider({ children, storedUser }) {
 
     const [localUser, setLocalUser] = useState(null)
+    const [messageRequests, setMessageRequests] = useState(null);
 
 
-    const values={ localUser,  setLocalUser}
+    const values = {
+        localUser,
+        setLocalUser,
+        messageRequests,
+        setMessageRequests,
+    };
 
     return (
         <UserContext.Provider value={values}>
