@@ -4,8 +4,10 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { MdCheckCircle, MdRemoveCircle } from "react-icons/md";
 import axios from "axios";
+import { useUser } from "../contexts/UserProvider";
 
 const Request = ({ request, localUser }) => {
+    const { setMessageRequests } = useUser();
     const handleAccept = async (acceptedId) => {
         const config = {
             headers: {
@@ -24,6 +26,7 @@ const Request = ({ request, localUser }) => {
                 console.log(error_code);
                 return;
             });
+        setMessageRequests(data);
     };
 
     return (
