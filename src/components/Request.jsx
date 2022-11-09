@@ -29,6 +29,27 @@ const Request = ({ request, localUser }) => {
         setMessageRequests(data);
     };
 
+    const handleReject = async (acceptedId) => {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${localUser.token}`,
+            },
+        };
+
+        const { data } = await axios
+            .post(
+                `${process.env.REACT_APP_BASE_URL}/api/conversations`,
+                { users: [acceptedId] },
+                config
+            )
+            .catch((error) => {
+                const error_code = JSON.stringify(error.response.data.error);
+                console.log(error_code);
+                return;
+            });
+        setMessageRequests(data);
+    };
+
     return (
         <StyledRow>
             <Col
@@ -50,7 +71,10 @@ const Request = ({ request, localUser }) => {
                 className="mx-3 ms-auto d-flex flex-column justify-content-center"
             >
                 <Row>
-                    <RejectButton className="m-1"></RejectButton>
+                    <RejectButton
+                        onClick={() => handleReject(request._id)}
+                        className="m-1"
+                    ></RejectButton>
                     <AcceptButton
                         onClick={() => handleAccept(request._id)}
                         className="m-1"

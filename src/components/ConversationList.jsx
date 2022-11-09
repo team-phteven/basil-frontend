@@ -61,7 +61,6 @@ const ConversationList = () => {
     const getMessages = async () => {
         // GET MESSAGES FOR SELECTED CONVERSATION AND STORE THEM IN STATE
         console.log("get messages called");
-        console.log(selectedConversation._id);
         const config = {
             method: "GET",
             headers: {

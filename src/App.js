@@ -5,15 +5,25 @@ import { ConversationsProvider } from "./contexts/ConversationsProvider";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import axios from "axios";
+import { io } from "socket.io-client";
 
 function App() {
     const { setLocalUser, localUser, messageRequests, setMessageRequests } =
         useUser();
+
     // Set local user
-    useEffect(() => {
-        const userData = JSON.parse(localStorage.getItem("storedUser"));
-        if (userData) setLocalUser(userData);
-    }, []);
+    useEffect(
+        () => {
+            const userData = JSON.parse(localStorage.getItem("storedUser"));
+            if (userData) setLocalUser(userData);
+        },
+        []
+        // () => {
+        //     socket.on("disconnect", () => {
+        //         console.log("disconnect"); // undefined
+        //     });
+        // }
+    );
 
     useEffect(() => {
         if (localUser) getMessageRequests();
