@@ -16,8 +16,8 @@ const OpenConversation = () => {
 
     const [socketConnected, setSocketConnected] = useState(false);
 
-    const socket = io(process.env.REACT_APP_BASE_URL);
     let selectedConversationComparison;
+    const socket = io(process.env.REACT_APP_BASE_URL);
 
     useEffect(() => {
         socket.emit("setup", localUser.email);
@@ -25,6 +25,24 @@ const OpenConversation = () => {
         socket.on("connected", () => {
             setSocketConnected(true);
             console.log("connected");
+        });
+
+        socket.on("message received", (newMessageReceived) => {
+            console.log("<------message received in frontend!--->");
+            console.log(newMessageReceived);
+            if (
+                !selectedConversationComparison ||
+                selectedConversationComparison._id !==
+                    newMessageReceived.conversation._id
+            ) {
+                // give notif
+            } else {
+                console.log("else message received hit!!");
+                setSelectedConversationMessages([
+                    ...selectedConversationMessages,
+                    newMessageReceived,
+                ]);
+            }
         });
 
         return () => {
@@ -37,25 +55,28 @@ const OpenConversation = () => {
             socket.emit("join conversation", selectedConversation._id);
             selectedConversationComparison = selectedConversation;
         }
+        selectedConversationComparison = selectedConversation;
     }, [selectedConversation]);
 
-    useEffect(() => {
-        socket.on("message received", (newMessageReceived) => {
-            console.log("<------message received in frontend!--->");
-            if (
-                !selectedConversationComparison ||
-                selectedConversationComparison._id !==
-                    newMessageReceived.conversation._id
-            ) {
-                // give notif
-            } else {
-                setSelectedConversationMessages([
-                    ...selectedConversationMessages,
-                    newMessageReceived,
-                ]);
-            }
-        });
-    });
+    // useEffect(() => {
+    //     socket.on("message received", (newMessageReceived) => {
+    //         console.log("<------message received in frontend!--->");
+    //         console.log(newMessageReceived);
+    //         if (
+    //             !selectedConversationComparison ||
+    //             selectedConversationComparison._id !==
+    //                 newMessageReceived.conversation._id
+    //         ) {
+    //             // give notif
+    //         } else {
+    //             console.log("else message received hit!!");
+    //             setSelectedConversationMessages([
+    //                 ...selectedConversationMessages,
+    //                 newMessageReceived,
+    //             ]);
+    //         }
+    //     });
+    // });
 
     return (
         <>
