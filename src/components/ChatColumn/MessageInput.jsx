@@ -4,11 +4,14 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import styled from "styled-components";
 import axios from "axios";
+import { io } from "socket.io-client";
 
 const MessageInput = ({ selectedConversation, localUser }) => {
     const [focusedInput, setFocusedInput] = useState("false");
 
     const [inputMessage, setInputMessage] = useState("");
+
+    const socket = io(process.env.REACT_APP_BASE_URL);
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -49,6 +52,9 @@ const MessageInput = ({ selectedConversation, localUser }) => {
                 console.log(error_code);
                 return;
             });
+        console.log("emitting a new message from frontend!! ->");
+        console.log(data);
+        socket.emit("new message", data);
         setInputMessage("");
     };
 

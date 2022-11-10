@@ -8,12 +8,16 @@ import { io } from "socket.io-client";
 
 const OpenConversation = () => {
     const { localUser } = useUser();
-    const { selectedConversationMessages, selectedConversation } =
-        useConversations();
+    const {
+        selectedConversationMessages,
+        selectedConversation,
+        setSelectedConversationMessages,
+    } = useConversations();
 
     const [socketConnected, setSocketConnected] = useState(false);
 
     const socket = io(process.env.REACT_APP_BASE_URL);
+    let selectedConversationComparison;
 
     useEffect(() => {
         socket.emit("setup", localUser.email);
@@ -31,8 +35,27 @@ const OpenConversation = () => {
     useEffect(() => {
         if (selectedConversation) {
             socket.emit("join conversation", selectedConversation._id);
+            selectedConversationComparison = selectedConversation;
         }
     }, [selectedConversation]);
+
+    useEffect(() => {
+        socket.on("message received", (newMessageReceived) => {
+            console.log("<------message received in frontend!--->");
+            if (
+                !selectedConversationComparison ||
+                selectedConversationComparison._id !==
+                    newMessageReceived.conversation._id
+            ) {
+                // give notif
+            } else {
+                setSelectedConversationMessages([
+                    ...selectedConversationMessages,
+                    newMessageReceived,
+                ]);
+            }
+        });
+    });
 
     return (
         <>
