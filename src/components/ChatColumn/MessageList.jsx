@@ -19,7 +19,6 @@ const MessageList = () => {
             {selectedConversationMessages && selectedConversationMessages.map((message, index) => (
                     <Message key={index} message={message} />
                 ))}
-                <p>{selectedConversation && selectedConversation._id}</p>
         </Stack>
     );
 };

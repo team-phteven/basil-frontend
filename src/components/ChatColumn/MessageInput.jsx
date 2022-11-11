@@ -76,7 +76,6 @@ const MessageInput = ({ selectedConversation, localUser }) => {
                     <Form.Control
                         onFocus={() => setFocusedInput(true)}
                         onBlur={() => setFocusedInput(false)}
-                        placeholder={selectedConversation && selectedConversation._id}
                         as="textarea"
                         onKeyDown={enterSend}
                         value={inputMessage}

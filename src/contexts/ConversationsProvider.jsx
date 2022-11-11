@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useUser } from "../contexts/UserProvider";
-import { useSocket } from "./SocketProvider";
 
 const ConversationsContext = React.createContext();
 
@@ -17,8 +16,6 @@ export function ConversationsProvider({ children }) {
     const [otherConversations, setOtherConversations] = useState(null);
 
     const { localUser } = useUser();
-
-    const socket = useSocket();
 
     // Get conversations when localUSer updates
     useEffect(() => {
@@ -63,7 +60,6 @@ export function ConversationsProvider({ children }) {
 
     // getting messages for the selected conversation
     const getMessages = async () => {
-        console.log(otherConversations)
         const config = {
             method: "GET",
             headers: {

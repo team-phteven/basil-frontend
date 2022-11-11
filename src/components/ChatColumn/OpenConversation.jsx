@@ -9,32 +9,11 @@ import { useSocket } from "../../contexts/SocketProvider";
 
 const OpenConversation = () => {
     const { localUser } = useUser();
-    const {
-        selectedConversationMessages,
-        selectedConversation,
-        setSelectedConversationMessages,
-    } = useConversations();
 
-    const socket = useSocket();
+        const {
+            selectedConversation
+        } = useConversations();
 
-
-    useEffect(() => {
-        if (socket && selectedConversation) {
-            socket.on("message received", (message) => updateMessages(message))};
-    }, [selectedConversation, selectedConversationMessages]);
-
-    const updateMessages = (message) => {
-        console.log("selected" + selectedConversation._id);
-        console.log("message" + message.conversation._id);
-        if (message.conversation._id != selectedConversation._id) {
-            console.log("NOTIFICATION!!!");
-        } else {
-            setSelectedConversationMessages([
-                message,
-                ...selectedConversationMessages,
-            ]);
-        }
-    };
 
     return (
         <>

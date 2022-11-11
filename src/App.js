@@ -10,11 +10,11 @@ function App() {
 
     return (
         <div className="App bg-dark">
-            <SocketProvider>
                 <ConversationsProvider>
+            <SocketProvider>
                     {localUser ? <Profile /> : <Home />}
-                </ConversationsProvider>
             </SocketProvider>
+                </ConversationsProvider>
         </div>
     );
 }
