@@ -11,7 +11,6 @@ import { useConversations } from "../../contexts/ConversationsProvider";
 const MessageInput = ({ selectedConversation, localUser }) => {
     const [focusedInput, setFocusedInput] = useState("false");
     const [inputMessage, setInputMessage] = useState("");
-    const socket = useSocket();
     const { setSelectedConversationMessages, selectedConversationMessages } =
         useConversations();
 
@@ -30,8 +29,12 @@ const MessageInput = ({ selectedConversation, localUser }) => {
             sendMessage();
         }
     };
+    
+    const socket = useSocket();
 
     const sendMessage = async () => {
+
+
         const newMessage = {
             content: inputMessage,
             conversationId: selectedConversation._id,
@@ -54,10 +57,7 @@ const MessageInput = ({ selectedConversation, localUser }) => {
                 console.log(error_code);
                 return;
             });
-        console.log("emitting a new message from frontend!! ->");
-        console.log(data);
-
-        socket.emit("new message", data);
+        if (socket) socket.emit("new message", data);
         setInputMessage("");
         setSelectedConversationMessages([
             data,
