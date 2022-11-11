@@ -15,23 +15,18 @@ export function SocketProvider({ children }) {
 
     useEffect(() => {
         setSocket(io(process.env.REACT_APP_BASE_URL));
-
     }, []);
 
     // set-up socket on socket state change
     useEffect(() => {
-        if (socket) socket.on("connect", connectSocket());
-        if (localUser) socket.emit("setup", localUser.email);
+        if (socket) socket.on("connect", console.log("socket connected"));
+        if (socket && localUser) socket.emit("setup", localUser.email);
 
         return () => {
             if (socket) socket.disconnect();
             console.log("socket disconnected");
         };
     }, [socket]);
-
-    const connectSocket = () => {
-        console.log("socket connected");
-    };
 
     return (
         <SocketContext.Provider value={socket}>

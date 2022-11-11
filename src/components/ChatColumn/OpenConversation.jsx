@@ -12,25 +12,34 @@ const OpenConversation = () => {
     const {
         selectedConversationMessages,
         selectedConversation,
-        setSelectedConversationMessages}
-     = useConversations();
-
-    const [socketConnected, setSocketConnected] = useState(false);
+        setSelectedConversationMessages,
+    } = useConversations();
 
     const socket = useSocket();
 
+
     useEffect(() => {
-        if (selectedConversationMessages) socket.on("message received", (message) => updateMessages(message));
-    }, [selectedConversation, selectedConversationMessages])
+        if (socket && selectedConversation) {
+            socket.on("message received", (message) => updateMessages(message))};
+    }, [selectedConversation, selectedConversationMessages]);
 
     const updateMessages = (message) => {
-        setSelectedConversationMessages([message, ...selectedConversationMessages])
-    }
+        console.log("selected" + selectedConversation._id);
+        console.log("message" + message.conversation._id);
+        if (message.conversation._id != selectedConversation._id) {
+            console.log("NOTIFICATION!!!");
+        } else {
+            setSelectedConversationMessages([
+                message,
+                ...selectedConversationMessages,
+            ]);
+        }
+    };
 
     return (
         <>
             <Row className="mb-4 mx-2 flex-grow-1">
-                <MessageList messages={selectedConversationMessages} />
+                <MessageList/>
             </Row>
             <Row>
                 <MessageInput

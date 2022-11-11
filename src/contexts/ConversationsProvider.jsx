@@ -25,9 +25,6 @@ export function ConversationsProvider({ children }) {
         if (localUser) getConversations();
     }, [localUser]);
 
-    const receiveMessage = (message, messages) => {
-        setSelectedConversationMessages([...messages, message])
-    }
 
     // Fetching conversations from database
     const getConversations = async () => {
@@ -66,6 +63,7 @@ export function ConversationsProvider({ children }) {
 
     // getting messages for the selected conversation
     const getMessages = async () => {
+        console.log(otherConversations)
         const config = {
             method: "GET",
             headers: {
@@ -82,7 +80,6 @@ export function ConversationsProvider({ children }) {
                 console.log(error_code);
                 return;
             });
-        console.log("selected conversation messages set with:" + data);
         setSelectedConversationMessages(data);
     };
 

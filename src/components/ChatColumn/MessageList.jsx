@@ -7,17 +7,19 @@ import { useSocket } from "../../contexts/SocketProvider";
 import { useUser } from "../../contexts/UserProvider";
 import { useConversations } from "../../contexts/ConversationsProvider";
 
-const MessageList = ({ messages }) => {
-    const socket = useSocket();
-    const { localUser } = useUser();
-    const { setSelectedConversationMessages } = useConversations();
+const MessageList = () => {
+    const {
+        selectedConversationMessages,
+        selectedConversation,
+    } = useConversations();
+
 
     return (
         <Stack as={StyledCol} gap={4} className="p-0">
-            {messages &&
-                messages.map((message, index) => (
+            {selectedConversationMessages && selectedConversationMessages.map((message, index) => (
                     <Message key={index} message={message} />
                 ))}
+                <p>{selectedConversation && selectedConversation._id}</p>
         </Stack>
     );
 };

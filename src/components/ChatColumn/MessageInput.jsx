@@ -57,8 +57,7 @@ const MessageInput = ({ selectedConversation, localUser }) => {
                 console.log(error_code);
                 return;
             });
-        console.log(socket)
-        socket.emit("new message", data);
+        if (socket) socket.emit("new message", data);
         setInputMessage("");
         setSelectedConversationMessages([
             data,
@@ -77,6 +76,7 @@ const MessageInput = ({ selectedConversation, localUser }) => {
                     <Form.Control
                         onFocus={() => setFocusedInput(true)}
                         onBlur={() => setFocusedInput(false)}
+                        placeholder={selectedConversation && selectedConversation._id}
                         as="textarea"
                         onKeyDown={enterSend}
                         value={inputMessage}
