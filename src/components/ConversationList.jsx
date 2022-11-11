@@ -60,7 +60,7 @@ const ConversationList = () => {
 
     const getMessages = async () => {
         // GET MESSAGES FOR SELECTED CONVERSATION AND STORE THEM IN STATE
-        console.log("get messages called");
+
         const config = {
             method: "GET",
             headers: {
@@ -80,6 +80,7 @@ const ConversationList = () => {
                 console.log(error_code);
                 return;
             });
+        console.log("selected conversation messages set with:" + data);
         setSelectedConversationMessages(data);
     };
 

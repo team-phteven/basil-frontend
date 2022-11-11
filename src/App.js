@@ -5,7 +5,8 @@ import { ConversationsProvider } from "./contexts/ConversationsProvider";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import axios from "axios";
-import { io } from "socket.io-client";
+import io from "socket.io-client";
+import { SocketProvider } from "./contexts/SocketProvider";
 
 function App() {
     const { setLocalUser, localUser, messageRequests, setMessageRequests } =
@@ -50,9 +51,11 @@ function App() {
 
     return (
         <div className="App bg-dark">
-            <ConversationsProvider>
-                {localUser ? <Profile /> : <Home />}
-            </ConversationsProvider>
+            <SocketProvider localUser={localUser}>
+                <ConversationsProvider>
+                    {localUser ? <Profile /> : <Home />}
+                </ConversationsProvider>
+            </SocketProvider>
         </div>
     );
 }
