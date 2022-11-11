@@ -5,13 +5,15 @@ import InputGroup from "react-bootstrap/InputGroup";
 import styled from "styled-components";
 import axios from "axios";
 import { io } from "socket.io-client";
+import { useSocket } from "../../contexts/SocketProvider";
+import { useConversations } from "../../contexts/ConversationsProvider";
 
 const MessageInput = ({ selectedConversation, localUser }) => {
     const [focusedInput, setFocusedInput] = useState("false");
-
     const [inputMessage, setInputMessage] = useState("");
-
-    const socket = io(process.env.REACT_APP_BASE_URL);
+    const socket = useSocket();
+    const { setSelectedConversationMessages, selectedConversationMessages } =
+        useConversations();
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -54,8 +56,13 @@ const MessageInput = ({ selectedConversation, localUser }) => {
             });
         console.log("emitting a new message from frontend!! ->");
         console.log(data);
+
         socket.emit("new message", data);
         setInputMessage("");
+        setSelectedConversationMessages([
+            data,
+            ...selectedConversationMessages,
+        ]);
     };
 
     return (

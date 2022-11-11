@@ -80,6 +80,7 @@ const ConversationList = () => {
                 console.log(error_code);
                 return;
             });
+        console.log("selected conversation messages set with:" + data);
         setSelectedConversationMessages(data);
     };
 

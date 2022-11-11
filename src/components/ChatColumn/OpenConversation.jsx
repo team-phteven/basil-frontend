@@ -5,6 +5,7 @@ import { useConversations } from "../../contexts/ConversationsProvider";
 import { useUser } from "../../contexts/UserProvider";
 import MessageList from "./MessageList";
 import { io } from "socket.io-client";
+import { useSocket } from "../../contexts/SocketProvider";
 
 const OpenConversation = () => {
     const { localUser } = useUser();
@@ -17,7 +18,18 @@ const OpenConversation = () => {
     const [socketConnected, setSocketConnected] = useState(false);
 
     let selectedConversationComparison;
-    const socket = io(process.env.REACT_APP_BASE_URL);
+    var tempMessages = selectedConversationMessages;
+    const socket = useSocket();
+
+    useEffect(() => {
+        console.log("NEW USE EFFECT HERE");
+        console.log("selectedConversation" + selectedConversation);
+        console.log(
+            "selectedConversationMessages" + selectedConversationMessages
+        );
+
+        tempMessages = selectedConversationMessages;
+    });
 
     useEffect(() => {
         socket.emit("setup", localUser.email);
@@ -29,7 +41,6 @@ const OpenConversation = () => {
 
         socket.on("message received", (newMessageReceived) => {
             console.log("<------message received in frontend!--->");
-            console.log(newMessageReceived);
             if (
                 !selectedConversationComparison ||
                 selectedConversationComparison._id !==
@@ -38,8 +49,11 @@ const OpenConversation = () => {
                 // give notif
             } else {
                 console.log("else message received hit!!");
+                console.log(
+                    "current messages in state: " + selectedConversationMessages
+                );
                 setSelectedConversationMessages([
-                    ...selectedConversationMessages,
+                    ...tempMessages,
                     newMessageReceived,
                 ]);
             }
@@ -48,7 +62,7 @@ const OpenConversation = () => {
         return () => {
             socket.off("connected");
         };
-    }, []);
+    });
 
     useEffect(() => {
         if (selectedConversation) {
