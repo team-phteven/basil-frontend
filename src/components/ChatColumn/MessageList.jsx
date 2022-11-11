@@ -12,33 +12,6 @@ const MessageList = ({ messages }) => {
     const { localUser } = useUser();
     const { setSelectedConversationMessages } = useConversations();
 
-    useEffect(() => {
-        socket.emit("setup", localUser.email);
-
-        socket.on("connected", () => {
-            // setSocketConnected(true);
-            console.log("connected");
-        });
-
-        socket.on("message received", (newMessageReceived) => {
-            console.log("<------message received in frontend!--->");
-            // if (
-            // !selectedConversationComparison ||
-            // selectedConversationComparison._id !==
-            //     newMessageReceived.conversation._id
-            // ) {
-            // give notif
-            // } else {
-            console.log("else message received hit!!");
-            console.log("current messages in message list state: " + messages);
-            setSelectedConversationMessages([newMessageReceived, ...messages]);
-            // }
-        });
-
-        return () => {
-            socket.off("connected");
-        };
-    });
     return (
         <Stack as={StyledCol} gap={4} className="p-0">
             {messages &&

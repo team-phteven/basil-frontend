@@ -1,57 +1,17 @@
-import { useState, useEffect } from "react";
 import { useUser } from "./contexts/UserProvider";
 import "./App.css";
 import { ConversationsProvider } from "./contexts/ConversationsProvider";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-import axios from "axios";
-import io from "socket.io-client";
 import { SocketProvider } from "./contexts/SocketProvider";
 
 function App() {
-    const { setLocalUser, localUser, messageRequests, setMessageRequests } =
+    const { localUser } =
         useUser();
-
-    // Set local user
-    useEffect(
-        () => {
-            const userData = JSON.parse(localStorage.getItem("storedUser"));
-            if (userData) setLocalUser(userData);
-        },
-        []
-        // () => {
-        //     socket.on("disconnect", () => {
-        //         console.log("disconnect"); // undefined
-        //     });
-        // }
-    );
-
-    useEffect(() => {
-        if (localUser) getMessageRequests();
-    }, [localUser]);
-
-    const getMessageRequests = async () => {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${localUser.token}`,
-            },
-        };
-        const { data } = await axios
-            .get(
-                `${process.env.REACT_APP_BASE_URL}/api/users/get-requests`,
-                config
-            )
-            .catch((error) => {
-                const error_code = JSON.stringify(error.response.data.error);
-                console.log(error_code);
-                return;
-            });
-        setMessageRequests(data);
-    };
 
     return (
         <div className="App bg-dark">
-            <SocketProvider localUser={localUser}>
+            <SocketProvider>
                 <ConversationsProvider>
                     {localUser ? <Profile /> : <Home />}
                 </ConversationsProvider>
