@@ -23,12 +23,10 @@ export function ConversationsProvider({ children }) {
     // Get conversations when localUSer updates
     useEffect(() => {
         if (localUser) getConversations();
-        if (socket) socket.on("message recieved", (message) => receiveMessage())
     }, [localUser]);
 
-    recieveMessage = () => {
-
-        
+    const receiveMessage = (message, messages) => {
+        setSelectedConversationMessages([...messages, message])
     }
 
     // Fetching conversations from database

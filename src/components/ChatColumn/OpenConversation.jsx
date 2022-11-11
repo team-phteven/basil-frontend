@@ -12,17 +12,21 @@ const OpenConversation = () => {
     const {
         selectedConversationMessages,
         selectedConversation,
-        setSelectedConversationMessages,
-    } = useConversations();
+        setSelectedConversationMessages}
+     = useConversations();
 
     const [socketConnected, setSocketConnected] = useState(false);
 
-    let selectedConversationComparison;
-    var tempMessages = selectedConversationMessages;
-
     const socket = useSocket();
 
-    
+    useEffect(() => {
+        if (selectedConversationMessages) socket.on("message received", (message) => updateMessages(message));
+    }, [selectedConversation, selectedConversationMessages])
+
+    const updateMessages = (message) => {
+        setSelectedConversationMessages([message, ...selectedConversationMessages])
+    }
+
     return (
         <>
             <Row className="mb-4 mx-2 flex-grow-1">

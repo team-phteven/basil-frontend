@@ -17,7 +17,7 @@ export function UserProvider({ children, storedUser }) {
         if (userData) setLocalUser(userData);
     }, []);
 
-    // when local user changes get their message requests
+    // when local user changes get their
     useEffect(() => {
         if (localUser) getMessageRequests();
     }, [localUser])

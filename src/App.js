@@ -6,8 +6,7 @@ import Profile from "./pages/Profile";
 import { SocketProvider } from "./contexts/SocketProvider";
 
 function App() {
-    const { localUser } =
-        useUser();
+    const { localUser } = useUser();
 
     return (
         <div className="App bg-dark">
