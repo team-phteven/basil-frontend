@@ -22,22 +22,21 @@ export function SocketProvider({ children }) {
 
     // set-up socket on socket state change
     useEffect(() => {
-        if (socket) socket.on("connect", console.log("socket connected"));
-        if (socket && localUser) socket.emit("setup", localUser.email);
-        socket &&
-            selectedConversation &&
-            socket.on("message received", (message) => updateMessages(message));
-
+        socket.on("connect", console.log("socket connected"));
+        localUser && socket.emit("setup", localUser.email);
+        selectedConversation && socket.on(
+            "message received", 
+            (message) => updateMessages(message));
         return () => {
-            if (socket) socket.disconnect();
+            socket.disconnect();
             console.log("socket disconnected");
         };
-    }, [socket, selectedConversation]);
+    }, [socket, selectedConversation, localUser]);
 
     const updateMessages = (message) => {
         console.log("selected" + selectedConversation._id);
         console.log("message" + message.conversation._id);
-        message.conversation._id == selectedConversation._id
+        message.conversation._id === selectedConversation._id
             ? setSelectedConversationMessages([
                   message,
                   ...selectedConversationMessages,
