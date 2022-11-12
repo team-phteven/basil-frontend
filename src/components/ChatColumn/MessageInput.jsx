@@ -56,12 +56,12 @@ const MessageInput = ({ selectedConversation, localUser }) => {
                 console.log(error_code);
                 return;
             });
-        socket.emit("new message", data)
-        setInputMessage("");
-        setSelectedConversationMessages([
-            data,
-            ...selectedConversationMessages,
-        ]);
+            setInputMessage("");
+            setSelectedConversationMessages([
+                data,
+                ...selectedConversationMessages,
+            ]);
+            socket.emit("new message", data)
     };
 
 
