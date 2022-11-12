@@ -10,7 +10,7 @@ const ConversationList = () => {
     const {
         selectedConversation,
         setSelectedConversation,
-        otherConversations,
+        conversations
     } = useConversations();
 
 
@@ -21,31 +21,21 @@ const ConversationList = () => {
 
     return (
         <Col className="d-flex flex-column p-0 m-0">
-            {/* SELECTED CONVERSATION */}
-
-            {selectedConversation && (
-                <ConversationSlab
-                    conversation={selectedConversation}
-                    selected
-                />
-            )}
-
-            {/* ALL OTHER CONVERSATIONS */}
 
             <Row
                 style={{
-                    borderTopRightRadius: "60px",
                     overflow: "hidden",
                 }}
                 className="p-0 m-0 bg-warning flex-grow-1"
             >
                 <Stack className="p-0 m-0">
-                    {otherConversations &&
-                        otherConversations.map((conversation, index) => (
+                    {selectedConversation &&
+                        conversations.map((conversation, index) => (
                             <ConversationSlab
                                 onClick={selectConversation}
                                 key={index}
                                 conversation={conversation}
+                                selected={conversation._id == selectedConversation._id}
                             />
                         ))}
                 </Stack>
