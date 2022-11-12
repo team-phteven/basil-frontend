@@ -3,7 +3,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Avatar from "./Avatar";
 import { useUser } from "../contexts/UserProvider";
-import { useEffect } from "react";
 
 export const ConversationSlab = ({ conversation, selected, onClick }) => {
     const { localUser } = useUser();
@@ -22,7 +21,7 @@ export const ConversationSlab = ({ conversation, selected, onClick }) => {
                 {otherUser && (
                     <Avatar
                         url={otherUser.avatar}
-                        bgc={selected ? "#f8f9fa" : "#ffc107"}
+                        bgc={"#ffc107"}
                     />
                 )}
             </Col>

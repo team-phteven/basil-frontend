@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { useUser } from "./UserProvider";
 import { useConversations } from "./ConversationsProvider";
 const io = require("socket.io-client");
@@ -24,9 +24,8 @@ export function SocketProvider({ children }) {
     useEffect(() => {
         socket.on("connect", console.log("socket connected"));
         localUser && socket.emit("setup", localUser.email);
-        selectedConversation && socket.on(
-            "message received", 
-            (message) => updateMessages(message));
+        selectedConversation &&
+            socket.on("message received", (message) => updateMessages(message));
         return () => {
             socket.disconnect();
             console.log("socket disconnected");
