@@ -4,7 +4,6 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import styled from "styled-components";
 import axios from "axios";
-import { io } from "socket.io-client";
 import { useSocket } from "../../contexts/SocketProvider";
 import { useConversations } from "../../contexts/ConversationsProvider";
 
@@ -57,13 +56,14 @@ const MessageInput = ({ selectedConversation, localUser }) => {
                 console.log(error_code);
                 return;
             });
-        if (socket) socket.emit("new message", data);
+        socket.emit("new message", data)
         setInputMessage("");
         setSelectedConversationMessages([
             data,
             ...selectedConversationMessages,
         ]);
     };
+
 
     return (
         <Form style={{ display: "relative" }} className="m-0 p-0">
