@@ -16,6 +16,8 @@ export function SocketProvider({ children }) {
         selectedConversationMessages,
         selectedConversation,
         setSelectedConversationMessages,
+        messageNotifications,
+        setMessageNotifications,
     } = useConversations();
 
     const socket = io(process.env.REACT_APP_BASE_URL);
@@ -33,14 +35,24 @@ export function SocketProvider({ children }) {
     }, [socket, selectedConversation, localUser]);
 
     const updateMessages = (message) => {
-        console.log("selected" + selectedConversation._id);
-        console.log("message" + message.conversation._id);
-        message.conversation._id === selectedConversation._id
-            ? setSelectedConversationMessages([
-                  message,
-                  ...selectedConversationMessages,
-              ])
-            : console.log("notify");
+
+        if (message.conversation._id === selectedConversation._id) {
+            setSelectedConversationMessages([
+                message,
+                ...selectedConversationMessages,
+            ]);
+        } else {
+            const key = message.conversation._id
+            messageNotifications.hasOwnProperty(key)
+                ? setMessageNotifications({
+                      ...messageNotifications,
+                      [key]: messageNotifications[key] + 1,
+                  })
+                : setMessageNotifications({
+                      ...messageNotifications,
+                      [key]: 1,
+                  });
+        }
     };
 
     return (
