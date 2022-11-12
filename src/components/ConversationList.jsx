@@ -9,15 +9,10 @@ const ConversationList = () => {
 
     const {
         selectedConversation,
-        setSelectedConversation,
-        conversations
+        conversations,
+
     } = useConversations();
 
-
-    // FUNCTION FOR SELECTING CONVERSATIONS
-    function selectConversation(conversation) {
-        setSelectedConversation(conversation);
-    }
 
     return (
         <Col className="d-flex flex-column p-0 m-0">
@@ -32,7 +27,6 @@ const ConversationList = () => {
                     {selectedConversation &&
                         conversations.map((conversation, index) => (
                             <ConversationSlab
-                                onClick={selectConversation}
                                 key={index}
                                 conversation={conversation}
                                 selected={conversation._id == selectedConversation._id}

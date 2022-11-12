@@ -14,6 +14,7 @@ export function ConversationsProvider({ children }) {
     const [selectedConversationMessages, setSelectedConversationMessages] =
         useState([]);
     const [otherConversations, setOtherConversations] = useState(null);
+    const [messageNotifications, setMessageNotifications] = useState({});
 
     const { localUser } = useUser();
 
@@ -88,6 +89,8 @@ export function ConversationsProvider({ children }) {
         setSelectedConversationMessages,
         otherConversations,
         setOtherConversations,
+        messageNotifications,
+        setMessageNotifications
     };
 
     return (
