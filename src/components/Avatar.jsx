@@ -1,13 +1,13 @@
 import { Popover } from "bootstrap";
 import styled from "styled-components"
 
-const Avatar = ({ url, bgc, size }) => {
+const Avatar = ({ url, bgc, size, hideStatus = false }) => {
     return (
         <AvatarWrapper size={size}>
             <ProfilePic
                 url={`url('${url ? url : "face.jpeg"}')`}
             ></ProfilePic>
-            <StatusLight bgc={bgc} />
+            {hideStatus ? null : <StatusLight bgc={bgc} />}
         </AvatarWrapper>
     );
 };

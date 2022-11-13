@@ -3,12 +3,14 @@ import styled from "styled-components";
 
 const Settings = () => {
     return (
-        <SettingsCol className="p-2 bg-black text-white">
+        <SettingsCol className="p-2 text-white">
             <h3>Settings</h3>
         </SettingsCol>
     );
 };
 
-const SettingsCol = styled(Col)``;
+const SettingsCol = styled(Col)`
+    background: var(--darkgrey);
+`
 
 export default Settings;

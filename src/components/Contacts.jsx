@@ -10,6 +10,7 @@ import { useUser } from "../contexts/UserProvider";
 import Request from "./Request";
 import Stack from "react-bootstrap/Stack";
 import axios from "axios";
+import { ContactSlab } from "./ContactSlab";
 
 const Contacts = () => {
     const { conversations } = useConversations();
@@ -45,7 +46,7 @@ const Contacts = () => {
     };
 
     return (
-        <ContactsCol className="p-2 bg-black text-white">
+        <ContactsCol className="p-2 text-white">
             <h3>Contacts</h3>
 
             <Row className="my-4">
@@ -84,15 +85,16 @@ const Contacts = () => {
             <Row>
                 <h4>Contacts</h4>
                 {conversations &&
-                    conversations.map(
-                        (conversation, index) =>
-                            getContactInfo(conversation).firstName
-                    )}
+                    conversations.map((conversation, index) => (
+                        <ContactSlab contact={getContactInfo(conversation)} />
+                    ))}
             </Row>
         </ContactsCol>
     );
 };
 
-const ContactsCol = styled(Col)``;
+const ContactsCol = styled(Col)`
+    background: var(--darkgrey);
+`
 
 export default Contacts;
