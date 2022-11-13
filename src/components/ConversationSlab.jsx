@@ -24,7 +24,6 @@ export const ConversationSlab = ({ conversation, selected, onClick }) => {
 
     useEffect(() => {
         const key = conversation._id;
-        console.log("messages: " + messageNotifications[key]);
         if (messageNotifications && messageNotifications[key])
             setNotifications(messageNotifications[key]);
     }, [messageNotifications]);
