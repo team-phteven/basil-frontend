@@ -43,7 +43,7 @@ export const ConversationSlab = ({ conversation, selected, onClick }) => {
             background={selected ? "rgba(0, 0, 0, 0.1)" : "transparent"}
         >
             <Col sm={4}>
-                {otherUser && <Avatar url={otherUser.avatar} bgc={"#ffc107"} />}
+                {otherUser && <Avatar url={otherUser.avatar} bgc={"var(--midgrey)"} />}
             </Col>
             <Col className="flex-grow-1">
                 <Row>

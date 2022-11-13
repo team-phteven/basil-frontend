@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -6,6 +6,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { useSocket } from "../../contexts/SocketProvider";
 import { useConversations } from "../../contexts/ConversationsProvider";
+import autosize from "autosize";
 
 const MessageInput = ({ selectedConversation, localUser }) => {
     const [focusedInput, setFocusedInput] = useState("false");
@@ -18,9 +19,17 @@ const MessageInput = ({ selectedConversation, localUser }) => {
         sendMessage();
     };
 
+    const ta = document.querySelector("textarea");
+
+    autosize(ta);
+
     const handleChange = (e) => {
         setInputMessage(e.target.value);
     };
+
+    useEffect(() => {
+        autosize.update(ta);
+    }, [inputMessage])
 
     const enterSend = (event) => {
         if (event.key === "Enter" && !event.shiftKey && focusedInput) {
@@ -64,42 +73,50 @@ const MessageInput = ({ selectedConversation, localUser }) => {
             socket.emit("new message", data)
     };
 
-
     return (
         <Form style={{ display: "relative" }} className="m-0 p-0">
-            <Form.Group
-                className="p-0 bg-black d-flex rounded"
+            <InputFieldWrapper
+                className="p-0 d-flex rounded"
                 style={{ overflow: "auto" }}
             >
                 <InputGroup>
                     {/* TO-DO - autoresize textarea with typing extra lines */}
-                    <Form.Control
+                    <TextBox
                         onFocus={() => setFocusedInput(true)}
                         onBlur={() => setFocusedInput(false)}
                         as="textarea"
                         onKeyDown={enterSend}
                         value={inputMessage}
-                        className="p-0"
                         onChange={handleChange}
-                        style={{
-                            background: "transparent",
-                            color: "white",
-                            border: "0",
-                            resize: "none",
-                        }}
                     />
                 </InputGroup>
-                <SendButton className="p-0" onClick={handleClick} type="submit">
+                <SendButton onClick={handleClick} type="submit">
                     Send
                 </SendButton>
-            </Form.Group>
+            </InputFieldWrapper>
         </Form>
     );
 };
 
+const InputFieldWrapper = styled(Form.Group)`
+`
+
+const TextBox = styled(Form.Control)`
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: var(--midgrey);
+    padding: 5px;
+    max-height: 50vh;
+`
+
 const SendButton = styled(Button)`
-    height: 50px;
-    margin: 0;
+    height: 35px;
+    border-radius: 20px;
+    margin: 5px;
+    padding: 0px 20px;
+    align-self: end;
+    color: white;
 `;
 
 export default MessageInput;

@@ -38,19 +38,16 @@ const Profile = () => {
             <Row className="h-100 m-0 p-0 d-flex flex-row vh-100">
                 {/* CONVERSATIONS COLUMN */}
 
-                <Col
-                    xs={3}
+                <ConversationsColumn
+                    xs="auto"
                     style={{ boxSizing: "border-box", overflow: "hidden" }}
-                    className="p-0 m-0 bg-transparent m-0 p-0 d-flex flex-column vh-100"
-                >
-                    <Row className="flex-grow-1 m-0 p-0">
+                    className="p-0 m-0 m-0 p-0 d-flex flex-column vh-100">
+                    <Conversations className="flex-grow-1 m-0 p-0">
                         {menu === "Conversations" && <ConversationList />}
                         {menu === "Settings" && <Settings />}
                         {menu === "Contacts" && <Contacts />}
-                    </Row>
-
-                    {/* Menu */}
-                    <Row className="bg-black m-0 p-2 d-flex flex-row align-items-center">
+                    </Conversations>
+                    <UserMenu className="m-0 p-2 d-flex flex-row align-items-center">
                         <Col xs="auto" className="m-0 p-0">
                             <Avatar
                                 url={localUser.avatar}
@@ -99,18 +96,37 @@ const Profile = () => {
                                 <MdOutlineLogout size="2em" />
                             </Button>
                         </Col>
-                    </Row>
-                </Col>
-                {/* CHAT COLUMN */}
-                <Col xs={7} className="bg-transparent d-flex flex-column vh-100">
+                    </UserMenu>
+                </ConversationsColumn>
+
+                <ChatColumn xs={7} className="d-flex flex-column vh-100">
                     <OpenConversation className="vh-100"/>
-                </Col>
-                {/* IN-CHAT CONTACTS */}
-                <Col xs={2} className="bg-secondary m-0 p-0 vh-100"></Col>
+                </ChatColumn>
+
+                <ChatContacts xs={2} className="m-0 p-0 vh-100"></ChatContacts>
             </Row>
         </StyledContainer>
     );
 };
+
+const ConversationsColumn = styled(Col)`
+background: var(--midgrey);
+`
+const Conversations = styled(Row)`
+`
+
+const UserMenu = styled(Row)`
+    background: var(--darkgrey);
+`
+
+const ChatColumn = styled(Col)`
+    background: var(--lightgrey);
+    padding: 0px 5px;
+`
+
+const ChatContacts = styled(Col)`
+    background: var(--midgrey);
+`
 
 const StyledContainer = styled(Container)`
     height: 100vh;

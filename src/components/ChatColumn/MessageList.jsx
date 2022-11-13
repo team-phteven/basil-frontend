@@ -11,7 +11,7 @@ const MessageList = () => {
     } = useConversations();
 
     return (
-        <Stack as={StyledCol} gap={4} className="p-0">
+        <Stack as={StyledCol} gap={4} >
             {selectedConversationMessages.map((message, index) => (
                     <Message key={index} message={message} />
                 ))}
@@ -22,7 +22,8 @@ const MessageList = () => {
 const StyledCol = styled(Col)`
     display: flex;
     flex-direction: column-reverse;
-    margin-bottom: 20px;
+    flex-wrap: reverse-wrap;
+    margin: 0px 0px 20px 0px;
 `;
 
 export default MessageList;

@@ -13,17 +13,17 @@ const OpenConversation = () => {
     const { selectedConversation } = useConversations();
 
     return (
-        <Row>
-            <Col className="vh-100 d-flex flex-column p-0">
+        <Row className="m-0 p-0">
+            <Col className="vh-100 d-flex flex-column p-1">
                 <StyledRow className="m-0 flex-grow-1">
                     <MessageList />
                 </StyledRow>
-                <Row className="m-0 p-0">
+                <MessageInputRow className="m-0 p-0">
                     <MessageInput
                         selectedConversation={selectedConversation}
                         localUser={localUser}
                     />
-                </Row>
+                </MessageInputRow>
             </Col>
         </Row>
     );
@@ -34,7 +34,10 @@ const StyledRow = styled(Row)`
     overflow-y: scroll;
     width: 100%;
     margin: 0;
-    padding: 0;
-`;
+`
+
+const MessageInputRow = styled(Row)`
+
+`
 
 export default OpenConversation;

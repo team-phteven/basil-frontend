@@ -21,7 +21,7 @@ const ConversationList = () => {
                 style={{
                     overflow: "hidden",
                 }}
-                className="p-0 m-0 bg-warning flex-grow-1"
+                className="p-0 m-0 flex-grow-1"
             >
                 <Stack className="p-0 m-0">
                     {selectedConversation &&
