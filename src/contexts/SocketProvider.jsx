@@ -24,15 +24,18 @@ export function SocketProvider({ children }) {
 
     // set-up socket on socket state change
     useEffect(() => {
-        socket.on("connect", console.log("socket connected"));
-        localUser && socket.emit("setup", localUser.email);
+        socket.on("connect", () => {
+            console.log("socket connected")
+            // docs say to move this outside of the .on, however it fixes an error in the setup
+            localUser && socket.emit("setup", localUser.email);
+        });
         selectedConversation &&
             socket.on("message received", (message) => updateMessages(message));
         return () => {
             socket.disconnect();
             console.log("socket disconnected");
         };
-    }, [socket, selectedConversation, localUser]);
+    }, [socket, localUser]);
 
     const updateMessages = (message) => {
 
