@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { DateTime } from "luxon";
 import styled from "styled-components";
-import Avatar from "../Avatar";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 
