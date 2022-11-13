@@ -54,9 +54,13 @@ const MessageContainer = styled(Row)`
     box-sizing: border-box;
     overflow: hidden;
     display: flex;
+    padding: 10px;
     flex-direction: row;
     flex-wrap: nowrap;
     overflow-wrap: break-word;
-`;
+    &:hover{
+        background: rgba(0,0,0,0.2);
+    }
+`
 
 export default Message;

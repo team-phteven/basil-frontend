@@ -39,7 +39,7 @@ const Profile = () => {
                 {/* CONVERSATIONS COLUMN */}
 
                 <ConversationsColumn
-                    xs="auto"
+                    xs={2}
                     style={{ boxSizing: "border-box", overflow: "hidden" }}
                     className="p-0 m-0 m-0 p-0 d-flex flex-column vh-100">
                     <Conversations className="flex-grow-1 m-0 p-0">
@@ -99,7 +99,7 @@ const Profile = () => {
                     </UserMenu>
                 </ConversationsColumn>
 
-                <ChatColumn xs={7} className="d-flex flex-column vh-100">
+                <ChatColumn xs={8} className="d-flex flex-column vh-100">
                     <OpenConversation className="vh-100"/>
                 </ChatColumn>
 
@@ -121,7 +121,7 @@ const UserMenu = styled(Row)`
 
 const ChatColumn = styled(Col)`
     background: var(--lightgrey);
-    padding: 0px 5px;
+    padding: 0;
 `
 
 const ChatContacts = styled(Col)`

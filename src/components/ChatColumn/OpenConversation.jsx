@@ -14,17 +14,17 @@ const OpenConversation = () => {
 
     return (
         <Row className="m-0 p-0">
-            <Col className="vh-100 d-flex flex-column p-1">
+            <StyledCol className="vh-100 d-flex flex-column">
                 <StyledRow className="m-0 flex-grow-1">
                     <MessageList />
                 </StyledRow>
-                <MessageInputRow className="m-0 p-0">
+                <MessageInputRow className="m-0">
                     <MessageInput
                         selectedConversation={selectedConversation}
                         localUser={localUser}
                     />
                 </MessageInputRow>
-            </Col>
+            </StyledCol>
         </Row>
     );
 };
@@ -36,8 +36,12 @@ const StyledRow = styled(Row)`
     margin: 0;
 `
 
-const MessageInputRow = styled(Row)`
+const StyledCol = styled(Col)`
+    padding: 0px 5px 0px 0px;
+`
 
+const MessageInputRow = styled(Row)`
+    padding: 0 0 10px 10px;
 `
 
 export default OpenConversation;

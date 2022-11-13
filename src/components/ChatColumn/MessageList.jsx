@@ -11,11 +11,11 @@ const MessageList = () => {
     } = useConversations();
 
     return (
-        <Stack as={StyledCol} gap={4} >
+        <StyledCol>
             {selectedConversationMessages.map((message, index) => (
                     <Message key={index} message={message} />
                 ))}
-        </Stack>
+        </StyledCol>
     );
 };
 
