@@ -18,7 +18,7 @@ const Message = ({ message }) => {
                     className="m-0 p-0"
                 />
             </Col>
-            <MessageContent className="d-flex flex-column m-0 p-0 flex-grow-1">
+            <MessageContent className="d-flex flex-column m-0 flex-grow-1">
                 <Row>
                     <MessageHeader>
                         {message.sender.firstName} {message.sender.lastName}{" "}
@@ -38,6 +38,9 @@ const MessageHeader = styled.p`
 `;
 
 const MessageContent = styled(Col)`
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 0px 10px;
 `;
 
 const MessageBody = styled.p`

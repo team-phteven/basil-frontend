@@ -76,7 +76,7 @@ const MessageInput = ({ selectedConversation, localUser }) => {
     return (
         <Form style={{ display: "relative" }} className="m-0 p-0">
             <InputFieldWrapper
-                className="p-0 d-flex rounded"
+                className="p-0 d-flex"
                 style={{ overflow: "auto" }}
             >
                 <InputGroup>
@@ -88,6 +88,8 @@ const MessageInput = ({ selectedConversation, localUser }) => {
                         onKeyDown={enterSend}
                         value={inputMessage}
                         onChange={handleChange}
+                        rows={1}
+                        placeholder="message..."
                     />
                 </InputGroup>
                 <SendButton onClick={handleClick} type="submit">
@@ -108,13 +110,13 @@ const TextBox = styled(Form.Control)`
     background: var(--midgrey);
     padding: 5px;
     max-height: 50vh;
+    border-radius: 10px;
 `
 
 const SendButton = styled(Button)`
     height: 35px;
     border-radius: 20px;
     margin: 5px;
-    padding: 0px 20px;
     align-self: end;
     color: white;
 `;
