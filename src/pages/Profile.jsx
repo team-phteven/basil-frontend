@@ -11,6 +11,7 @@ import { useState } from "react";
 import { MdOutlineLogout, MdSettings, MdGroupAdd } from "react-icons/md";
 import Contacts from "../components/Contacts";
 import Settings from "../components/Settings";
+import styled from 'styled-components';
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -33,14 +34,14 @@ const Profile = () => {
     const { localUser } = useUser();
 
     return (
-        <Container as="main" className="mx-0 p-0 vh-100 bg-light" fluid>
-            <Row className="h-100 m-0 p-0 d-flex flex-row">
+        <StyledContainer as="main" className="mx-0 p-0 bg-light" fluid>
+            <Row className="h-100 m-0 p-0 d-flex flex-row vh-100">
                 {/* CONVERSATIONS COLUMN */}
 
                 <Col
                     xs={3}
                     style={{ boxSizing: "border-box", overflow: "hidden" }}
-                    className="p-0 m-0 bg-transparent m-0 p-0 d-flex flex-column"
+                    className="p-0 m-0 bg-transparent m-0 p-0 d-flex flex-column vh-100"
                 >
                     <Row className="flex-grow-1 m-0 p-0">
                         {menu === "Conversations" && <ConversationList />}
@@ -101,14 +102,21 @@ const Profile = () => {
                     </Row>
                 </Col>
                 {/* CHAT COLUMN */}
-                <Col xs={7} className="bg-transparent d-flex flex-column">
-                    <OpenConversation />
+                <Col xs={7} className="bg-transparent d-flex flex-column vh-100">
+                    <OpenConversation className="vh-100"/>
                 </Col>
                 {/* IN-CHAT CONTACTS */}
-                <Col xs={2} className="bg-secondary m-0 p-0"></Col>
+                <Col xs={2} className="bg-secondary m-0 p-0 vh-100"></Col>
             </Row>
-        </Container>
+        </StyledContainer>
     );
 };
+
+const StyledContainer = styled(Container)`
+    height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+`
 
 export default Profile;

@@ -22,6 +22,7 @@ const MessageList = () => {
 const StyledCol = styled(Col)`
     display: flex;
     flex-direction: column-reverse;
+    margin-bottom: 20px;
 `;
 
 export default MessageList;
