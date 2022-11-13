@@ -24,28 +24,31 @@ export function SocketProvider({ children }) {
 
     // set-up socket on socket state change
     useEffect(() => {
-        socket.on("connect", () => {
-            console.log("socket connected")
-            // docs say to move this outside of the .on, however it fixes an error in the setup
-            localUser && socket.emit("setup", localUser.email);
-        });
-        selectedConversation &&
+        
+        if (localUser && selectedConversation) {
+            socket.on("connect", () => {
+                console.log("socket connected");
+                // docs say to move this outside of the .on, however it fixes an error in the setup
+                localUser && socket.emit("setup", localUser.email);
+            });
             socket.on("message received", (message) => updateMessages(message));
-        return () => {
-            socket.disconnect();
-            console.log("socket disconnected");
-        };
+            
+            return () => {
+                socket.disconnect();
+                console.log("socket disconnected");
+            };
+        }
+        
     }, [socket, localUser]);
 
     const updateMessages = (message) => {
-
         if (message.conversation._id === selectedConversation._id) {
             setSelectedConversationMessages([
                 message,
                 ...selectedConversationMessages,
             ]);
         } else {
-            const key = message.conversation._id
+            const key = message.conversation._id;
             messageNotifications.hasOwnProperty(key)
                 ? setMessageNotifications({
                       ...messageNotifications,
