@@ -32,7 +32,6 @@ const MessageList = () => {
                 const render = lastMessage && isTrailing(message, lastMessage) ?
                     <TrailingMessage key={index} message={message} /> :
                     <Message key={index} message={message} />;
-
                 lastMessage = selectedConversationMessages[index + 2];
                 return render;
             })}

@@ -7,6 +7,10 @@
 --violet: #8a4fec;
 }
 
+html {
+  font-size: 14px;
+}
+
 /* App Spacing */
 
 body {

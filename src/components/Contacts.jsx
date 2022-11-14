@@ -86,7 +86,7 @@ const Contacts = () => {
                 <h4>Contacts</h4>
                 {conversations &&
                     conversations.map((conversation, index) => (
-                        <ContactSlab contact={getContactInfo(conversation)} />
+                        <ContactSlab key={index} contact={getContactInfo(conversation)} />
                     ))}
             </Row>
         </ContactsCol>
