@@ -31,10 +31,10 @@ const Profile = () => {
                     <UserMenu setMenu={setMenu} menu={menu}/>
                 </ConversationsColumn>
 
-                <ChatColumn xs={8} className="d-flex flex-column vh-100">
+                <ChatColumn xs={8} className="d-flex flex-column vh-100 flex-grow-1">
                     <OpenConversation className="vh-100"/>
                 </ChatColumn>
-                <ChatContacts xs={2} className="m-0 p-0 vh-100">
+                <ChatContacts xs="auto" className="m-0 p-0 vh-100">
                     <ConversationUserList />
                 </ChatContacts>
             </Row>
