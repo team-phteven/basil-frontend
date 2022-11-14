@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { MdOutlineLogout, MdSettings, MdGroup } from "react-icons/md";
 import Col from 'react-bootstrap/Col'
 import Button from "react-bootstrap/Button";
@@ -7,7 +7,7 @@ import { useUser } from "../contexts/UserProvider";
 import Row from "react-bootstrap/Row";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-
+import Modal from 'react-bootstrap/Modal'
 
 const UserMenu = ({ menu, setMenu }) => {
 
@@ -27,6 +27,11 @@ const UserMenu = ({ menu, setMenu }) => {
     const toggleContacts = () => {
         setMenu(menu === "Contacts" ? "Conversations" : "Contacts");
     };
+
+      const [show, setShow] = useState(false);
+      const handleClose = () => setShow(false);
+      const handleShow = () => setShow(true);
+
 
 
   return (
@@ -64,10 +69,28 @@ const UserMenu = ({ menu, setMenu }) => {
 
               <Button
                   className="m-1 p-0 bg-transparent border-0"
-                  onClick={handleLogOut}
+                  onClick={handleShow}
               >
-                  <MdOutlineLogout size="1.5em" />
+                  <MdOutlineLogout
+                      size="1.5em"
+                      color={show ? "var(--violet)" : "white"}
+                  />
               </Button>
+
+              {/* LOG OUT MODAL */}
+              <Modal show={show} onHide={handleClose} centered>
+                  <LogOutModal>
+                      <LogOutTitle>
+                          Are you sure you want to log out?
+                      </LogOutTitle>
+                      <StyledButton variant="secondary" onClick={handleClose}>
+                          Cancel
+                      </StyledButton>
+                      <StyledButton variant="primary" onClick={handleLogOut}>
+                          Log Out
+                      </StyledButton>
+                  </LogOutModal>
+              </Modal>
           </Col>
       </UserMenuContainer>
   );
@@ -75,6 +98,19 @@ const UserMenu = ({ menu, setMenu }) => {
 
 const UserMenuContainer = styled(Row)`
     background: var(--darkgrey);
+`
+
+const LogOutTitle = styled(Modal.Title)`
+    margin: 10px;
+    color: white;
+`
+
+const LogOutModal = styled(Modal.Body)`
+    background: var(--darkgrey);
+`
+
+const StyledButton = styled(Button)`
+    margin: 10px;
 `
 
 export default UserMenu

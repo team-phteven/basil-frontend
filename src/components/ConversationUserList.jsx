@@ -21,7 +21,7 @@ export const ConversationUserList = () => {
         <Row className="w-100 h-100 m-0 p-0">
             <Col className="p-0 m-0">
             {conversationUsers && conversationUsers.map((user, index) => (
-                <ContactSlab contact={user} size="40px" fontSize="14px"/>     
+                <ContactSlab contact={user} key={index} size="40px" fontSize="14px"/>     
              ))}
             </Col>
         </Row>
