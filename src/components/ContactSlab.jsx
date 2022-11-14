@@ -3,48 +3,58 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Avatar from "./Avatar";
 
-export const ContactSlab = ({ contact }) => {
+export const ContactSlab = ({ contact, size = '60px', fontSize = '16px' }) => {
 
 
     return (
-        <Slab
-            className="p-0 m-0"
-        >
+        <Slab>
             <Col sm={4}>
                 {contact && (
-                    <Avatar url={contact.avatar} bgc={"var(--midgrey)"} />
+                    <Avatar
+                        url={contact.avatar}
+                        size={size}
+                        bgc={"var(--midgrey)"}
+                    />
                 )}
             </Col>
-            <Col className="flex-grow-1">
-                <Row>
-                    {contact &&
-                        `${contact.firstName} ${contact.lastName}`}
+            <Col className="flex-grow-1 ms-2 flex-nowrap">
+                <Row
+                    className=""
+                    style={{
+                        fontSize,
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        width: "120px",
+                    }}
+                >
+                    <span
+                        style={{
+                            fontSize,
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            margin: "0px",
+                            padding: "0px"
+                        }}
+                    >
+                        {contact && `${contact.firstName} ${contact.lastName}`}
+                    </span>
                 </Row>
             </Col>
         </Slab>
     );
 };
 
-const Notification = styled.div`
-    width: 20px;
-    height: 20px;
-    color: white;
-    padding: 0;
-    margin-left: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    background: red;
-`;
-
 const Slab = styled(Row)`
     cursor: pointer;
     background: ${(props) => props.background};
-    height: 100px;
     display: flex;
+    margin: 0px;
+    padding: 10px 0px;
     flex-direction: row;
     align-items: center;
     &:hover {
+        background: rgba(0,0,0,0.1);
     }
 `;
