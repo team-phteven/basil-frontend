@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -11,8 +11,12 @@ import autosize from "autosize";
 const MessageInput = ({ selectedConversation, localUser }) => {
     const [focusedInput, setFocusedInput] = useState("false");
     const [inputMessage, setInputMessage] = useState("");
-    const { setSelectedConversationMessages, selectedConversationMessages } =
-        useConversations();
+    const {
+        setSelectedConversationMessages,
+        selectedConversationMessages,
+        activeSeconds,
+        setActiveSeconds,
+    } = useConversations();
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -29,7 +33,7 @@ const MessageInput = ({ selectedConversation, localUser }) => {
 
     useEffect(() => {
         autosize.update(ta);
-    }, [inputMessage])
+    }, [inputMessage]);
 
     const enterSend = (event) => {
         if (event.key === "Enter" && !event.shiftKey && focusedInput) {
@@ -37,12 +41,10 @@ const MessageInput = ({ selectedConversation, localUser }) => {
             sendMessage();
         }
     };
-    
+
     const socket = useSocket();
 
     const sendMessage = async () => {
-
-
         const newMessage = {
             content: inputMessage,
             conversationId: selectedConversation._id,
@@ -65,13 +67,35 @@ const MessageInput = ({ selectedConversation, localUser }) => {
                 console.log(error_code);
                 return;
             });
-            setInputMessage("");
-            setSelectedConversationMessages([
-                data,
-                ...selectedConversationMessages,
-            ]);
-            socket.emit("new message", data)
+        setInputMessage("");
+        setSelectedConversationMessages([
+            data,
+            ...selectedConversationMessages,
+        ]);
+        socket.emit("new message", data);
     };
+
+    // logic for time tracking ---- vv
+
+    useEffect(() => {
+        return () => clearInterval(id.current);
+    }, []);
+
+    let id = useRef();
+
+    const startTimer = () => {
+        id.current = setInterval(() => {
+            setActiveSeconds((prev) => prev + 1);
+            console.log(activeSeconds);
+        }, 1000);
+    };
+
+    const endTimer = () => {
+        clearInterval(id.current);
+        console.log(activeSeconds);
+        setActiveSeconds(0);
+    };
+    // logic for time tracking ---- ^^
 
     return (
         <Form style={{ display: "relative" }} className="m-0 p-0">
@@ -82,8 +106,14 @@ const MessageInput = ({ selectedConversation, localUser }) => {
                 <InputGroup>
                     {/* TO-DO - autoresize textarea with typing extra lines */}
                     <TextBox
-                        onFocus={() => setFocusedInput(true)}
-                        onBlur={() => setFocusedInput(false)}
+                        onFocus={() => {
+                            startTimer();
+                            setFocusedInput(true);
+                        }}
+                        onBlur={() => {
+                            endTimer();
+                            setFocusedInput(false);
+                        }}
                         as="textarea"
                         onKeyDown={enterSend}
                         value={inputMessage}
@@ -100,8 +130,7 @@ const MessageInput = ({ selectedConversation, localUser }) => {
     );
 };
 
-const InputFieldWrapper = styled(Form.Group)`
-`
+const InputFieldWrapper = styled(Form.Group)``;
 
 const TextBox = styled(Form.Control)`
     width: 100%;
@@ -111,7 +140,7 @@ const TextBox = styled(Form.Control)`
     padding: 5px;
     max-height: 50vh;
     border-radius: 10px;
-`
+`;
 
 const SendButton = styled(Button)`
     height: 35px;

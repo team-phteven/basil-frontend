@@ -11,7 +11,7 @@ const Timer = () => {
 
     let id = useRef();
 
-    function handelTime() {
+    function handleTime() {
         id.current = setInterval(() => {
             setTime((prev) => prev + 1);
             console.log(time);
@@ -22,7 +22,7 @@ const Timer = () => {
         <Row className="m-0 p-0">
             <Col className="vh-100 d-flex flex-column">
                 <h1>{time}</h1>
-                <button onClick={() => handelTime()}>Start</button>
+                <button onClick={() => handleTime()}>Start</button>
                 <button onClick={() => clearInterval(id.current)}>Pause</button>
                 <button
                     onClick={() => {
