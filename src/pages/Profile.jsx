@@ -9,6 +9,7 @@ import Contacts from "../components/Contacts";
 import Settings from "../components/Settings";
 import styled from 'styled-components';
 import UserMenu from '../components/UserMenu'
+import { ConversationUserList } from "../components/ConversationUserList";
 
 const Profile = () => {
 
@@ -33,8 +34,9 @@ const Profile = () => {
                 <ChatColumn xs={8} className="d-flex flex-column vh-100">
                     <OpenConversation className="vh-100"/>
                 </ChatColumn>
-
-                <ChatContacts xs={2} className="m-0 p-0 vh-100"></ChatContacts>
+                <ChatContacts xs={2} className="m-0 p-0 vh-100">
+                    <ConversationUserList />
+                </ChatContacts>
             </Row>
         </StyledContainer>
     );

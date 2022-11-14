@@ -3,7 +3,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Avatar from "./Avatar";
 
-export const ContactSlab = ({ contact }) => {
+export const ContactSlab = ({ contact, size = '60px', fontSize = '14px' }) => {
 
 
     return (
@@ -12,11 +12,11 @@ export const ContactSlab = ({ contact }) => {
         >
             <Col sm={4}>
                 {contact && (
-                    <Avatar url={contact.avatar} bgc={"var(--midgrey)"} />
+                    <Avatar url={contact.avatar} size={size} bgc={"var(--midgrey)"} />
                 )}
             </Col>
             <Col className="flex-grow-1">
-                <Row>
+                <Row style={{ fontSize }}>
                     {contact &&
                         `${contact.firstName} ${contact.lastName}`}
                 </Row>
