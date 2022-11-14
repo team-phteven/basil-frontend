@@ -28,6 +28,7 @@ const Timer = () => {
                     onClick={() => {
                         clearInterval(id.current);
                         setTime(0);
+                        console.log(time);
                     }}
                 >
                     Reset

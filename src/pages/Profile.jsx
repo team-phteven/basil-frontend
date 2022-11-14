@@ -7,6 +7,7 @@ import OpenConversation from "../components/ChatColumn/OpenConversation";
 import { useState } from "react";
 import Contacts from "../components/Contacts";
 import Timer from "../components/RightColumn/Timer";
+import ConvoInfo from "../components/RightColumn/ConvoInfo";
 import Settings from "../components/Settings";
 import styled from "styled-components";
 import UserMenu from "../components/UserMenu";
@@ -36,7 +37,8 @@ const Profile = () => {
                 </ChatColumn>
 
                 <ChatContacts xs={2} className="m-0 p-0 vh-100">
-                    <Timer />
+                    {/* <Timer /> */}
+                    <ConvoInfo />
                 </ChatContacts>
             </Row>
         </StyledContainer>

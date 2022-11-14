@@ -23,7 +23,6 @@ export function ConversationsProvider({ children }) {
         if (localUser) getConversations();
     }, [localUser]);
 
-
     // Fetching conversations from database
     const getConversations = async () => {
         const config = {
@@ -90,7 +89,7 @@ export function ConversationsProvider({ children }) {
         otherConversations,
         setOtherConversations,
         messageNotifications,
-        setMessageNotifications
+        setMessageNotifications,
     };
 
     return (
