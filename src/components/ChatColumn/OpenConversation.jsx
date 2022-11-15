@@ -13,6 +13,22 @@ const OpenConversation = () => {
     const { selectedConversation, activeSeconds, setActiveSeconds } =
         useConversations();
 
+    // logic for time tracking ---- vv
+
+    useEffect(() => {
+        return () => clearInterval(id.current);
+    }, []);
+
+    let id = useRef();
+
+    function handleTime() {
+        id.current = setInterval(() => {
+            setActiveSeconds((prev) => prev + 1);
+            console.log(activeSeconds);
+        }, 1000);
+    }
+    // logic for time tracking ---- ^^
+
     return (
         <Row className="m-0 p-0">
             <StyledCol className="vh-100 d-flex flex-column">
