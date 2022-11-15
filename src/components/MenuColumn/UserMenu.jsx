@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { MdOutlineLogout, MdSettings, MdGroup } from "react-icons/md";
 import Col from 'react-bootstrap/Col'
 import Button from "react-bootstrap/Button";
-import Avatar from "../components/Avatar";
-import { useUser } from "../contexts/UserProvider";
+import Avatar from "../GlobalComponents/Avatar";
+import { useUser } from "../../contexts/UserProvider";
 import Row from "react-bootstrap/Row";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";

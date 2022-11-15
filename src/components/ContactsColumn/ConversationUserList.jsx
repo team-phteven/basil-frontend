@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useConversations } from "../contexts/ConversationsProvider";
+import { useConversations } from "../../contexts/ConversationsProvider";
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col";
-import { ContactSlab } from "./ContactSlab";
+import { ContactSlab } from "../GlobalComponents/ContactSlab";
 
 export const ConversationUserList = () => {
     const { selectedConversation } = useConversations();
