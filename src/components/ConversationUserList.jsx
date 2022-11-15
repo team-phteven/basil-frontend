@@ -6,16 +6,11 @@ import { ContactSlab } from "./ContactSlab";
 
 export const ConversationUserList = () => {
     const { selectedConversation } = useConversations();
-    const [conversationUsers, setConversationUsers] = useState(['test']);
+    const [conversationUsers, setConversationUsers] = useState(null);
 
     useEffect(() => {
-        if (selectedConversation)
         if (selectedConversation) setConversationUsers(selectedConversation.users);
     }, [selectedConversation]);
-
-    useEffect(() => {
-        console.log(conversationUsers)
-    }, [conversationUsers])
 
     return (
         <Row className="w-100 h-100 m-0 p-0">

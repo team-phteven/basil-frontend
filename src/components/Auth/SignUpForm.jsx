@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 // custom components
 import PasswordFloatingLabelToggle from "./PasswordFloatingLabelToggle";
+import Avatar from "../Avatar";
 // BS components
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -80,12 +81,15 @@ function SignUpForm() {
         if (["image/jpeg", "image/png", "image/jpeg"].includes(file.type)) {
             const data = new FormData();
             data.append("file", file);
-            data.append("upload_preset", "chatApp");
-            data.append("cloud_name", "dp8gqsvgm");
-            fetch("https://api.cloudinary.com/v1_1/dp8gqsvgm/image/upload", {
-                method: "post",
-                body: data,
-            })
+          data.append("upload_preset", process.env.REACT_APP_CLOUDINARY_PRESET);
+          data.append("cloud_name", process.env.REACT_APP_CLOUDINARY_NAME);
+            fetch(
+                `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_NAME}/image/upload`,
+                {
+                    method: "post",
+                    body: data,
+                }
+            )
                 .then((res) => res.json())
                 .then((data) => {
                     setFormFields({
@@ -183,18 +187,23 @@ function SignUpForm() {
                     </Form.Group>
                 </Row>
                 <Row>
+                    <Col xs='auto'>
+                    <Avatar url={formFields.avatar || 'avatar2.svg'} size="80px" hideStatus/>
+                    </Col>
+                    <Col>
                     <Form.Group
                         as={Col}
                         className="p-0 mb-5"
                         onChange={(e) => handleFile(e.target.files[0])}
-                    >
+                        >
                         <Form.Label>Avatar (optional)</Form.Label>
                         <Form.Control
-                            id="password"
+                            id="avatar"
                             type="file"
                             accept="image/*"
-                        />
+                            />
                     </Form.Group>
+                    </Col>
                 </Row>
                 <Row className="w-0">
                     <Col md={6} className="p-0">

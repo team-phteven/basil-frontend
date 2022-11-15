@@ -1,23 +1,21 @@
 // packages
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { MdDelete } from "react-icons/md";
 // custom components
 import PasswordFloatingLabelToggle from "./Auth/PasswordFloatingLabelToggle";
 import { useUser } from "../contexts/UserProvider";
+import Avatar from "../components/Avatar";
 // BS components
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-import styledComponents from "styled-components";
 
 function Settings() {
     const { localUser, setLocalUser } = useUser();
 
-    // navigate instance (for page reload)
-    const navigate = useNavigate();
     // form fields state
     const [personalFields, setPersonalFields] = useState({
         firstName: localUser.name.split(" ")[0],
@@ -31,26 +29,28 @@ function Settings() {
         confirmPassword: "",
     });
 
+    const [avatar, setAvatar] = useState();
+
     const [personalLoading, setPersonalLoading] = useState(false);
     const [passwordLoading, setPasswordLoading] = useState(false);
-
-
-    // component loading state
-    const [loading, setLoading] = useState(false);
+    const [avatarLoading, setAvatarLoading] = useState(false);
 
     const handleFile = (file) => {
-        setLoading(true);
+        setAvatarLoading(true);
         if (file === undefined) {
             console.log("file upload failed");
+            setAvatarLoading(false);
         }
         if (["image/jpeg", "image/png", "image/jpeg"].includes(file.type)) {
             const data = new FormData();
             data.append("file", file);
-            data.append("upload_preset", "chatApp");
-            data.append("cloud_name", `${process.env.CLOUDINARY_NAME}`);
+            data.append(
+                "upload_preset",
+                process.env.REACT_APP_CLOUDINARY_PRESET
+            );
+            data.append("cloud_name", process.env.REACT_APP_CLOUDINARY_NAME);
             fetch(
-                
-                `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_NAME}/image/upload`,
+                `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_NAME}/image/upload`,
                 {
                     method: "post",
                     body: data,
@@ -58,15 +58,16 @@ function Settings() {
             )
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log(data.url.toString());
-                    setLoading(false);
+                    setAvatar(data.url.toString());
+                    setAvatarLoading(false);
                 })
                 .catch((err) => {
                     console.log(err);
-                    setLoading(false);
+                    setAvatarLoading(false);
                 });
         } else {
             console.log("Wrong file format");
+            setAvatarLoading(false);
         }
     };
 
@@ -101,7 +102,6 @@ function Settings() {
             return;
         }
         try {
-
             const details = {
                 firstName: personalFields.firstName,
                 lastName: personalFields.lastName,
@@ -118,7 +118,7 @@ function Settings() {
             const { data } = await axios.put(
                 `${process.env.REACT_APP_BASE_URL}/api/users/update-details`,
                 details,
-                config,
+                config
             );
 
             localStorage.setItem("storedUser", JSON.stringify(data));
@@ -133,7 +133,7 @@ function Settings() {
             console.log("error: " + error.message);
             setPersonalLoading(false);
         }
-    }
+    };
 
     const updatePassword = async (e) => {
         // prevent page refresh
@@ -150,14 +150,13 @@ function Settings() {
             return;
         }
 
-        if ( passwordFields.newPassword !== passwordFields.confirmPassword ) {
+        if (passwordFields.newPassword !== passwordFields.confirmPassword) {
             console.log("Confirmation password must match new password");
             setPasswordLoading(false);
             return;
         }
 
         try {
-
             const details = {
                 oldPassword: passwordFields.oldPassword,
                 newPassword: passwordFields.newPassword,
@@ -173,7 +172,7 @@ function Settings() {
             const { data } = await axios.put(
                 `${process.env.REACT_APP_BASE_URL}/api/users/update-password`,
                 details,
-                config,
+                config
             );
 
             setPasswordFields({
@@ -184,9 +183,84 @@ function Settings() {
         } catch (error) {
             console.log("error: " + error.message);
             setPasswordLoading(false);
-            return
+            return;
         }
-    }
+    };
+
+    const updateAvatar = async (e) => {
+        // prevent page refresh
+        e.preventDefault();
+        setAvatarLoading(true);
+        // check for empty fields
+        if (!avatar) {
+            console.log("Missing Avatar");
+            setAvatarLoading(false);
+            return;
+        }
+        try {
+            const details = {
+                avatar: avatar,
+            };
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${localUser.token}`,
+                },
+            };
+
+            // update user
+            const { data } = await axios.put(
+                `${process.env.REACT_APP_BASE_URL}/api/users/update-avatar`,
+                details,
+                config
+            );
+
+            localStorage.setItem("storedUser", JSON.stringify(data));
+            localStorage.setItem(
+                "welcomeBack",
+                JSON.stringify({ email: data.email, name: data.name })
+            );
+            setAvatarLoading(false);
+            const userData = JSON.parse(localStorage.getItem("storedUser"));
+            setLocalUser(userData);
+        } catch (error) {
+            console.log("error: " + error.message);
+            setAvatarLoading(false);
+        }
+    };
+
+    const deleteAvatar = async () => {
+        setAvatarLoading(true);
+        try {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${localUser.token}`,
+                },
+            };
+
+            // update user
+            const { data } = await axios.put(
+                `${process.env.REACT_APP_BASE_URL}/api/users/delete-avatar`,
+                {},
+                config
+            );
+
+            localStorage.setItem("storedUser", JSON.stringify(data));
+            localStorage.setItem(
+                "welcomeBack",
+                JSON.stringify({ email: data.email, name: data.name })
+            );
+
+            setAvatarLoading(false);
+
+            const userData = JSON.parse(localStorage.getItem("storedUser"));
+            setLocalUser(userData);
+        } catch (error) {
+            console.log("error: " + error.message);
+            setAvatarLoading(false);
+            return;
+        }
+    };
 
     return (
         <Menu className="p-2 m-0">
@@ -315,9 +389,28 @@ function Settings() {
                     </Row>
                 </Col>
             </Row>
+
             {/* Change Avatar */}
             <h3 className="text-white">Change Avatar</h3>
-            <Row as={Form} className="p-0 mb-5">
+            <Row className="d-flex flex-row justify-content-center p-4">
+                <Col className="p-0 m-0 d-flex flex-column justify-content-end align-items-end">
+                    <Avatar
+                        url={localUser.avatar}
+                        bgc={"black"}
+                        size="100px"
+                        hideStatus
+                    />
+                </Col>
+                <Col className="p-0 m-0 d-flex flex-column justify-content-end">
+                    <StyledIcon
+                        className="p-0"
+                        size="30px"
+                        color="white"
+                        onClick={deleteAvatar}
+                    />
+                </Col>
+            </Row>
+            <Row as={Form} name="avatarForm" className="p-0 mb-5">
                 <Col>
                     <Form.Group
                         as={Col}
@@ -334,10 +427,11 @@ function Settings() {
                         <Button
                             as={Col}
                             xs="auto"
-                            variant="primary"
+                            variant={"primary"}
                             type="submit"
                             className="text-white"
-                            disabled={loading ? true : false}
+                            disabled={avatarLoading}
+                            onClick={updateAvatar}
                         >
                             Update Avatar
                         </Button>
@@ -348,8 +442,14 @@ function Settings() {
     );
 }
 
-const Menu = styledComponents(Col)`
-    background: var(--darkgrey)
+const Menu = styled(Col)`
+    background: var(--darkgrey);
+`;
+
+const StyledIcon = styled(MdDelete)`
+    &:hover {
+        cursor: pointer;
+    }
 `;
 
 export default Settings;
