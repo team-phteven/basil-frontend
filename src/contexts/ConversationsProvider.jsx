@@ -15,6 +15,7 @@ export function ConversationsProvider({ children }) {
         useState([]);
     const [otherConversations, setOtherConversations] = useState(null);
     const [messageNotifications, setMessageNotifications] = useState({});
+    const [activeSeconds, setActiveSeconds] = useState(0);
 
     const { localUser } = useUser();
 
@@ -22,7 +23,6 @@ export function ConversationsProvider({ children }) {
     useEffect(() => {
         if (localUser) getConversations();
     }, [localUser]);
-
 
     // Fetching conversations from database
     const getConversations = async () => {
@@ -90,7 +90,9 @@ export function ConversationsProvider({ children }) {
         otherConversations,
         setOtherConversations,
         messageNotifications,
-        setMessageNotifications
+        setMessageNotifications,
+        activeSeconds,
+        setActiveSeconds,
     };
 
     return (
