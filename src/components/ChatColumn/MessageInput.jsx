@@ -76,7 +76,6 @@ const MessageInput = ({ selectedConversation, localUser }) => {
     };
 
     // logic for time tracking ---- vv
-
     useEffect(() => {
         return () => clearInterval(id.current);
     }, []);
@@ -90,9 +89,32 @@ const MessageInput = ({ selectedConversation, localUser }) => {
         }, 1000);
     };
 
-    const endTimer = () => {
+    const endTimer = async () => {
         clearInterval(id.current);
-        console.log(activeSeconds);
+
+        // sending request for incrementing time
+        const config = {
+            headers: {
+                Authorization: `Bearer ${localUser.token}`,
+            },
+        };
+
+        const { data } = await axios
+            .put(
+                `${process.env.REACT_APP_BASE_URL}/api/conversations/add-seconds`,
+                {
+                    seconds: activeSeconds,
+                    conversationId: selectedConversation._id,
+                },
+                config
+            )
+            .catch((error) => {
+                const error_code = JSON.stringify(error.response.data.error);
+                console.log(error_code);
+                return;
+            });
+        console.log(data);
+
         setActiveSeconds(0);
     };
     // logic for time tracking ---- ^^

@@ -36,10 +36,7 @@ const Profile = () => {
                     <OpenConversation className="vh-100" />
                 </ChatColumn>
 
-                <ChatContacts xs={2} className="m-0 p-0 vh-100">
-                    {/* <Timer /> */}
-                    <ConvoInfo />
-                </ChatContacts>
+                <ChatContacts xs={2} className="m-0 p-0 vh-100"></ChatContacts>
             </Row>
         </StyledContainer>
     );
