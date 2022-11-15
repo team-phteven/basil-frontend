@@ -12,6 +12,7 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
+import Spinner from "react-bootstrap/Spinner";
 
 function Settings() {
     const { localUser, setLocalUser } = useUser();
@@ -21,6 +22,13 @@ function Settings() {
         firstName: localUser.name.split(" ")[0],
         lastName: localUser.name.split(" ")[1],
         email: localUser.email,
+    });
+
+    const [validity, setValidity] = useState({
+        details: "none",
+        password: "none",
+        file: "none",
+        avatar: "none",
     });
 
     const [passwordFields, setPasswordFields] = useState({
@@ -40,6 +48,10 @@ function Settings() {
         if (file === undefined) {
             console.log("file upload failed");
             setAvatarLoading(false);
+            setValidity({
+                ...validity,
+                file: "invalid",
+            });
         }
         if (["image/jpeg", "image/png", "image/jpeg"].includes(file.type)) {
             const data = new FormData();
@@ -60,14 +72,26 @@ function Settings() {
                 .then((data) => {
                     setAvatar(data.url.toString());
                     setAvatarLoading(false);
+                    setValidity({
+                        ...validity,
+                        file: "valid",
+                    });
                 })
                 .catch((err) => {
                     console.log(err);
                     setAvatarLoading(false);
+                                setValidity({
+                                    ...validity,
+                                    file: "invalid",
+                                });
                 });
         } else {
             console.log("Wrong file format");
             setAvatarLoading(false);
+            setValidity({
+                ...validity,
+                file: "invalid",
+            });
         }
     };
 
@@ -180,6 +204,8 @@ function Settings() {
                 newPassword: "",
                 confirmPassword: "",
             });
+
+            setPasswordLoading(false);
         } catch (error) {
             console.log("error: " + error.message);
             setPasswordLoading(false);
@@ -267,7 +293,12 @@ function Settings() {
             <h2 className="text-white mb-4">Profile Settings</h2>
 
             {/* UPDATE DETAILS */}
-            <Row as={Form} className="mb-5" onSubmit={updateDetails}>
+            <Row
+                as={Form}
+                onClick={updateDetails}
+                className="mb-5"
+                onSubmit={updateDetails}
+            >
                 <h3 className="text-white">Personal Details</h3>
                 <Col>
                     <Form.Group as={Row} className="p-0 mb-4">
@@ -322,70 +353,59 @@ function Settings() {
                         </Col>
                     </Form.Group>
                     <Row className="m-0 p-0">
-                        <Button
-                            as={Col}
+                        <Col
+                            as={Button}
                             xs="auto"
                             variant="primary"
                             type="submit"
-                            onClick={updateDetails}
                             className="text-white"
-                            disabled={personalLoading ? true : false}
+                            disabled={personalLoading}
                         >
                             Update Details
-                        </Button>
+                        </Col>
                     </Row>
                 </Col>
             </Row>
 
             {/* CHANGE PASSWORD */}
-            <Row as={Form} className="p-0 mb-5">
+            <Row as={Form} className="p-0 mb-5" onSubmit={updatePassword}>
                 <h3 className="text-white">Change Password</h3>
                 <Col>
-                    <Form.Group
-                        as={Row}
-                        className="p-0 mb-4"
-                        onChange={handlePasswordInput}
-                        value={passwordFields.oldPassword}
-                    >
+                    <Form.Group as={Row} className="p-0 mb-4">
                         <PasswordFloatingLabelToggle
                             label="Current Password"
                             uniqueId="oldPassword"
+                            handleChange={handlePasswordInput}
+                            value={passwordFields.oldPassword}
                         />
                     </Form.Group>
-                    <Form.Group
-                        as={Row}
-                        className="p-0 mb-4"
-                        onChange={handlePasswordInput}
-                        value={passwordFields.newPassword}
-                    >
+                    <Form.Group as={Row} className="p-0 mb-4">
                         <PasswordFloatingLabelToggle
                             label="New Password"
                             uniqueId="newPassword"
+                            handleChange={handlePasswordInput}
+                            value={passwordFields.newPassword}
                         />
                     </Form.Group>
-                    <Form.Group
-                        as={Row}
-                        className="p-0 mb-4"
-                        onChange={handlePasswordInput}
-                        value={passwordFields.confirmPassword}
-                    >
+                    <Form.Group as={Row} className="p-0 mb-4">
                         <PasswordFloatingLabelToggle
                             label="Confirm New Password"
                             uniqueId="confirmPassword"
+                            handleChange={handlePasswordInput}
+                            value={passwordFields.confirmPassword}
                         />
                     </Form.Group>
                     <Row className="p-0 m-0">
-                        <Button
-                            as={Col}
+                        <Col
+                            as={Button}
                             xs="auto"
                             variant="primary"
                             type="submit"
                             className="text-white"
-                            disabled={passwordLoading ? true : false}
-                            onClick={updatePassword}
+                            disabled={passwordLoading}
                         >
                             Update Password
-                        </Button>
+                        </Col>
                     </Row>
                 </Col>
             </Row>
@@ -410,7 +430,12 @@ function Settings() {
                     />
                 </Col>
             </Row>
-            <Row as={Form} name="avatarForm" className="p-0 mb-5">
+            <Row
+                as={Form}
+                onSubmit={updateAvatar}
+                name="avatarForm"
+                className="p-0 mb-5"
+            >
                 <Col>
                     <Form.Group
                         as={Col}
@@ -421,20 +446,35 @@ function Settings() {
                             id="password"
                             type="file"
                             accept="image/*"
+                            isValid={validity.file === "valid" ? true : null}
+                            isInvalid={
+                                validity.file === "invalid" ? true : null
+                            }
                         />
+                        <span className="m-0 p-0 text-white">
+                            .jpg .jpeg .png - 10mb max
+                        </span>
                     </Form.Group>
-                    <Row className="p-0 m-0">
-                        <Button
-                            as={Col}
+                    <Row className="p-0 m-0 align-items-center">
+                        <Col
+                            as={Button}
                             xs="auto"
                             variant={"primary"}
                             type="submit"
                             className="text-white"
                             disabled={avatarLoading}
-                            onClick={updateAvatar}
                         >
-                            Update Avatar
-                        </Button>
+                            {avatarLoading && (
+                                <Spinner
+                                    as="span"
+                                    animation="grow"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                />
+                            )}
+                            <span className="ms-2">Update Avatar</span>
+                        </Col>
                     </Row>
                 </Col>
             </Row>

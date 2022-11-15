@@ -167,42 +167,44 @@ function SignUpForm() {
                     </Form.Group>
                 </Row>
                 <Row>
-                    <Form.Group
-                        as={Col}
-                        className="p-0 mb-4"
-                        onChange={handleInput}
-                        value={formFields.password}
-                    >
-                        <PasswordFloatingLabelToggle uniqueId="up-password" />
+                    <Form.Group as={Col} className="p-0 mb-4">
+                        <PasswordFloatingLabelToggle
+                            uniqueId="up-password"
+                            handleChange={handleInput}
+                            value={formFields.password}
+                        />
                     </Form.Group>
                 </Row>
                 <Row>
-                    <Form.Group
-                        as={Col}
-                        className="p-0 mb-4"
-                        onChange={handleInput}
-                        value={formFields.confirmPassword}
-                    >
-                        <PasswordFloatingLabelToggle uniqueId="confirmPassword" />
+                    <Form.Group as={Col} className="p-0 mb-4">
+                        <PasswordFloatingLabelToggle
+                            uniqueId="confirmPassword"
+                            handleChange={handleInput}
+                            value={formFields.confirmPassword}
+                        />
                     </Form.Group>
                 </Row>
                 <Row>
-                    <Col xs='auto'>
-                    <Avatar url={formFields.avatar || 'avatar2.svg'} size="80px" hideStatus/>
+                    <Col xs="auto">
+                        <Avatar
+                            url={formFields.avatar || "avatar2.svg"}
+                            size="80px"
+                            hideStatus
+                        />
                     </Col>
                     <Col>
-                    <Form.Group
-                        as={Col}
-                        className="p-0 mb-5"
-                        onChange={(e) => handleFile(e.target.files[0])}
+                        <Form.Group
+                            as={Col}
+                            className="p-0 mb-5"
+                            onChange={(e) => handleFile(e.target.files[0])}
                         >
-                        <Form.Label>Avatar (optional)</Form.Label>
-                        <Form.Control
-                            id="avatar"
-                            type="file"
-                            accept="image/*"
+                            <Form.Label>Avatar (optional)</Form.Label>
+                            <Form.Control
+                                id="avatar"
+                                type="file"
+                                accept="image/*"
                             />
-                    </Form.Group>
+                        </Form.Group>
                     </Col>
                 </Row>
                 <Row className="w-0">
