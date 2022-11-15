@@ -16,7 +16,7 @@ const PasswordFloatingLabelToggle = (props) => {
 
     return (
         <InputGroup size="lg">
-            <Form.FloatingLabel label="Password">
+            <Form.FloatingLabel label={props.label || "Password"}>
                 <Form.Control
                     id={props.uniqueId}
                     type={showPassword ? "text" : "password"}

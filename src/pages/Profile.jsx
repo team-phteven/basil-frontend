@@ -11,6 +11,7 @@ import ConvoInfo from "../components/RightColumn/ConvoInfo";
 import Settings from "../components/Settings";
 import styled from "styled-components";
 import UserMenu from "../components/UserMenu";
+import { ConversationUserList } from "../components/ConversationUserList";
 
 const Profile = () => {
     const [menu, setMenu] = useState("Conversations");
@@ -32,11 +33,15 @@ const Profile = () => {
                     <UserMenu setMenu={setMenu} menu={menu} />
                 </ConversationsColumn>
 
-                <ChatColumn xs={8} className="d-flex flex-column vh-100">
+                <ChatColumn
+                    xs={8}
+                    className="d-flex flex-column vh-100 flex-grow-1"
+                >
                     <OpenConversation className="vh-100" />
                 </ChatColumn>
-
-                <ChatContacts xs={2} className="m-0 p-0 vh-100"></ChatContacts>
+                <ChatContacts xs={2} className="m-0 p-0 vh-100">
+                    <ConversationUserList />
+                </ChatContacts>
             </Row>
         </StyledContainer>
     );
@@ -45,7 +50,10 @@ const Profile = () => {
 const ConversationsColumn = styled(Col)`
     background: var(--midgrey);
 `;
-const Conversations = styled(Row)``;
+const Conversations = styled(Row)`
+    overflow-y: auto;
+    overflow-x: hidden;
+`;
 
 const ChatColumn = styled(Col)`
     background: var(--lightgrey);
