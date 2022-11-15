@@ -2,8 +2,8 @@ import React from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Stack from "react-bootstrap/Stack";
-import { ConversationSlab } from "../components/ConversationSlab";
-import { useConversations } from "../contexts/ConversationsProvider";
+import { ConversationSlab } from "./ConversationSlab";
+import { useConversations } from "../../../contexts/ConversationsProvider";
 
 const ConversationList = () => {
 

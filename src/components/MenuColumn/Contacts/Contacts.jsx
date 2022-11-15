@@ -5,12 +5,12 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import styled from "styled-components";
 import { MdOutlinePersonAddAlt } from "react-icons/md";
-import { useConversations } from "../contexts/ConversationsProvider";
-import { useUser } from "../contexts/UserProvider";
+import { useConversations } from "../../../contexts/ConversationsProvider";
+import { useUser } from "../../../contexts/UserProvider";
 import Request from "./Request";
 import Stack from "react-bootstrap/Stack";
 import axios from "axios";
-import { ContactSlab } from "./ContactSlab";
+import { ContactSlab } from "../../GlobalComponents/ContactSlab";
 
 const Contacts = () => {
     const { conversations } = useConversations();

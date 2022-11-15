@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 // custom components
 import PasswordFloatingLabelToggle from "./PasswordFloatingLabelToggle";
-import Avatar from "../Avatar";
+import Avatar from "../GlobalComponents/Avatar";
 // BS components
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";

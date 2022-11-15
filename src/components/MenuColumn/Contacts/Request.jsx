@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import Avatar from "./Avatar";
+import Avatar from "../../GlobalComponents/Avatar";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { MdCheckCircle, MdRemoveCircle } from "react-icons/md";
 import axios from "axios";
-import { useUser } from "../contexts/UserProvider";
+import { useUser } from "../../../contexts/UserProvider";
 
 const Request = ({ request, localUser }) => {
     const { setMessageRequests } = useUser();

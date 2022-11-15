@@ -1,6 +1,6 @@
 // packages
 // custom components
-import FormTabs from "../components/FormTabs";
+import FormTabs from "../components/Auth/FormTabs";
 // BS components
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";

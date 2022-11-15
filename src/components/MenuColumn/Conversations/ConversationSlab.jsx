@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Avatar from "./Avatar";
-import { useUser } from "../contexts/UserProvider";
-import { useConversations } from "../contexts/ConversationsProvider";
+import Avatar from "../../GlobalComponents/Avatar";
+import { useUser } from "../../../contexts/UserProvider";
+import { useConversations } from "../../../contexts/ConversationsProvider";
 import { useEffect, useState } from "react";
 
 
