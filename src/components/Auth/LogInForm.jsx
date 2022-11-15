@@ -43,6 +43,8 @@ function LogInForm() {
         }
     }, []);
 
+    
+
     // deconstruct formFields
     const { email, password } = formFields;
 
@@ -140,13 +142,12 @@ function LogInForm() {
                     </Form.Group>
                 </Row>
                 <Row>
-                    <Form.Group
-                        as={Col}
-                        className="p-0 mb-4"
-                        onChange={handleInput}
-                        value={formFields.password}
-                    >
-                        <PasswordFloatingLabelToggle uniqueId={"in-password"} />
+                    <Form.Group as={Col} className="p-0 mb-4">
+                        <PasswordFloatingLabelToggle
+                            uniqueId={"in-password"}
+                            handleChange={handleInput}
+                            value={formFields.password}
+                        />
                     </Form.Group>
                 </Row>
                 <Row>
