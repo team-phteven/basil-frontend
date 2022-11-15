@@ -7,7 +7,7 @@ import OpenConversation from "../components/ChatColumn/OpenConversation";
 import { useState } from "react";
 import Contacts from "../components/MenuColumn/Contacts/Contacts";
 import Timer from "../components/RightColumn/Timer";
-import ConvoInfo from "../components/RightColumn/ConvoInfo";
+import ConvoInfo from "../components/ChatColumn/ConvoInfo";
 import Settings from "../components/MenuColumn/Settings/Settings";
 import styled from "styled-components";
 import UserMenu from "../components/MenuColumn/UserMenu";
@@ -37,8 +37,8 @@ const Profile = () => {
                     xs={8}
                     className="d-flex flex-column vh-100 flex-grow-1"
                 >
-                    {/* <OpenConversation className="vh-100" /> */}
-                    <ConvoInfo />
+                    <OpenConversation className="vh-100" />
+                    {/* <ConvoInfo /> */}
                 </ChatColumn>
                 <ChatContacts xs={2} className="m-0 p-0 vh-100">
                     <ConversationUserList />
