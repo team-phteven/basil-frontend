@@ -90,8 +90,6 @@ export function ConversationsProvider({ children }) {
         setOtherConversations,
         messageNotifications,
         setMessageNotifications,
-        activeSeconds,
-        setActiveSeconds,
     };
 
     return (
