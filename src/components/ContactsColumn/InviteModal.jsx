@@ -4,9 +4,13 @@ import { useConversations } from "../../contexts/ConversationsProvider";
 import { useUser } from "../../contexts/UserProvider";
 import { CheckContactSlab } from "../GlobalComponents/CheckContactSlab";
 import axios from "axios";
+import { useRef } from "react";
 
-export default function NewConversationModal({ closeCreateGroupModal }) {
-    const { conversations } = useConversations();
+export default function InviteModal({
+    closeCreateGroupModal,
+    conversationUsers,
+}) {
+    const { conversations, selectedConversation } = useConversations();
     const [selectedUserIds, setSelectedUserIds] = useState([]);
     const { localUser } = useUser();
 
@@ -32,10 +36,15 @@ export default function NewConversationModal({ closeCreateGroupModal }) {
             },
         };
 
+        console.log("selectedConversation:====>" + selectedConversation);
+
         const { data } = await axios
-            .post(
-                `${process.env.REACT_APP_BASE_URL}/api/conversations`,
-                { users: selectedUserIds },
+            .put(
+                `${process.env.REACT_APP_BASE_URL}/api/conversations/add-users`,
+                {
+                    users: selectedUserIds,
+                    conversationId: selectedConversation._id,
+                },
                 config
             )
             .catch((error) => {
@@ -43,6 +52,7 @@ export default function NewConversationModal({ closeCreateGroupModal }) {
                 console.log(error_code);
                 return;
             });
+
         closeCreateGroupModal();
     };
 
@@ -67,7 +77,7 @@ export default function NewConversationModal({ closeCreateGroupModal }) {
 
     return (
         <>
-            <Modal.Header closeButton>Create Group Conversation</Modal.Header>
+            <Modal.Header closeButton>Add Contacts to Group</Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
                     {conversations &&
@@ -85,8 +95,8 @@ export default function NewConversationModal({ closeCreateGroupModal }) {
                                 </>
                             )
                         )}
-                    <Button disabled={selectedUserIds.length < 2} type="submit">
-                        Create Conversation
+                    <Button disabled={selectedUserIds.length < 1} type="submit">
+                        Add Users
                     </Button>
                 </Form>
             </Modal.Body>

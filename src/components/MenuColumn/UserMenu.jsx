@@ -38,7 +38,7 @@ const UserMenu = ({ menu, setMenu }) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    // logic for NewConversationModal being open
+    // logic for create convo modal
     const [createGroupModalOpen, setCreateGroupModalOpen] = useState(false);
 
     const closeCreateGroupModal = () => {

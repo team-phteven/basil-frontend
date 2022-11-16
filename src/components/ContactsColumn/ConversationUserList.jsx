@@ -3,7 +3,9 @@ import { useConversations } from "../../contexts/ConversationsProvider";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 import { ContactSlab } from "../GlobalComponents/ContactSlab";
+import InviteModal from "./InviteModal";
 
 export const ConversationUserList = () => {
     const { selectedConversation } = useConversations();
@@ -13,6 +15,13 @@ export const ConversationUserList = () => {
         if (selectedConversation)
             setConversationUsers(selectedConversation.users);
     }, [selectedConversation]);
+
+    // invite modal logic
+    const [inviteModalOpen, setInviteModalOpen] = useState(false);
+
+    const closeInviteModal = () => {
+        setInviteModalOpen(false);
+    };
 
     return (
         <Row className="w-100 h-100 m-0 p-0">
@@ -26,7 +35,21 @@ export const ConversationUserList = () => {
                             fontSize="14px"
                         />
                     ))}
-                <Button>Invite Contacts</Button>
+                <Button
+                    onClick={() => {
+                        console.log(conversationUsers);
+                        setInviteModalOpen(true);
+                    }}
+                >
+                    Invite Contacts
+                </Button>
+                {/* GROUP CHAT MODAL */}
+                <Modal show={inviteModalOpen} onHide={closeInviteModal}>
+                    <InviteModal
+                        closeCreateGroupModal={closeInviteModal}
+                        conversationUsers={conversationUsers}
+                    />
+                </Modal>
             </Col>
         </Row>
     );
