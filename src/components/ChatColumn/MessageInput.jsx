@@ -11,12 +11,9 @@ import autosize from "autosize";
 const MessageInput = ({ selectedConversation, localUser }) => {
     const [focusedInput, setFocusedInput] = useState("false");
     const [inputMessage, setInputMessage] = useState("");
-    const {
-        setSelectedConversationMessages,
-        selectedConversationMessages,
-        activeSeconds,
-        setActiveSeconds,
-    } = useConversations();
+    const [activeSeconds, setActiveSeconds] = useState(0);
+    const { setSelectedConversationMessages, selectedConversationMessages } =
+        useConversations();
 
     const handleClick = (e) => {
         e.preventDefault();
