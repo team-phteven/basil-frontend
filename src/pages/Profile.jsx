@@ -4,17 +4,41 @@ import Col from "react-bootstrap/Col";
 import { useUser } from "../contexts/UserProvider";
 import ConversationList from "../components/MenuColumn/Conversations/ConversationList";
 import OpenConversation from "../components/ChatColumn/OpenConversation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Contacts from "../components/MenuColumn/Contacts/Contacts";
 import Timer from "../components/RightColumn/Timer";
 import ConvoInfo from "../components/ChatColumn/ConvoInfo";
 import Settings from "../components/MenuColumn/Settings/Settings";
 import styled from "styled-components";
 import UserMenu from "../components/MenuColumn/UserMenu";
+import axios from "axios";
 import { ConversationUserList } from "../components/ContactsColumn/ConversationUserList";
 
 const Profile = () => {
     const [menu, setMenu] = useState("Conversations");
+    const { localUser } = useUser();
+
+    const getContacts = async () => {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${localUser.token}`,
+            },
+        };
+
+        const { data } = await axios
+            .get(`${process.env.REACT_APP_BASE_URL}/api/users/get-contacts`, config)
+            .catch((error) => {
+                const error_code = JSON.stringify(error.response.data.error);
+                console.log(error_code);
+                return;
+            });
+
+        console.log(data)
+    };
+
+    useEffect(() => {
+        getContacts()
+    }, [localUser])
 
     return (
         <StyledContainer as="main" className="mx-0 p-0 bg-light" fluid>

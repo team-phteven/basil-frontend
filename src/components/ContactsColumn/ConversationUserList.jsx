@@ -6,11 +6,15 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { ContactSlab } from "../GlobalComponents/ContactSlab";
 import InviteModal from "./InviteModal";
+import { allContacts } from "../../utils/getAllContacts";
+import { useUser } from "../../contexts/UserProvider";
 
 export const ConversationUserList = () => {
     const { selectedConversation } = useConversations();
     const [conversationUsers, setConversationUsers] = useState(null);
 
+
+    
     useEffect(() => {
         if (selectedConversation)
             setConversationUsers(selectedConversation.users);
