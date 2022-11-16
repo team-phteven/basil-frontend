@@ -3,6 +3,7 @@ import { Modal, Form, Button } from "react-bootstrap";
 import { useConversations } from "../../contexts/ConversationsProvider";
 import { useUser } from "../../contexts/UserProvider";
 import { CheckContactSlab } from "../GlobalComponents/CheckContactSlab";
+import axios from "axios";
 
 export default function NewConversationModal({ closeCreateGroupModal }) {
     const { conversations } = useConversations();
@@ -17,9 +18,28 @@ export default function NewConversationModal({ closeCreateGroupModal }) {
         return result;
     };
 
-    function handleSubmit(e) {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-    }
+        console.log("handle submit hit!!====>");
+        console.log("conversation ids passed in====>  " + selectedUserIds);
+        const config = {
+            headers: {
+                Authorization: `Bearer ${localUser.token}`,
+            },
+        };
+
+        const { data } = await axios
+            .post(
+                `${process.env.REACT_APP_BASE_URL}/api/conversations`,
+                { users: selectedUserIds },
+                config
+            )
+            .catch((error) => {
+                const error_code = JSON.stringify(error.response.data.error);
+                console.log(error_code);
+                return;
+            });
+    };
 
     const getContactInfo = (conversation) => {
         const otherUser = conversation.users.find((user) => {
@@ -60,12 +80,7 @@ export default function NewConversationModal({ closeCreateGroupModal }) {
                                 </>
                             )
                         )}
-                    <Button
-                        type="submit"
-                        onClick={() => console.log(selectedUserIds)}
-                    >
-                        Create
-                    </Button>
+                    <Button type="submit">Create Conversation</Button>
                 </Form>
             </Modal.Body>
         </>

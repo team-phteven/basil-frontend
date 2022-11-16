@@ -58,12 +58,14 @@ export const CheckContactSlab = ({
                         width: "120px",
                     }}
                 >
-                    <Form.Check
-                        value={selectedUserIds.includes(contact._id)}
-                        onChange={() => {
-                            handleCheckboxChange(contact._id);
-                        }}
-                    />
+                    {contact && (
+                        <Form.Check
+                            value={selectedUserIds.includes(contact._id)}
+                            onChange={() => {
+                                handleCheckboxChange(contact._id);
+                            }}
+                        />
+                    )}
                 </Row>
             </Col>
         </Slab>
