@@ -18,28 +18,6 @@ const Profile = () => {
     const [menu, setMenu] = useState("Conversations");
     const { localUser } = useUser();
 
-    const getContacts = async () => {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${localUser.token}`,
-            },
-        };
-
-        const { data } = await axios
-            .get(`${process.env.REACT_APP_BASE_URL}/api/users/get-contacts`, config)
-            .catch((error) => {
-                const error_code = JSON.stringify(error.response.data.error);
-                console.log(error_code);
-                return;
-            });
-
-        console.log(data)
-    };
-
-    useEffect(() => {
-        getContacts()
-    }, [localUser])
-
     return (
         <StyledContainer as="main" className="mx-0 p-0 bg-light" fluid>
             <Row className="h-100 m-0 p-0 d-flex flex-row vh-100">

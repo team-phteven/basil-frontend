@@ -3,16 +3,23 @@ import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Avatar from "./Avatar";
+import { useEffect } from "react";
 
 export const CheckContactSlab = ({
     contact,
+    disabled,
     size = "60px",
     fontSize = "16px",
     handleCheckboxChange,
     selectedUserIds,
 }) => {
+
+    useEffect(() => {
+        console.log("hello")
+    }, [])
+
     return (
-        <Slab>
+        <Slab style={{opacity: disabled ? "0.5" : "1"}}>
             <Col sm={4}>
                 {contact && (
                     <Avatar
@@ -60,6 +67,7 @@ export const CheckContactSlab = ({
                 >
                     {contact && (
                         <Form.Check
+                            disabled={disabled}
                             value={selectedUserIds.includes(contact._id)}
                             onChange={() => {
                                 handleCheckboxChange(contact._id);

@@ -2,18 +2,18 @@ import styled from "styled-components";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Avatar from "../../GlobalComponents/Avatar";
+import GroupAvatar from "../../GlobalComponents/GroupAvatar";
 import { useUser } from "../../../contexts/UserProvider";
 import { useConversations } from "../../../contexts/ConversationsProvider";
 import { useEffect, useState } from "react";
 
-
-export const ConversationSlab = ({ conversation, selected, onClick }) => {
+export const ConversationSlab = ({ conversation, selected }) => {
     const { localUser } = useUser();
 
     const {
         messageNotifications,
         setMessageNotifications,
-        setSelectedConversation
+        setSelectedConversation,
     } = useConversations();
 
     const otherUser = conversation.users.find((user) => {
@@ -42,17 +42,43 @@ export const ConversationSlab = ({ conversation, selected, onClick }) => {
             onClick={selectConversation}
             background={selected ? "rgba(0, 0, 0, 0.1)" : "transparent"}
         >
-            <Col sm={4}>
-                {otherUser && <Avatar url={otherUser.avatar} bgc={"var(--midgrey)"} />}
-            </Col>
-            <Col className="flex-grow-1">
-                <Row>
-                    {otherUser &&
-                        `${otherUser.firstName} ${otherUser.lastName}`}
-                    {notifications > 0 && (
-                        <Notification>{notifications}</Notification>
+            {" "}
+            {conversation?.isGroupConversation ? (
+                <Col sm={4}>
+                    <GroupAvatar
+                        hideStatus
+                        users={conversation.users}
+                        bgc={"var(--midgrey)"}
+                    />
+                </Col>
+            ) : (
+                <Col sm={4}>
+                    {otherUser && (
+                        <Avatar
+                            url={otherUser.avatar}
+                            bgc={"var(--midgrey)"}
+                        />
                     )}
-                </Row>
+                </Col>
+            )}
+            <Col className="flex-grow-1">
+                {conversation?.isGroupConversation ? (
+                    <Row>
+                        {conversation &&
+                            conversation.users.map((user, index) => {
+                                if (user.email === localUser.email) return;
+                                return `${user.firstName}, `;
+                            })}
+                    </Row>
+                ) : (
+                    <Row>
+                        {otherUser &&
+                            `${otherUser.firstName} ${otherUser.lastName}`}
+                        {notifications > 0 && (
+                            <Notification>{notifications}</Notification>
+                        )}
+                    </Row>
+                )}
             </Col>
         </Slab>
     );
@@ -69,7 +95,7 @@ const Notification = styled.div`
     align-items: center;
     border-radius: 50%;
     background: red;
-`
+`;
 
 const Slab = styled(Row)`
     cursor: pointer;

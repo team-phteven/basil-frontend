@@ -11,10 +11,11 @@ export function useConversations() {
 export function ConversationsProvider({ children }) {
     const [conversations, setConversations] = useState([]);
     const [selectedConversation, setSelectedConversation] = useState(null);
-    const [selectedConversationMessages, setSelectedConversationMessages] =
-        useState([]);
+    const [selectedConversationMessages, setSelectedConversationMessages] = useState([]);
     const [otherConversations, setOtherConversations] = useState(null);
     const [messageNotifications, setMessageNotifications] = useState({});
+    const [selectedConversationUsers, setSelectedConversationUsers] = useState(null);
+
 
     const { localUser } = useUser();
 
@@ -56,6 +57,8 @@ export function ConversationsProvider({ children }) {
         );
         // get messages for selected conversation
         if (selectedConversation) getMessages();
+        // get set users from slected conversation;
+        if (selectedConversation) setSelectedConversationUsers(selectedConversation.users)
     }, [selectedConversation]);
 
     // getting messages for the selected conversation
@@ -90,6 +93,7 @@ export function ConversationsProvider({ children }) {
         setOtherConversations,
         messageNotifications,
         setMessageNotifications,
+        selectedConversationUsers
     };
 
     return (

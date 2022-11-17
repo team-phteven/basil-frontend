@@ -3,9 +3,8 @@ import {
     MdOutlineLogout,
     MdSettings,
     MdGroup,
-    // AiOutlineUsergroupAdd,
+    MdGroupAdd
 } from "react-icons/md";
-import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Avatar from "../GlobalComponents/Avatar";
@@ -34,16 +33,10 @@ const UserMenu = ({ menu, setMenu }) => {
         setMenu(menu === "Contacts" ? "Conversations" : "Contacts");
     };
 
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+            const [show, setShow] = useState(false);
+            const handleClose = () => setShow(false);
+            const handleShow = () => setShow(true);
 
-    // logic for create convo modal
-    const [createGroupModalOpen, setCreateGroupModalOpen] = useState(false);
-
-    const closeCreateGroupModal = () => {
-        setCreateGroupModalOpen(false);
-    };
 
     return (
         <UserMenuContainer className="m-0 p-2 d-flex flex-row align-items-center">
@@ -88,13 +81,6 @@ const UserMenu = ({ menu, setMenu }) => {
                     />
                 </Button>
 
-                <Button
-                    className="m-1 p-0 bg-transparent border-0"
-                    onClick={() => setCreateGroupModalOpen(true)}
-                >
-                    <AiOutlineUsergroupAdd size="1.5em" color={"white"} />
-                </Button>
-
                 {/* LOG OUT MODAL */}
                 <Modal show={show} onHide={handleClose} centered>
                     <LogOutModal>
@@ -108,16 +94,6 @@ const UserMenu = ({ menu, setMenu }) => {
                             Log Out
                         </StyledButton>
                     </LogOutModal>
-                </Modal>
-
-                {/* GROUP CHAT MODAL */}
-                <Modal
-                    show={createGroupModalOpen}
-                    onHide={closeCreateGroupModal}
-                >
-                    <CreateGroupModal
-                        closeCreateGroupModal={closeCreateGroupModal}
-                    />
                 </Modal>
             </Col>
         </UserMenuContainer>
