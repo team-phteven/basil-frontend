@@ -36,23 +36,25 @@ const ConversationList = () => {
             >
                 <Stack className="p-0 m-0">
                     {conversations?.map((conversation, index) => (
-                            <ConversationSlab
-                                key={index}
-                                conversation={conversation}
-                                selected={
-                                    conversation._id == selectedConversation?._id
-                                }
-                            />
-                        ))}
+                        <ConversationSlab
+                            key={index}
+                            conversation={conversation}
+                            selected={
+                                conversation._id == selectedConversation?._id
+                            }
+                        />
+                    ))}
                 </Stack>
             </Row>
-            <AddButton onClick={() => setCreateGroupModalOpen(true)}>
-                <MdOutlineChatBubble color="var(--violet)" size="60px"/>
-                <MdGroupAdd
-                    color="var(--lightgrey)"
-                    size="30px"
-                    style={{ marginTop: "10px", position: "fixed" }}
-                />
+            <AddButton as={Row} xs="auto">
+                <ButtonWrap onClick={() => setCreateGroupModalOpen(true)}>
+                    <MdOutlineChatBubble color="var(--violet)" size="60px" />
+                    <MdGroupAdd
+                        color="var(--lightgrey)"
+                        size="30px"
+                        style={{ marginTop: "10px", position: "fixed" }}
+                    />
+                </ButtonWrap>
             </AddButton>
 
             {/* GROUP CHAT MODAL */}
@@ -66,9 +68,15 @@ const ConversationList = () => {
 };
 
 const AddButton = styled.div`
-    position: absolute;
+    pointer-events: none;
+    position: sticky;
     bottom: 10px;
     right: 10px;
+    justify-content: end;
+`;
+
+const ButtonWrap = styled.div`
+pointer-events: auto;
     display: flex;
     justify-content: center;
     align-items: start;
