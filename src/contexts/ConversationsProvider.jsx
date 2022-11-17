@@ -42,24 +42,15 @@ export function ConversationsProvider({ children }) {
         setConversations(data);
     };
 
+    useEffect(() => {
+        getMessages();
+    }, [selectedConversation]) 
     // Selecting conversation
     // TO-DO: CONVERSATION WITH MOST RECENT MESSAGE SHOULD BE SELECTED
-    useEffect(() => {
-        setSelectedConversation(conversations[0]);
-    }, [conversations]);
+    // useEffect(() => {
+    //     setSelectedConversation(conversations[0]);
+    // }, [conversations]);
 
-    // Setting all other conversations to otherConversations
-    useEffect(() => {
-        setOtherConversations(
-            conversations.filter((conversation) => {
-                return conversation._id !== selectedConversation._id;
-            })
-        );
-        // get messages for selected conversation
-        if (selectedConversation) getMessages();
-        // get set users from slected conversation;
-        if (selectedConversation) setSelectedConversationUsers(selectedConversation.users)
-    }, [selectedConversation]);
 
     // getting messages for the selected conversation
     const getMessages = async () => {
@@ -80,6 +71,7 @@ export function ConversationsProvider({ children }) {
                 return;
             });
         setSelectedConversationMessages(data);
+        setSelectedConversationUsers(selectedConversation.users);
     };
 
     const values = {
@@ -93,7 +85,10 @@ export function ConversationsProvider({ children }) {
         setOtherConversations,
         messageNotifications,
         setMessageNotifications,
-        selectedConversationUsers
+        selectedConversationUsers,
+        setSelectedConversationUsers,
+        getConversations,
+        getMessages,
     };
 
     return (

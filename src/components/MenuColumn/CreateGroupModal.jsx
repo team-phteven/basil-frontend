@@ -6,7 +6,7 @@ import { CheckContactSlab } from "../GlobalComponents/CheckContactSlab";
 import axios from "axios";
 
 export default function NewConversationModal({ closeCreateGroupModal }) {
-    const { conversations } = useConversations();
+    const { conversations, getConversations } = useConversations();
     const [selectedUserIds, setSelectedUserIds] = useState([]);
     const { localUser } = useUser();
 
@@ -43,6 +43,8 @@ export default function NewConversationModal({ closeCreateGroupModal }) {
                 console.log(error_code);
                 return;
             });
+
+        getConversations();
         closeCreateGroupModal();
     };
 

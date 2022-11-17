@@ -10,11 +10,7 @@ import { allContacts } from "../../utils/getAllContacts";
 import { useUser } from "../../contexts/UserProvider";
 
 export const ConversationUserList = () => {
-    const { selectedConversation, selectedConversationUsers } = useConversations();
-
-    useEffect(() => {
-        console.log(selectedConversation)
-    }, [selectedConversation])
+    const { selectedConversation, setSelectedConversation, selectedConversationUsers, getConversations } = useConversations();
 
     // invite modal logic
     const [inviteModalOpen, setInviteModalOpen] = useState(false);

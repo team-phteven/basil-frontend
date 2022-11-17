@@ -5,9 +5,12 @@ import Col from "react-bootstrap/Col";
 import { MdCheckCircle, MdRemoveCircle } from "react-icons/md";
 import axios from "axios";
 import { useUser } from "../../../contexts/UserProvider";
+import { useConversations } from "../../../contexts/ConversationsProvider";
 
 const Request = ({ request, localUser }) => {
-    const { setMessageRequests } = useUser();
+    const { setMessageRequests, getContacts } = useUser();
+    const { getConversations } = useConversations();
+
     const handleAccept = async (acceptedId) => {
         const config = {
             headers: {
@@ -27,6 +30,8 @@ const Request = ({ request, localUser }) => {
                 return;
             });
         setMessageRequests(data);
+        getConversations();
+        getContacts()
     };
 
     const handleReject = async (acceptedId) => {

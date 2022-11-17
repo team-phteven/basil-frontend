@@ -7,7 +7,7 @@ import axios from "axios";
 
 export default function InviteModal({ closeCreateGroupModal }) {
     const { localUser, contacts } = useUser();
-    const { conversations, selectedConversation, selectedConversationUsers } =
+    const { conversations, selectedConversation, selectedConversationUsers, getConversations, setSelectedConversationUsers } =
         useConversations();
     const [selectedConversationIds, setSelectedConversationIds] = useState([]);
     const [selectedUserIds, setSelectedUserIds] = useState([]);
@@ -42,7 +42,13 @@ export default function InviteModal({ closeCreateGroupModal }) {
                 console.log(error_code);
                 return;
             });
-
+        //  sets the selected conversation's users so
+        //  new user is instantly added to conversation contact list 
+        setSelectedConversationUsers(data.users)
+        // instantly adds their avatar to the conversation slab
+        // by fetching convos again (while maintaining selected convo)
+        getConversations();
+        // closes modal
         closeCreateGroupModal();
     };
 

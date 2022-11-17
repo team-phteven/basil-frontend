@@ -13,16 +13,9 @@ import axios from "axios";
 import { ContactSlab } from "../../GlobalComponents/ContactSlab";
 
 const Contacts = () => {
-    const { conversations } = useConversations();
-    const { localUser, messageRequests } = useUser();
+    const { localUser, messageRequests, contacts } = useUser();
     const [input, setInput] = useState("");
 
-    const getContactInfo = (conversation) => {
-        const otherUser = conversation.users.find((user) => {
-            return user.email !== localUser.email;
-        });
-        return otherUser;
-    };
 
     const handleClick = async () => {
         console.log("handle input called!-----");
@@ -84,9 +77,8 @@ const Contacts = () => {
             </Row>
             <Row>
                 <h4>Contacts</h4>
-                {conversations &&
-                    conversations.map((conversation, index) => (
-                        <ContactSlab key={index} contact={getContactInfo(conversation)} />
+                {contacts?.map((contact, index) => (
+                        <ContactSlab key={index} contact={contact} />
                     ))}
             </Row>
         </ContactsCol>

@@ -35,13 +35,12 @@ const ConversationList = () => {
                 className="p-0 m-0 flex-grow-1"
             >
                 <Stack className="p-0 m-0">
-                    {selectedConversation &&
-                        conversations.map((conversation, index) => (
+                    {conversations?.map((conversation, index) => (
                             <ConversationSlab
                                 key={index}
                                 conversation={conversation}
                                 selected={
-                                    conversation._id == selectedConversation._id
+                                    conversation._id == selectedConversation?._id
                                 }
                             />
                         ))}
@@ -52,7 +51,7 @@ const ConversationList = () => {
                 <MdGroupAdd
                     color="var(--lightgrey)"
                     size="30px"
-                    style={{ marginTop: "10px", position: "absolute" }}
+                    style={{ marginTop: "10px", position: "fixed" }}
                 />
             </AddButton>
 

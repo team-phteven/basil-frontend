@@ -72,6 +72,7 @@ export function UserProvider({ children, storedUser }) {
         getContacts,
         setContacts,
         contacts,
+        getContacts
     };
 
     return (
