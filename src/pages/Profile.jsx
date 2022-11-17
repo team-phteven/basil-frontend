@@ -16,7 +16,7 @@ import { ConversationUserList } from "../components/ContactsColumn/ConversationU
 import useViewport from '../hooks/useViewport'
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Button from "react-bootstrap/Button";
-import { MdMenu } from 'react-icons/md'
+import { MdMenu, MdGroups } from "react-icons/md";
 import { DesktopConversationsColumn } from "../components/MenuColumn/Conversations/DesktopConversationsColumn";
 import { MobileConversationsColumn } from "../components/MenuColumn/Conversations/MobileCoversationsColumn";
 
@@ -58,8 +58,8 @@ const Profile = () => {
                         show={conversationsShow}
                         onHide={handleConversationsClose}
                     >
-                        <Offcanvas.Header closeButton>
-                            BasilChat
+                        <Offcanvas.Header style={{background: "var(--midgrey)"}} closeButton>
+                            <img src="BasilLogo.svg" width="60px" style={{margin: "0 auto"}}></img>
                         </Offcanvas.Header>
                         <MobileConversationsColumn />
                     </Offcanvas>
@@ -92,12 +92,12 @@ const Profile = () => {
                         style={{
                             position: "absolute",
                             top: "0",
-                            right: "0",
+                            right: "20px",
                             backgroundColor: "transparent",
                             border: "none",
                         }}
                     >
-                        <MdMenu color="var(--darkgrey)" size="50px" />
+                        <MdGroups color="var(--darkgrey)" size="40px" />
                     </Button>
                     <Offcanvas
                         placement="end"
@@ -105,7 +105,7 @@ const Profile = () => {
                         onHide={handleContactsClose}
                     >
                         <Offcanvas.Header closeButton>
-                            BasilChat
+                            Contacts
                         </Offcanvas.Header>
                         <ConversationUserList />
                     </Offcanvas>
