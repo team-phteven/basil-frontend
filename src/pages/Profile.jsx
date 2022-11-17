@@ -25,7 +25,7 @@ const Profile = () => {
                 <ConversationsColumn
                     xs={2}
                     style={{ boxSizing: "border-box", overflow: "hidden" }}
-                    className="p-0 m-0 m-0 p-0 d-flex flex-column vh-100"
+                    className="p-0 m-0 m-0 p-0 d-flex flex-column vh-100 conversationColumn"
                 >
                     <Conversations className="flex-grow-1 m-0 p-0">
                         {menu === "Conversations" && <ConversationList />}
