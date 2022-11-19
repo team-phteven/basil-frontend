@@ -13,6 +13,7 @@ import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 // Icons
 import { MdCheckCircle, MdDelete } from "react-icons/md";
+import { FaDice } from "react-icons/fa";
 
 export const AvatarForm = () => {
     // Local User Context
@@ -179,12 +180,11 @@ export const AvatarForm = () => {
                     />
                 </Col>
                 <Col className="p-0 m-0 d-flex flex-column justify-content-end">
-                    <StyledIcon
-                        className="p-0"
-                        size="30px"
-                        color="white"
-                        onClick={deleteAvatar}
-                    />
+                    {/* if it's a default avatar use dice icon otherwise trashcan */}
+                    {localUser.avatar.match('.svg') ?
+                    <StyledIcon as={FaDice} onClick={deleteAvatar} />
+                    : <StyledIcon as={MdDelete} onClick={deleteAvatar} />
+                    }
                 </Col>
             </Row>
             <Row
@@ -256,7 +256,10 @@ export const AvatarForm = () => {
 };
 
 
-const StyledIcon = styled(MdDelete)`
+const StyledIcon = styled(Button)`
+    width: ${(props) => props.size || "30px"};
+    height: ${(props) => props.size || "30px"};
+    color: ${(props) => props.color || "white"};
     &:hover {
         cursor: pointer;
     }

@@ -8,7 +8,7 @@ export const ContactSlab = ({ contact, size = '60px', fontSize = '16px' }) => {
 
     return (
         <Slab>
-            <Col sm={4}>
+            <Col xs="auto">
                 {contact && (
                     <Avatar
                         url={contact.avatar}
