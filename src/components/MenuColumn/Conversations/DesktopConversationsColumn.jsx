@@ -16,8 +16,8 @@ export const DesktopConversationsColumn = () => {
 
     return (
         <ConversationsColumn
-            xs={2}
-            md={3}
+            xs={4}
+            lg={2}
             style={{
                 boxSizing: "border-box",
                 overflow: "hidden",

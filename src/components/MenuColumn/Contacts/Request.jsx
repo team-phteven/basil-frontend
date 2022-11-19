@@ -8,8 +8,9 @@ import { useUser } from "../../../contexts/UserProvider";
 import { useConversations } from "../../../contexts/ConversationsProvider";
 
 const Request = ({ request, localUser }) => {
-    const { setMessageRequests, getContacts } = useUser();
+    const { setMessageRequests, getMessageRequests, getContacts } = useUser();
     const { getConversations } = useConversations();
+
 
     const handleAccept = async (acceptedId) => {
         const config = {
@@ -34,7 +35,7 @@ const Request = ({ request, localUser }) => {
         getContacts()
     };
 
-    const handleReject = async (acceptedId) => {
+    const handleReject = async (rejectedId) => {
         const config = {
             headers: {
                 Authorization: `Bearer ${localUser.token}`,
@@ -42,9 +43,9 @@ const Request = ({ request, localUser }) => {
         };
 
         const { data } = await axios
-            .post(
-                `${process.env.REACT_APP_BASE_URL}/api/conversations`,
-                { users: [acceptedId] },
+            .put(
+                `${process.env.REACT_APP_BASE_URL}/api/users/decline-request`,
+                { contactId: rejectedId },
                 config
             )
             .catch((error) => {
@@ -52,7 +53,7 @@ const Request = ({ request, localUser }) => {
                 console.log(error_code);
                 return;
             });
-        setMessageRequests(data);
+        getMessageRequests();
     };
 
     return (
@@ -71,37 +72,30 @@ const Request = ({ request, localUser }) => {
                     {request.firstName} {request.lastName}
                 </span>
             </Col>
-            <Col
-                xs="auto"
-                className="mx-3 ms-auto d-flex flex-column justify-content-center"
-            >
-                <Row>
-                    <RejectButton
+            <Col className="">
+                <Row className="d-flex flex-row p-0 m-0 flex-nowrap justify-content-end">
+                    <MdRemoveCircle
+                        as={Col}
+                        color="red"
+                        size="30px"
                         onClick={() => handleReject(request._id)}
-                        className="m-1"
-                    ></RejectButton>
-                    <AcceptButton
+                        className="m-1 p-0"
+                        style={{ width: "inherit", cursor: "pointer" }}
+                    ></MdRemoveCircle>
+                    <MdCheckCircle
+                        as={Col}
+                        color="var(--green)"
+                        size="30px"
                         onClick={() => handleAccept(request._id)}
-                        className="m-1"
-                    ></AcceptButton>
+                        className="m-1 p-0"
+                        style={{ width: "inherit", cursor: "pointer" }}
+                    ></MdCheckCircle>
                 </Row>
             </Col>
         </StyledRow>
     );
 };
 
-const AcceptButton = styled.div`
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: rgb(0, 255, 0);
-`;
-const RejectButton = styled.div`
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: rgb(255, 0, 0);
-`;
 
 const StyledRow = styled(Row)`
     display: flex;

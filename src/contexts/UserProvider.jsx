@@ -69,6 +69,7 @@ export function UserProvider({ children, storedUser }) {
         setLocalUser,
         messageRequests,
         setMessageRequests,
+        getMessageRequests,
         getContacts,
         setContacts,
         contacts,

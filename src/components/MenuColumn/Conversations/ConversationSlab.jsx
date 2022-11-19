@@ -44,7 +44,7 @@ export const ConversationSlab = ({ conversation, selected }) => {
         >
             {" "}
             {conversation?.isGroupConversation ? (
-                <Col sm={4}>
+                <Col xs="auto">
                     <GroupAvatar
                         hideStatus
                         users={conversation.users}
@@ -52,12 +52,9 @@ export const ConversationSlab = ({ conversation, selected }) => {
                     />
                 </Col>
             ) : (
-                <Col sm={4}>
+                <Col xs="auto">
                     {otherUser && (
-                        <Avatar
-                            url={otherUser.avatar}
-                            bgc={"var(--midgrey)"}
-                        />
+                        <Avatar url={otherUser.avatar} bgc={"var(--midgrey)"} />
                     )}
                 </Col>
             )}
