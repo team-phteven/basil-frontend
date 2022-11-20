@@ -44,7 +44,7 @@ export default function TimeModal({ closeModal }) {
                 <Col>
                     {billableSeconds?.map((user, index) => (
                         <Row key={index} className="p-2 mb-4">
-                            <Col className="d-flex flex-column align-items-center">
+                            <Col className="d-flex flex-column align-items-center justify-content-between">
                                 <Title>
                                     {user.firstName} {user.lastName}
                                 </Title>
@@ -54,7 +54,7 @@ export default function TimeModal({ closeModal }) {
                                     size="80px"
                                 />
                             </Col>
-                            <Col className="d-flex flex-column align-items-center">
+                            <Col className="d-flex flex-column align-items-center justify-content-between">
                                 <Title>Minutes</Title>
                                 <TimeGraph
                                     seconds={(+user.seconds / 60).toFixed(2)}
@@ -63,7 +63,7 @@ export default function TimeModal({ closeModal }) {
                                     }%`}
                                 />
                             </Col>
-                            <Col className="d-flex flex-column align-items-center">
+                            <Col className="d-flex flex-column align-items-center justify-content-between">
                                 <Title>Messages</Title>
                                 <TimeGraph
                                     seconds={user.messages}
@@ -90,5 +90,5 @@ const ModalHeader = styled(Modal.Header)`
 
 const Title = styled.h3`
     color: var(--darkgrey);
-    font-size: 18px;
+    font-size: 14px;
 `;

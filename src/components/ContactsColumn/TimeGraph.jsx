@@ -29,6 +29,7 @@ const OuterGraph = styled.div`
     );
     width: 80px;
     height: 80px;
+    border: 1px solid var(--green);
     border-radius: 50%;
     position: relative;
 `;
