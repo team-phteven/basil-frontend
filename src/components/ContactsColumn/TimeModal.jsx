@@ -7,6 +7,7 @@ import Row from "react-bootstrap/Row";
 import Avatar from "../GlobalComponents/Avatar";
 import TimeGraph from "./TimeGraph";
 import styled from "styled-components";
+import { Duration } from "luxon";
 
 export default function TimeModal({ closeModal }) {
     const { selectedConversation, selectedConversationMessages } =
@@ -42,8 +43,11 @@ export default function TimeModal({ closeModal }) {
             </ModalHeader>
             <ModalBody>
                 <Col>
-                    {billableSeconds?.map((user, index) => (
-                        <Row key={index} className="p-2 mb-4">
+                    {billableSeconds?.map((user, index) => {
+                        const millis = Duration.fromMillis(user.seconds * 1000)
+                            .toFormat("m:ss", {floor: true})
+
+                        return <Row key={index} className="p-2 mb-4">
                             <Col className="d-flex flex-column align-items-center justify-content-between">
                                 <Title>
                                     {user.firstName} {user.lastName}
@@ -57,7 +61,7 @@ export default function TimeModal({ closeModal }) {
                             <Col className="d-flex flex-column align-items-center justify-content-between">
                                 <Title>Minutes</Title>
                                 <TimeGraph
-                                    seconds={(+user.seconds / 60).toFixed(2)}
+                                    seconds={millis}
                                     percentage={`${
                                         (user.seconds / timeSum) * 100
                                     }%`}
@@ -73,7 +77,7 @@ export default function TimeModal({ closeModal }) {
                                 />
                             </Col>
                         </Row>
-                    ))}
+                    })}
                 </Col>
             </ModalBody>
         </>
