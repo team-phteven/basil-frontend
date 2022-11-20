@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useUser } from "../../contexts/UserProvider";
 import { useConversations } from "../../contexts/ConversationsProvider";
 import { Modal, Form, Button, Col } from "react-bootstrap";
-import { formatConvoInfo } from "../../utils/formatConvoInfo";
+import formatConvoInfo from "../../utils/formatConvoInfo";
 import Row from "react-bootstrap/Row";
 import Avatar from "../GlobalComponents/Avatar";
 import TimeGraph from "./TimeGraph";
