@@ -13,6 +13,7 @@ import axios from "axios";
 import { ContactSlab } from "../../GlobalComponents/ContactSlab";
 import Button from "react-bootstrap/Button";
 
+
 const Contacts = () => {
     const { localUser, messageRequests, getMessageRequests, contacts } = useUser();
     const [input, setInput] = useState("");
@@ -61,11 +62,15 @@ const Contacts = () => {
         <ContactsCol className="p-2 text-white">
             <h3>Contacts</h3>
 
+
             <Row className="my-4">
                 <Stack as={Col} gap={3}>
                     <Row xs="auto">
-                    <h4>Message Requests</h4>
-                    <StyledIcon as={MdRefresh} onClick={getMessageRequests}/>
+                        <h4>Message Requests</h4>
+                        <StyledIcon
+                            as={MdRefresh}
+                            onClick={getMessageRequests}
+                        />
                     </Row>
                     {messageRequests?.map((request, index) => {
                         return (

@@ -27,8 +27,7 @@ const MessageList = () => {
 
     return (
         <StyledCol>
-
-            {selectedConversationMessages && selectedConversationMessages.map((message, index) => {
+            {selectedConversationMessages?.map((message, index) => {
                 const render = lastMessage && isTrailing(message, lastMessage) ?
                     <TrailingMessage key={index} message={message} /> :
                     <Message key={index} message={message} />;

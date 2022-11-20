@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useUser } from "../../../contexts/UserProvider";
 // Custom Components
 import Avatar from "../../GlobalComponents/Avatar";
+import IconButton from "../../GlobalComponents/IconButton";
 // React BS Components
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
@@ -182,8 +183,8 @@ export const AvatarForm = () => {
                 <Col className="p-0 m-0 d-flex flex-column justify-content-end">
                     {/* if it's a default avatar use dice icon otherwise trashcan */}
                     {localUser.avatar.match('.svg') ?
-                    <StyledIcon as={FaDice} onClick={deleteAvatar} />
-                    : <StyledIcon as={MdDelete} onClick={deleteAvatar} />
+                    <IconButton icon={FaDice} action={deleteAvatar} />
+                    : <IconButton icon={MdDelete} action={deleteAvatar} />
                     }
                 </Col>
             </Row>
@@ -255,12 +256,3 @@ export const AvatarForm = () => {
     );
 };
 
-
-const StyledIcon = styled(Button)`
-    width: ${(props) => props.size || "30px"};
-    height: ${(props) => props.size || "30px"};
-    color: ${(props) => props.color || "white"};
-    &:hover {
-        cursor: pointer;
-    }
-`;
