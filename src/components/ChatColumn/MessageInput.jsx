@@ -12,7 +12,7 @@ const MessageInput = ({ selectedConversation, localUser }) => {
     const [focusedInput, setFocusedInput] = useState("false");
     const [inputMessage, setInputMessage] = useState("");
     const [activeSeconds, setActiveSeconds] = useState(0);
-    const { setSelectedConversationMessages, selectedConversationMessages } =
+    const { getConversations, setSelectedConversation, setSelectedConversationMessages, selectedConversationMessages } =
         useConversations();
 
     const handleClick = (e) => {
@@ -111,7 +111,7 @@ const MessageInput = ({ selectedConversation, localUser }) => {
                 return;
             });
         console.log(data);
-
+        setSelectedConversation({...selectedConversation, billableSeconds: {...data.billableSeconds, [(localUser._id)]: data.billableSeconds[(localUser._id)]}})
         setActiveSeconds(0);
     };
     // logic for time tracking ---- ^^

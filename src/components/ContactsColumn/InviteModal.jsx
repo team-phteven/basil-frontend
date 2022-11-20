@@ -5,7 +5,7 @@ import { useConversations } from "../../contexts/ConversationsProvider";
 import { CheckContactSlab } from "../GlobalComponents/CheckContactSlab";
 import axios from "axios";
 
-export default function InviteModal({ closeCreateGroupModal }) {
+export default function InviteModal({ closeModal }) {
     const { localUser, contacts } = useUser();
     const { conversations, selectedConversation, selectedConversationUsers, getConversations, setSelectedConversationUsers } =
         useConversations();
@@ -49,7 +49,7 @@ export default function InviteModal({ closeCreateGroupModal }) {
         // by fetching convos again (while maintaining selected convo)
         getConversations();
         // closes modal
-        closeCreateGroupModal();
+        closeModal();
     };
 
     const handleCheckboxChange = (userId) => {
