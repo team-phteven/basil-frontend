@@ -1,4 +1,5 @@
-const formatConvoInfo = (users, billableSeconds, messages) => {
+
+export default function formatConvoInfo(users, billableSeconds, messages) {
     let formattedArray = [];
     for (let id in billableSeconds) {
         users.forEach((user) => {
@@ -10,25 +11,21 @@ const formatConvoInfo = (users, billableSeconds, messages) => {
                     lastName: user.lastName,
                     avatar: user.avatar,
                     seconds: billableSeconds[id],
-                    messages: 0
+                    messages: 0,
                 });
             }
         });
     }
 
     formattedArray = formattedArray.map((user) => {
-        let newUser = {...user};
+        let newUser = { ...user };
         messages.forEach((message) => {
             if (message.sender._id == user._id) {
-                newUser = {...newUser, messages: (newUser.messages + 1)};
+                newUser = { ...newUser, messages: newUser.messages + 1 };
             }
-        })
-        return newUser
+        });
+        return newUser;
     });
 
     return formattedArray;
-};
-
-module.exports = {
-    formatConvoInfo,
 };
