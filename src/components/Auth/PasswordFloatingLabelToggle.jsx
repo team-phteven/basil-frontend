@@ -1,10 +1,12 @@
-import React from "react";
+// Packages
+import { useState } from "react";
+// BS Components
 import InputGroup from "react-bootstrap/InputGroup";
 import Form from "react-bootstrap/Form";
-import { useState } from "react";
+// Icons
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
-// REMEMBER TO USE THIS INSIDE <Form.Group> WITH CONTROLLED INPUT
+// USE THIS COMPONENT INSIDE <Form.Group> WITH CONTROLLED INPUT
 
 const PasswordFloatingLabelToggle = (props) => {
 

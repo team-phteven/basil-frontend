@@ -3,7 +3,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Avatar from "./Avatar";
 
-export const ContactSlab = ({ contact, size = '60px', fontSize = '16px' }) => {
+const ContactSlab = ({ contact, size = '60px', fontSize = '16px' }) => {
 
 
     return (
@@ -58,3 +58,5 @@ const Slab = styled(Row)`
         background: rgba(0,0,0,0.1);
     }
 `;
+
+export default ContactSlab;

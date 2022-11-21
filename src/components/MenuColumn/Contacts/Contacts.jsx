@@ -10,7 +10,7 @@ import { useUser } from "../../../contexts/UserProvider";
 import Request from "./Request";
 import Stack from "react-bootstrap/Stack";
 import axios from "axios";
-import { ContactSlab } from "../../GlobalComponents/ContactSlab";
+import ContactSlab from "../../GlobalComponents/ContactSlab";
 import Button from "react-bootstrap/Button";
 
 

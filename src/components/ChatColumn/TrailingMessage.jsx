@@ -20,8 +20,6 @@ const TrailingMessage = ({ message }) => {
     );
 };
 
-
-
 const MessageContent = styled(Col)`
     box-sizing: border-box;
     overflow: hidden;
