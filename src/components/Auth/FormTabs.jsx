@@ -1,3 +1,5 @@
+// Packages
+import styled from "styled-components"
 // Custom components
 import LogInForm from "./LogInForm";
 import SignUpForm from "./SignUpForm";
@@ -8,25 +10,33 @@ import Tabs from "react-bootstrap/Tabs";
 
 const FormTabs = () => {
     return (
-        <Col md={6} className="my-5 mx-auto p-0">
-            <Tabs defaultActiveKey="signIn" className="border-0 rounded-0" fill>
+        <TabContainer md={6}>
+            <TabControl defaultActiveKey="signIn" fill>
                 <Tab
                     eventKey="signIn"
                     title="Sign In"
-                    className="border border-top-0 p-0 m-0 mt-4 border-0"
                 >
                     <LogInForm />
                 </Tab>
                 <Tab
                     eventKey="signUp"
                     title="Sign Up"
-                    className="border border-top-0 p-0 border-0"
                 >
                     <SignUpForm />
                 </Tab>
-            </Tabs>
-        </Col>
+            </TabControl>
+        </TabContainer>
     );
 };
 
 export default FormTabs;
+
+const TabContainer = styled(Col)`
+    margin: 20px auto;
+    padding: 0;
+`
+const TabControl = styled(Tabs)`
+    border: none;
+    padding: 0;
+    margin: 0;
+`
