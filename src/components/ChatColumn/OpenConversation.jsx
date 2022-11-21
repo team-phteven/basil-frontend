@@ -1,66 +1,56 @@
-import React, { useState, useEffect, useRef } from "react";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import MessageInput from "./MessageInput";
+// Packages
+import styled from "styled-components";
+// Contexts
 import { useConversations } from "../../contexts/ConversationsProvider";
 import { useUser } from "../../contexts/UserProvider";
+// Custom Components
+import MessageInput from "./MessageInput";
 import MessageList from "./MessageList";
-import styled from "styled-components";
+// BS Components
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 
 const OpenConversation = () => {
+    // import contexts 
     const { localUser } = useUser();
-
-    const { selectedConversation, activeSeconds, setActiveSeconds } =
-        useConversations();
-
-    // logic for time tracking ---- vv
-
-    useEffect(() => {
-        return () => clearInterval(id.current);
-    }, []);
-
-    let id = useRef();
-
-    function handleTime() {
-        id.current = setInterval(() => {
-            setActiveSeconds((prev) => prev + 1);
-            console.log(activeSeconds);
-        }, 1000);
-    }
-    // logic for time tracking ---- ^^
+    const { selectedConversation } = useConversations();
 
     return (
-        <Row className="m-0 p-0">
-            <StyledCol className="vh-100 d-flex flex-column">
-                <StyledRow className="m-0 flex-grow-1">
+        <ConversationContainer>
+            <ConversationColumn>
+                <MessageListRow>
                     <MessageList />
-                </StyledRow>
-                <MessageInputRow className="m-0">
-                    <MessageInput
-                        selectedConversation={selectedConversation}
-                        localUser={localUser}
-                        onFocus={() => console.log("focused!!")}
-                        onBlur={() => console.log("blurred!")}
-                    />
+                </MessageListRow>
+                <MessageInputRow>
+                    <MessageInput/>
                 </MessageInputRow>
-            </StyledCol>
-        </Row>
+            </ConversationColumn>
+        </ConversationContainer>
     );
 };
 
-const StyledRow = styled(Row)`
+const MessageListRow = styled(Row)`
     flex-direction: column-reverse;
     overflow-y: scroll;
     width: 100%;
     margin: 0;
+    flex-grow: 1;
 `;
 
-const StyledCol = styled(Col)`
-    padding: 0px 5px 0px 0px;
+const ConversationContainer = styled(Row)`
+    margin: 0;
+    padding: 0;
+`
+
+const ConversationColumn = styled(Col)`
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 `;
 
 const MessageInputRow = styled(Row)`
-    padding: 0 0 10px 10px;
+    margin: 0;
+    padding-bottom: 20px;
 `;
 
 export default OpenConversation;

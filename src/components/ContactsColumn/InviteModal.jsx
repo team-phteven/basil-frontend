@@ -1,33 +1,52 @@
-import React, { useEffect, useState } from "react";
-import { useUser } from "../../contexts/UserProvider";
-import { Modal, Form, Button } from "react-bootstrap";
-import { useConversations } from "../../contexts/ConversationsProvider";
-import { CheckContactSlab } from "../GlobalComponents/CheckContactSlab";
+// Packages
+import { useEffect, useState } from "react";
 import axios from "axios";
+// Contexts
+import { useUser } from "../../contexts/UserProvider";
+import { useConversations } from "../../contexts/ConversationsProvider";
+// Custom Components
+import CheckContactSlab from "../GlobalComponents/CheckContactSlab";
+// BS Components
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
 
 export default function InviteModal({ closeModal }) {
+    // destructure user provider
     const { localUser, contacts } = useUser();
-    const { conversations, selectedConversation, selectedConversationUsers, getConversations, setSelectedConversationUsers } =
+    // destructure conversations provider
+    const { selectedConversation, 
+        selectedConversationUsers, 
+        getConversations, 
+        setSelectedConversationUsers } =
         useConversations();
+    
+    // state for users already in selected conversation
     const [selectedConversationIds, setSelectedConversationIds] = useState([]);
+    // state for selected users in menu
     const [selectedUserIds, setSelectedUserIds] = useState([]);
 
+    // set user ids of current conversation whenever conversation changes
     useEffect(() => {
         const ids = selectedConversationUsers.map((user) => user._id);
         setSelectedConversationIds(ids);
     }, [selectedConversation]);
 
+    // submit new users to conversation
     const handleSubmit = async (e) => {
+        // prevent page from refresh
         e.preventDefault();
+        // return if no selected ids
         if (selectedUserIds.length == 0) {
             return;
         }
-
+        // add JWT
         const config = {
             headers: {
                 Authorization: `Bearer ${localUser.token}`,
             },
         };
+        // make axios put request with users to add to conversation
         const { data } = await axios
             .put(
                 `${process.env.REACT_APP_BASE_URL}/api/conversations/add-users`,
@@ -52,6 +71,7 @@ export default function InviteModal({ closeModal }) {
         closeModal();
     };
 
+    // handles the selection and deselection of checkboxes
     const handleCheckboxChange = (userId) => {
         setSelectedUserIds((prevSelectedUserIds) => {
             if (prevSelectedUserIds.includes(userId)) {
@@ -66,7 +86,9 @@ export default function InviteModal({ closeModal }) {
 
     return (
         <>
-            <Modal.Header closeButton>Add Contacts to Group</Modal.Header>
+            <Modal.Header closeButton>
+                <h2>Invite to Conversation</h2>
+            </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
                     {contacts &&

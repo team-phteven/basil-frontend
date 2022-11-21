@@ -1,26 +1,25 @@
+// Packages
 import styled from "styled-components";
+import { useEffect } from "react";
+// Custom Components
+import Avatar from "./Avatar";
+// BS Components
+import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
-import Col from "react-bootstrap/Col";
-import Avatar from "./Avatar";
-import { useEffect } from "react";
 
-export const CheckContactSlab = ({
+const CheckContactSlab = ({
     contact,
     disabled,
     size = "60px",
-    fontSize = "16px",
     handleCheckboxChange,
     selectedUserIds,
 }) => {
 
-    useEffect(() => {
-        console.log("hello")
-    }, [])
-
     return (
-        <Slab style={{opacity: disabled ? "0.5" : "1"}}>
-            <Col sm={4}>
+        // dim opacity if user is disabled (already in chat)
+        <Slab disabled={disabled}>
+            <AvatarCol>
                 {contact && (
                     <Avatar
                         url={contact.avatar}
@@ -28,59 +27,47 @@ export const CheckContactSlab = ({
                         bgc={"var(--midgrey)"}
                     />
                 )}
-            </Col>
-            <Col className="flex-grow-1 ms-2 flex-nowrap">
-                <Row
-                    className=""
-                    style={{
-                        fontSize,
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        width: "120px",
-                    }}
-                >
-                    <span
-                        style={{
-                            fontSize,
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            margin: "0px",
-                            padding: "0px",
+            </AvatarCol>
+            <NameCol>
+                <span as={Row}>
+                    {contact?.firstName} {contact?.lastName}
+                </span>
+            </NameCol>
+            <CheckCol>
+                    <Form.Check
+                        disabled={disabled}
+                        value={selectedUserIds.includes(contact?._id)}
+                        onChange={() => {
+                            handleCheckboxChange(contact?._id);
                         }}
-                    >
-                        {contact && `${contact.firstName} ${contact.lastName}`}
-                    </span>
-                </Row>
-            </Col>
-            <Col className="flex-grow-1 ms-2 flex-nowrap">
-                <Row
-                    className=""
-                    style={{
-                        fontSize,
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        width: "120px",
-                    }}
-                >
-                    {contact && (
-                        <Form.Check
-                            disabled={disabled}
-                            value={selectedUserIds.includes(contact._id)}
-                            onChange={() => {
-                                handleCheckboxChange(contact._id);
-                            }}
-                        />
-                    )}
-                </Row>
-            </Col>
+                    />
+            </CheckCol>
         </Slab>
     );
 };
 
+export default CheckContactSlab
+
+const AvatarCol = styled(Col)`
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+`
+
+const NameCol = styled(Col)`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
+
+const CheckCol = styled(Col)`
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+`;
+
 const Slab = styled(Row)`
+    opacity: ${(props) => props.disabled ? "0.5" : "1"};
     cursor: pointer;
     background: ${(props) => props.background};
     display: flex;

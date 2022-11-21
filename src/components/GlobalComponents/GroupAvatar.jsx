@@ -1,20 +1,24 @@
-import { useEffect, useState } from "react";
-import { Popover } from "bootstrap";
+// Packages
+import { useState } from "react";
 import styled from "styled-components";
-import { IoEllipsisHorizontalCircleSharp } from "react-icons/io";
+// Contexts
 import { useUser } from "../../contexts/UserProvider"; 
 
-const GroupAvatar = ({users, bgc, size}) => {
+const GroupAvatar = ({users, size}) => {
     
+    // set spacer state
     const [spacer, setSpacer] = useState(5);
+    // destructure user provider
     const { localUser } = useUser();
     
+    // filter local user out of users array
     const otherUsers = users.filter((user) => {
         return user.email !== localUser.email
     })
 
     return (
         <AvatarWrapper
+            // increase spacer when hovered
             onMouseEnter={() => {
                 setSpacer(20);
             }}
@@ -23,12 +27,16 @@ const GroupAvatar = ({users, bgc, size}) => {
             }}
             size={size}
         >
+            {/* take first three users and map */}
             {otherUsers.slice(0, 3).map((user, index) => {
                 return (
+                    // make each pic (index*spacer)px to the right and down
                     <ProfilePic
+                        key={index}
                         url={`url(${user.avatar})`}
                         pos={`${index * spacer}px`}
                     >
+                        {/* on the third pic, if there are more, render "x more" */}
                         {index === 2 && otherUsers.length > 3 && (
                             <PlusMore
                                 size={spacer > 5 ? "12px" : "0px"}

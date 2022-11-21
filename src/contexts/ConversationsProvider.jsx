@@ -54,10 +54,11 @@ export function ConversationsProvider({ children }) {
 
     // getting messages for the selected conversation
     const getMessages = async () => {
+        if (localUser) {
         const config = {
             method: "GET",
             headers: {
-                Authorization: `Bearer ${localUser.token}`,
+                Authorization: `Bearer ${localUser?.token}`,
             },
         };
         const { data } = await axios
@@ -72,6 +73,7 @@ export function ConversationsProvider({ children }) {
             });
         setSelectedConversationMessages(data);
         setSelectedConversationUsers(selectedConversation.users);
+        }
     };
 
     const values = {

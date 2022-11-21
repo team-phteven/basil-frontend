@@ -1,11 +1,11 @@
-import React from 'react'
+// Packages
 import styled from 'styled-components'
+// BS Components
 import Button from 'react-bootstrap/Button'
 
 const IconButton = ({icon, action, size="30px", color="white"}) => {
   return <StyledIcon as={icon} onClick={action} size={size} color={color}/>;
 }
-
 
 const StyledIcon = styled(Button)`
     margin: 0;

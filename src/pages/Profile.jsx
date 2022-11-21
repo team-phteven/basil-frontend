@@ -7,7 +7,6 @@ import OpenConversation from "../components/ChatColumn/OpenConversation";
 import { useEffect, useState } from "react";
 import Contacts from "../components/MenuColumn/Contacts/Contacts";
 import Timer from "../components/RightColumn/Timer";
-import ConvoInfo from "../components/ChatColumn/ConvoInfo";
 import Settings from "../components/MenuColumn/Settings/Settings";
 import styled from "styled-components";
 import UserMenu from "../components/MenuColumn/UserMenu";
@@ -26,9 +25,6 @@ const Profile = () => {
     const conversationsBreakpoint = 1300;
     const contactsBreakpoint = 1600;
     
-    useEffect(() => {
-        console.log(width)
-    }, [width])
 
      const [conversationsShow, setConversationsShow] = useState(false);
      const handleConversationsClose = () => setConversationsShow(false);

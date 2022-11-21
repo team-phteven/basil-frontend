@@ -1,19 +1,22 @@
-import React, { useState, useEffect, useInsertionEffect } from "react";
+// Packages
+import { useState, useEffect } from "react";
+import styled from "styled-components";
+import axios from "axios";
+// Contexts
 import { useConversations } from "../../contexts/ConversationsProvider";
+import { useUser } from "../../contexts/UserProvider";
+// Custom Components
+import ContactSlab from "../GlobalComponents/ContactSlab";
+import TimeModal from "./TimeModal";
+import InviteModal from "./InviteModal";
+import IconButton from "../GlobalComponents/IconButton";
+// BS Components
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { ContactSlab } from "../GlobalComponents/ContactSlab";
-import InviteModal from "./InviteModal";
-import TimeModal from "./TimeModal";
-import { allContacts } from "../../utils/getAllContacts";
-import { useUser } from "../../contexts/UserProvider";
-import IconButton from "../GlobalComponents/IconButton";
-import styled from "styled-components";
 import Form from "react-bootstrap/Form";
-import axios from "axios";
-
+// Icons
 import {
     MdTimelapse,
     MdMeetingRoom,
@@ -22,16 +25,22 @@ import {
 } from "react-icons/md";
 
 export const ConversationUserList = () => {
+    // destructure conversation provider
     const {
         selectedConversation,
         setSelectedConversation,
         selectedConversationUsers,
         getConversations,
     } = useConversations();
+    // destructure user provider
+    const { localUser } = useUser();
 
+    // state for edit mode of group name
     const [editMode, setEditMode] = useState(false);
+    // state of group name
     const [groupName, setGroupName] = useState("");
 
+    // set group name when a conversation is selected
     useEffect(() => {
         if (selectedConversation?.groupName) {
             setGroupName(selectedConversation.groupName);
@@ -40,85 +49,87 @@ export const ConversationUserList = () => {
         }
     }, [selectedConversation]);
 
+    // handle group name change when in edit mode
     const handleChange = (e) => {
         setGroupName(e.target.value);
     };
 
-    const { localUser } = useUser();
-
-    // invite modal logic
+    // invite modal open state
     const [inviteModalOpen, setInviteModalOpen] = useState(false);
+    // close invite modal
     const closeInviteModal = () => {
         setInviteModalOpen(false);
     };
 
-    // time modal logic
+    // time modal open state
     const [timeModalOpen, setTimeModalOpen] = useState(false);
+    // close time modal
     const closeTimeModal = () => {
         setTimeModalOpen(false);
     };
 
+    // submit an edited group name
     const submitEdit = async (e) => {
         e.preventDefault();
-
+        // add JWT 
         const config = {
             headers: {
                 Authorization: `Bearer ${localUser.token}`,
             },
         };
-
-        const { data } = await axios
-            .put(
+        // make axios request to API
+        const { data } = await axios.put(
                 `${process.env.REACT_APP_BASE_URL}/api/conversations/rename`,
                 {
                     conversationId: selectedConversation._id,
                     groupName: groupName,
                 },
                 config
-            )
-            .catch((error) => {
+            ).catch((error) => {
                 const error_code = JSON.stringify(error.response.data.error);
                 console.log(error_code);
                 return;
             });
-
+        // get all conversation again to update name in all locations
         getConversations();
+        // turn edit mode to false
         setEditMode(false);
     };
 
+    // handle leaving group
     const leaveGroup = async () => {
+        // add JWT
         const config = {
             headers: {
                 Authorization: `Bearer ${localUser.token}`,
             },
         };
-
-        const { data } = await axios
-            .put(
+        // make axios request to API
+        const { data } = await axios.put(
                 `${process.env.REACT_APP_BASE_URL}/api/conversations/remove`,
                 {
                     conversationId: selectedConversation._id,
                 },
                 config
-            )
-            .catch((error) => {
+            ).catch((error) => {
                 const error_code = JSON.stringify(error.response.data.error);
                 console.log(error_code);
                 return;
             });
-
+        // refetch conversations
         getConversations();
+        // unselect conversation
         setSelectedConversation(null);
     };
 
     return (
-        <Col style={{ backgroundColor: "var(--midgrey)" }}>
+        <UserListCol>
+            {/* form for group name in edit mode */}
             {editMode ? (
-                <Form onSubmit={submitEdit}>
-                    <Form.Group className="p-0 mb-4 mt-4">
+                <GroupNameForm onSubmit={submitEdit}>
+                    <FormGroup>
                         <Form.FloatingLabel label="Group Name">
-                            <Form.Control
-                                className="border-0"
+                            <FormControl
                                 id="name"
                                 type="text"
                                 value={groupName}
@@ -127,19 +138,21 @@ export const ConversationUserList = () => {
                                 required
                             />
                         </Form.FloatingLabel>
-                    </Form.Group>
-                    <Button
+                    </FormGroup>
+                    <Col
+                        as={Button}
+                        xs={12}
+                        md={6}
                         variant="primary"
                         type="submit"
-                        className="w-100 text-white"
                     >
                         Submit
-                    </Button>
-                </Form>
+                    </Col>
+                </GroupNameForm>
             ) : (
-                <h2 className="m-2">{groupName}</h2>
+                <h2>{groupName}</h2>
             )}
-            <Row className="m-0 p-2 gap-2 d-flex flex-row justify-content-start">
+            <Menu>
                 <IconButton
                     action={() => setTimeModalOpen(true)}
                     icon={MdTimelapse}
@@ -172,11 +185,17 @@ export const ConversationUserList = () => {
                     />
                 )}
                 {selectedConversation?.isGroupConversation && (
-                    <IconButton icon={MdMeetingRoom} color="var(--darkgrey)" action={() => {leaveGroup()}}/>
+                    <IconButton
+                        icon={MdMeetingRoom}
+                        color="var(--darkgrey)"
+                        action={() => {
+                            leaveGroup();
+                        }}
+                    />
                 )}
-            </Row>
-            <Row className="m-0 p-0">
-                <Col className="p-0 m-0">
+            </Menu>
+            <UserRow>
+                <UserCol>
                     {selectedConversationUsers &&
                         selectedConversationUsers.map((user, index) => (
                             <ContactSlab
@@ -186,8 +205,46 @@ export const ConversationUserList = () => {
                                 fontSize="14px"
                             />
                         ))}
-                </Col>
-            </Row>
-        </Col>
+                </UserCol>
+            </UserRow>
+        </UserListCol>
     );
 };
+
+const UserRow = styled(Row)`
+    margin: 0;
+    padding: 0;
+`
+
+const UserCol = styled(Col)`
+    margin: 0;
+    padding: 0;
+`;
+
+const Menu = styled(Row)`
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    justify-content: space-around;
+`
+
+const GroupNameForm = styled(Form)`
+    margin: 20px 0;
+`
+
+const FormControl = styled(Form.Control)`
+    border: none;
+    margin: 0;
+    padding: 0;
+`
+const FormGroup = styled(Form.Group)`
+    padding: 0;
+    margin: 20px 0;
+`
+
+const UserListCol = styled(Col)`
+    background-color: var(--midgrey);
+    padding: 10px;
+    margin: 0;
+`;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import { useConversations } from "../../contexts/ConversationsProvider";
 import { useUser } from "../../contexts/UserProvider";
-import { CheckContactSlab } from "../GlobalComponents/CheckContactSlab";
+import CheckContactSlab from "../GlobalComponents/CheckContactSlab";
 import axios from "axios";
 import styled from "styled-components";
 
@@ -81,7 +81,6 @@ export default function NewConversationModal({ closeCreateGroupModal }) {
                     {conversations &&
                         getDirectConversations(conversations).map(
                             (conversation, index) => (
-                                <>
                                     <CheckContactSlab
                                         key={index}
                                         contact={getContactInfo(conversation)}
@@ -90,7 +89,6 @@ export default function NewConversationModal({ closeCreateGroupModal }) {
                                         }
                                         selectedUserIds={selectedUserIds}
                                     />
-                                </>
                             )
                         )}
                     <Form.Group className="p-0 mb-4 mt-4">

@@ -1,14 +1,6 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const TimeGraph = ({ seconds, percentage }) => {
-    // const [value, setValue] = useState("0%");
-
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         setValue(percentage)
-    //     }, 1000)
-    // }, [])
 
     return (
         <OuterGraph value={percentage} color="var(--violet)">

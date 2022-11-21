@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import styled from "styled-components";
 // custom components
 import PasswordFloatingLabelToggle from "./PasswordFloatingLabelToggle";
 import Avatar from "../GlobalComponents/Avatar";
@@ -33,6 +34,7 @@ function SignUpForm() {
     const handleSubmit = async (e) => {
         // prevent page refresh
         e.preventDefault();
+        // start loading state
         setLoading(true);
         // check for empty fields
         if (
@@ -43,70 +45,89 @@ function SignUpForm() {
             !confirmPassword
         ) {
             console.log("missing field!");
+            // end loading state
             setLoading(false);
             return;
         }
         // check passwords match
         if (password !== confirmPassword) {
             console.log("passwords do not match!");
+            // end loading state
             setLoading(false);
             return;
         }
-        try {
-            // create new user
-            const { data } = await axios.post(
-                `${process.env.REACT_APP_BASE_URL}/api/users/sign-up`,
-                { firstName, lastName, email, password, avatar }
-            );
-            // store new user in local storage
-            localStorage.setItem("storedUser", JSON.stringify(data));
-            localStorage.setItem(
-                "welcomeBack",
-                JSON.stringify({ email: email, name: data.name })
-            );
-            setLoading(false);
-            // refresh page
-            navigate(0);
-        } catch (error) {
-            console.log("error: " + error.message);
-            setLoading(false);
-        }
+        // create new user
+        const { data } = await axios
+            .post(`${process.env.REACT_APP_BASE_URL}/api/users/sign-up`, {
+                firstName,
+                lastName,
+                email,
+                password,
+                avatar,
+            })
+            .catch((error) => {
+                console.log("error: " + error.message);
+                setLoading(false);
+            });
+        // store new user in local storage
+        localStorage.setItem("storedUser", JSON.stringify(data));
+        // store welcome back data in local storage
+        localStorage.setItem(
+            "welcomeBack",
+            JSON.stringify({ email: email, name: data.name })
+        );
+        // set loading state
+        setLoading(false);
+        // refresh page
+        navigate(0);
     };
 
-    const handleFile = (file) => {
+    // handle the file upload to Cloudinary
+    const handleFile = async (file) => {
+        // start loading state
         setLoading(true);
+        // check for missing file
         if (file === undefined) {
             console.log("file upload failed");
         }
+        // if file type excepted make upload
         if (["image/jpeg", "image/png", "image/jpeg"].includes(file.type)) {
-            const data = new FormData();
-            data.append("file", file);
-          data.append("upload_preset", process.env.REACT_APP_CLOUDINARY_PRESET);
-          data.append("cloud_name", process.env.REACT_APP_CLOUDINARY_NAME);
-            fetch(
-                `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_NAME}/image/upload`,
-                {
-                    method: "post",
-                    body: data,
-                }
-            )
-                .then((res) => res.json())
-                .then((data) => {
-                    setFormFields({
-                        ...formFields,
-                        avatar: data.url.toString(),
-                    });
-                    setLoading(false);
-                })
-                .catch((err) => {
-                    console.log(err);
+            // create a new FormData instance (XMLHttpRequest Standard)
+            // this format is required for Cloudinary upload API
+            const body = new FormData();
+            // add file to form data
+            body.append("file", file);
+            // add cloud preset to form data
+            body.append(
+                "upload_preset",
+                process.env.REACT_APP_CLOUDINARY_PRESET
+            );
+            // add cloud name to form data
+            body.append("cloud_name", process.env.REACT_APP_CLOUDINARY_NAME);
+            // make post request
+            
+                const config = {
+                    headers: { "Content-Type": "multipart/form-data" },
+                };
+                const data = await axios.post(
+                    `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_NAME}/image/upload`,
+                    body,
+                    config
+                ).catch((error) => {
+                    console.log(error);
                     setLoading(false);
                 });
+
+                // set the uploaded images url to form field
+                setFormFields({ ...formFields, avatar: data.data.url });
+                // end loading state
+                setLoading(false); 
         } else {
             console.log("Wrong file format");
         }
     };
 
+    // handle input changes
     const handleInput = (e) => {
         const keyString = e.target.id;
         // remove the 'up' and 'in' prefix from email and password id's
@@ -116,13 +137,13 @@ function SignUpForm() {
     };
 
     return (
-        <Row className="p-3">
-            <Col as={Form} onSubmit={handleSubmit}>
-                <Row className="mt-4">
-                    <Form.Group
+        <FormContainer>
+            <FormCol as={Form} onSubmit={handleSubmit}>
+                <FormRow>
+                    <FormGroup
                         as={Col}
                         md={6}
-                        className="p-0 pe-xs-0 pe-md-2 mb-4"
+                        className="pe-xs-0 pe-md-2"
                         onChange={handleInput}
                         value={formFields.firstName}
                     >
@@ -133,11 +154,11 @@ function SignUpForm() {
                                 placeholder="First Name"
                             />
                         </Form.FloatingLabel>
-                    </Form.Group>
-                    <Form.Group
+                    </FormGroup>
+                    <FormGroup
                         as={Col}
                         md={6}
-                        className="p-0 ps-xs-0 ps-md-2 mb-4"
+                        className="ps-xs-0 ps-md-2"
                         onChange={handleInput}
                         value={formFields.lastName}
                     >
@@ -148,12 +169,11 @@ function SignUpForm() {
                                 placeholder="Last Name"
                             />
                         </Form.FloatingLabel>
-                    </Form.Group>
-                </Row>
-                <Row>
-                    <Form.Group
+                    </FormGroup>
+                </FormRow>
+                <FormRow>
+                    <FormGroup
                         as={Col}
-                        className="p-0 mb-4"
                         onChange={handleInput}
                         value={formFields.email}
                     >
@@ -164,27 +184,27 @@ function SignUpForm() {
                                 placeholder="Email"
                             />
                         </Form.FloatingLabel>
-                    </Form.Group>
-                </Row>
-                <Row>
-                    <Form.Group as={Col} className="p-0 mb-4">
+                    </FormGroup>
+                </FormRow>
+                <FormRow>
+                    <FormGroup as={Col}>
                         <PasswordFloatingLabelToggle
                             uniqueId="up-password"
                             handleChange={handleInput}
                             value={formFields.password}
                         />
-                    </Form.Group>
-                </Row>
-                <Row>
-                    <Form.Group as={Col} className="p-0 mb-4">
+                    </FormGroup>
+                </FormRow>
+                <FormRow>
+                    <FormGroup as={Col}>
                         <PasswordFloatingLabelToggle
                             uniqueId="confirmPassword"
                             handleChange={handleInput}
                             value={formFields.confirmPassword}
                         />
-                    </Form.Group>
-                </Row>
-                <Row>
+                    </FormGroup>
+                </FormRow>
+                <FormRow>
                     <Col xs="auto">
                         <Avatar
                             url={formFields.avatar || "avatar2.svg"}
@@ -193,9 +213,8 @@ function SignUpForm() {
                         />
                     </Col>
                     <Col>
-                        <Form.Group
+                        <FormGroup
                             as={Col}
-                            className="p-0 mb-5"
                             onChange={(e) => handleFile(e.target.files[0])}
                         >
                             <Form.Label>Avatar (optional)</Form.Label>
@@ -204,24 +223,53 @@ function SignUpForm() {
                                 type="file"
                                 accept="image/*"
                             />
-                        </Form.Group>
+                        </FormGroup>
                     </Col>
-                </Row>
-                <Row className="w-0">
-                    <Col md={6} className="p-0">
-                        <Button
-                            variant="primary"
-                            type="submit"
-                            className="w-100 text-white"
-                            disabled={loading ? true : false}
-                        >
-                            Submit
-                        </Button>
+                </FormRow>
+                <FormRow>
+                    <Col
+                        as={Button}
+                        xs={12}
+                        md={6}
+                        variant="primary"
+                        className="mt-4"
+                        type="submit"
+                        disabled={loading ? true : false}
+                    >
+                        Submit
                     </Col>
-                </Row>
-            </Col>
-        </Row>
+                </FormRow>
+            </FormCol>
+        </FormContainer>
     );
 }
 
 export default SignUpForm;
+
+const FormContainer = styled(Row)`
+    padding: 0;
+    margin: 20px 0px;
+`;
+
+const FormRow = styled(Row)`
+    padding: 0;
+    margin: 0px 0px 0px 0px;
+`;
+
+const FormCol = styled(Col)`
+    padding: 0;
+    margin: 0;
+`;
+
+const FormGroup = styled(Form.Group)`
+    padding: 0;
+    margin: 0px 0px 20px 0px;
+`;
+
+const WelcomeMessage = styled.span`
+    font-size: var(--fs-display);
+    color: var(--lightgrey);
+    text-align: center;
+    margin: 0 0 20px 0;
+    padding: 0;
+`;
