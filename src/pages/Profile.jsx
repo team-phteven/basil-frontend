@@ -7,7 +7,6 @@ import OpenConversation from "../components/ChatColumn/OpenConversation";
 import { useEffect, useState } from "react";
 import Contacts from "../components/MenuColumn/Contacts/Contacts";
 import Timer from "../components/RightColumn/Timer";
-import ConvoInfo from "../components/ChatColumn/ConvoInfo";
 import Settings from "../components/MenuColumn/Settings/Settings";
 import styled from "styled-components";
 import UserMenu from "../components/MenuColumn/UserMenu";

@@ -1,30 +1,30 @@
-import { useEffect } from "react";
+// Packages
 import { DateTime } from "luxon";
 import styled from "styled-components";
+// Custom Components
 import Avatar from "../GlobalComponents/Avatar";
+// BS Components
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 
 const Message = ({ message }) => {
 
+    // create an instance of DateTime for message createdAt
     const date = DateTime.fromISO(message.createdAt);
     
     return (
         <MessageContainer>
-            <Col
+            <AvatarCol
                 xs="auto"
-                style={{ overflowWrap: "break-word" }}
-                className="m-0 d-flex flex-column m-0 p-0"
             >
                 <Avatar
                     url={message.sender.avatar}
                     bgc={"#f8f9fa"}
-                    className="m-0 p-0"
                     size="50px"
                     hideStatus={true}
                 />
-            </Col>
-            <MessageContent className="d-flex flex-column m-0 flex-grow-1">
+            </AvatarCol>
+            <MessageContent>
                 <Row>
                     <MessageHeader>
                         {message.sender.firstName} {message.sender.lastName}{" "}
@@ -42,11 +42,17 @@ const Message = ({ message }) => {
     );
 };
 
+const AvatarCol = styled(Col)`
+    padding: 0;
+`
+
 const MessageHeader = styled.p`
     margin-bottom: 0px;
+    overflow-wrap: break-word;
 `;
 
 const MessageContent = styled(Col)`
+    margin: 0;
     box-sizing: border-box;
     overflow: hidden;
     padding: 0px 10px;
@@ -65,14 +71,8 @@ const TimeStamp = styled.span`
 `;
 
 const MessageContainer = styled(Row)`
-    width: 100%
-    box-sizing: border-box;
     overflow: hidden;
-    display: flex;
     padding: 20px 10px 0px 10px;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    overflow-wrap: break-word;
     &:hover{
         background: rgba(0,0,0,0.1);
     }
