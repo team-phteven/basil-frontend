@@ -1,24 +1,38 @@
+// Packages
 import styled from "styled-components";
-import Avatar from "../../GlobalComponents/Avatar";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import { MdCheckCircle, MdRemoveCircle } from "react-icons/md";
 import axios from "axios";
+// Contexts
 import { useUser } from "../../../contexts/UserProvider";
 import { useConversations } from "../../../contexts/ConversationsProvider";
+// Custom Components
+import Avatar from "../../GlobalComponents/Avatar";
+import IconButton from "../../GlobalComponents/IconButton";
+// BS Components
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+// Icons
+import { MdCheckCircle, MdRemoveCircle } from "react-icons/md";
 
 const Request = ({ request, localUser }) => {
-    const { setMessageRequests, getMessageRequests, getContacts } = useUser();
+    // destructure user provider
+    const { 
+        setMessageRequests, 
+        getMessageRequests, 
+        getContacts 
+    } = useUser();
+
+    // destructure conversation provider
     const { getConversations } = useConversations();
 
-
+    // handle clicking accept request
     const handleAccept = async (acceptedId) => {
+        // add JWT
         const config = {
             headers: {
                 Authorization: `Bearer ${localUser.token}`,
             },
         };
-
+        // make axios request to API
         const { data } = await axios
             .post(
                 `${process.env.REACT_APP_BASE_URL}/api/conversations`,
@@ -30,18 +44,22 @@ const Request = ({ request, localUser }) => {
                 console.log(error_code);
                 return;
             });
+        // set returned data as message requests
         setMessageRequests(data);
+        // refetch conversations and contacts
         getConversations();
         getContacts()
     };
 
+    // handle clicking reject request
     const handleReject = async (rejectedId) => {
+        // add JWT
         const config = {
             headers: {
                 Authorization: `Bearer ${localUser.token}`,
             },
         };
-
+        // make axios put request to API
         const { data } = await axios
             .put(
                 `${process.env.REACT_APP_BASE_URL}/api/users/decline-request`,
@@ -53,49 +71,64 @@ const Request = ({ request, localUser }) => {
                 console.log(error_code);
                 return;
             });
+        // refetch message requests
         getMessageRequests();
     };
 
     return (
         <StyledRow>
-            <Col
-                xs="auto"
-                className="d-flex flex-column justify-content-center"
-            >
+            <StyledCol xs="auto">
                 <Avatar url={request.avatar} size="3rem" bgc="black" />
-            </Col>
-            <Col
-                xs="auto"
-                className="d-flex flex-column justify-content-center"
-            >
+            </StyledCol>
+            <StyledCol xs="auto">
                 <span>
                     {request.firstName} {request.lastName}
                 </span>
-            </Col>
-            <Col className="">
-                <Row className="d-flex flex-row p-0 m-0 flex-nowrap justify-content-end">
-                    <MdRemoveCircle
+            </StyledCol>
+            <ButtonCol>
+                <ButtonRow>
+                    <IconButton
                         as={Col}
+                        icon={MdRemoveCircle}
                         color="red"
                         size="30px"
-                        onClick={() => handleReject(request._id)}
-                        className="m-1 p-0"
-                        style={{ width: "inherit", cursor: "pointer" }}
-                    ></MdRemoveCircle>
-                    <MdCheckCircle
+                        action={() => handleReject(request._id)}
+                    ></IconButton>
+                    <IconButton
                         as={Col}
+                        icon={MdCheckCircle}
                         color="var(--green)"
                         size="30px"
-                        onClick={() => handleAccept(request._id)}
-                        className="m-1 p-0"
-                        style={{ width: "inherit", cursor: "pointer" }}
-                    ></MdCheckCircle>
-                </Row>
-            </Col>
+                        action={() => handleAccept(request._id)}
+                    ></IconButton>
+                </ButtonRow>
+            </ButtonCol>
         </StyledRow>
     );
 };
 
+const ButtonCol = styled(Col)`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+`
+
+const ButtonRow = styled(Row)`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: end;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    gap: 5px;
+`
+
+const StyledCol = styled(Col)`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+`
 
 const StyledRow = styled(Row)`
     display: flex;
