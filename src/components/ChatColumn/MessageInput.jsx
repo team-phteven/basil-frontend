@@ -11,6 +11,7 @@ import { useConversations } from "../../contexts/ConversationsProvider";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
+import Spinner from "react-bootstrap/Spinner";
 
 const MessageInput = () => {
 
@@ -184,8 +185,14 @@ const MessageInput = () => {
                         placeholder="message..."
                     />
                 </InputGroup>
-                <SendButton disabled={loading} onClick={handleClick} type="submit">
-                    Send
+                <SendButton
+                    disabled={loading}
+                    onClick={handleClick}
+                    type="submit"
+                >
+                    {loading ?
+                    <Spinner animation="border" size="sm"/> :
+                    <span>Send</span>}
                 </SendButton>
             </InputWrapper>
         </Form>
