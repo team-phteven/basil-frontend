@@ -1,31 +1,42 @@
-import React, { useEffect, useState } from "react";
-import { useUser } from "../../contexts/UserProvider";
-import { useConversations } from "../../contexts/ConversationsProvider";
-import { Modal, Form, Button, Col } from "react-bootstrap";
-import formatConvoInfo from "../../utils/formatConvoInfo";
-import Row from "react-bootstrap/Row";
-import Avatar from "../GlobalComponents/Avatar";
-import TimeGraph from "./TimeGraph";
+// Packages
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Duration } from "luxon";
+// Contexts
+import { useUser } from "../../contexts/UserProvider";
+import { useConversations } from "../../contexts/ConversationsProvider";
+// Custom Components
+import Avatar from "../GlobalComponents/Avatar";
+import TimeGraph from "./TimeGraph";
+import formatConvoInfo from "../../utils/formatConvoInfo";
+//  BS Components
+import Col from "react-bootstrap/Col";
+import Modal from "react-bootstrap/Modal";
+import Row from "react-bootstrap/Row";
 
-export default function TimeModal({ closeModal }) {
+const TimeModal = () => {
+    // destructure conversation provider
     const { selectedConversation, selectedConversationMessages } =
         useConversations();
+
+    // state for billable seconds
     const [billableSeconds, setBillableSeconds] = useState();
 
+    // sum of all current billable seconds
     const timeSum = billableSeconds?.reduce((prev, curr) => {
         const seconds = curr.seconds;
         return prev + seconds;
     }, 0);
 
+    // sum of all current messages
     const messagesSum = billableSeconds?.reduce((prev, curr) => {
         const messages = curr.messages;
         return prev + messages;
     }, 0);
 
+    // set billable seconds when conversation changes or messages are loaded
     useEffect(() => {
-        if (selectedConversation) {
+        selectedConversation &&
             setBillableSeconds(
                 formatConvoInfo(
                     selectedConversation.users,
@@ -33,7 +44,6 @@ export default function TimeModal({ closeModal }) {
                     selectedConversationMessages
                 )
             );
-        }
     }, [selectedConversation, selectedConversationMessages]);
 
     return (
@@ -44,39 +54,43 @@ export default function TimeModal({ closeModal }) {
             <ModalBody>
                 <Col>
                     {billableSeconds?.map((user, index) => {
-                        const millis = Duration.fromMillis(user.seconds * 1000)
-                            .toFormat("m:ss", {floor: true})
+                        // convert seconds > milliseconds > m:ss format
+                        const millis = Duration.fromMillis(
+                            user.seconds * 1000
+                        ).toFormat("m:ss", { floor: true });
 
-                        return <Row key={index} className="p-2 mb-4">
-                            <Col className="d-flex flex-column align-items-center justify-content-between">
-                                <Title>
-                                    {user.firstName} {user.lastName}
-                                </Title>
-                                <Avatar
-                                    hideStatus
-                                    url={user.avatar}
-                                    size="80px"
-                                />
-                            </Col>
-                            <Col className="d-flex flex-column align-items-center justify-content-between">
-                                <Title>Minutes</Title>
-                                <TimeGraph
-                                    seconds={millis}
-                                    percentage={`${
-                                        (user.seconds / timeSum) * 100
-                                    }%`}
-                                />
-                            </Col>
-                            <Col className="d-flex flex-column align-items-center justify-content-between">
-                                <Title>Messages</Title>
-                                <TimeGraph
-                                    seconds={user.messages}
-                                    percentage={`${
-                                        (user.messages / messagesSum) * 100
-                                    }%`}
-                                />
-                            </Col>
-                        </Row>
+                        return (
+                            <StatRow key={index}>
+                                <StatCol>
+                                    <Title>
+                                        {user.firstName} {user.lastName}
+                                    </Title>
+                                    <Avatar
+                                        hideStatus
+                                        url={user.avatar}
+                                        size="80px"
+                                    />
+                                </StatCol>
+                                <StatCol>
+                                    <Title>Minutes</Title>
+                                    <TimeGraph
+                                        seconds={millis}
+                                        percentage={`${
+                                            (user.seconds / timeSum) * 100
+                                        }%`}
+                                    />
+                                </StatCol>
+                                <StatCol>
+                                    <Title>Messages</Title>
+                                    <TimeGraph
+                                        seconds={user.messages}
+                                        percentage={`${
+                                            (user.messages / messagesSum) * 100
+                                        }%`}
+                                    />
+                                </StatCol>
+                            </StatRow>
+                        );
                     })}
                 </Col>
             </ModalBody>
@@ -84,15 +98,28 @@ export default function TimeModal({ closeModal }) {
     );
 }
 
+export default TimeModal;
+
+const StatRow = styled(Row)`
+    margin: 40px 0;
+`
+
+const StatCol = styled(Col)`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: between;
+`
+
 const ModalBody = styled(Modal.Body)`
     background-color: var(--lightgrey);
-`;
+`
 
 const ModalHeader = styled(Modal.Header)`
     background-color: var(--lightgrey);
-`;
+`
 
 const Title = styled.h3`
     color: var(--darkgrey);
     font-size: 14px;
-`;
+`

@@ -5,7 +5,7 @@ import Col from "react-bootstrap/Col";
 import Avatar from "./Avatar";
 import { useEffect } from "react";
 
-export const CheckContactSlab = ({
+const CheckContactSlab = ({
     contact,
     disabled,
     size = "60px",
@@ -79,6 +79,8 @@ export const CheckContactSlab = ({
         </Slab>
     );
 };
+
+export default ContactSlab
 
 const Slab = styled(Row)`
     cursor: pointer;

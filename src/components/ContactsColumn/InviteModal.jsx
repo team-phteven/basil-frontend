@@ -5,7 +5,7 @@ import axios from "axios";
 import { useUser } from "../../contexts/UserProvider";
 import { useConversations } from "../../contexts/ConversationsProvider";
 // Custom Components
-import { CheckContactSlab } from "../GlobalComponents/CheckContactSlab";
+import CheckContactSlab from "../GlobalComponents/CheckContactSlab";
 // BS Components
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
