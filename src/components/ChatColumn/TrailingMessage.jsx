@@ -1,15 +1,17 @@
-import { useEffect } from "react";
+// Packages
 import { DateTime } from "luxon";
 import styled from "styled-components";
+// BS Components
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 
 const TrailingMessage = ({ message }) => {
+    // date of message created
     const date = DateTime.fromISO(message.createdAt);
 
     return (
         <MessageContainer>
-            <MessageContent className="d-flex flex-column m-0 flex-grow-1">
+            <MessageContent>
                 <Row>
                     <MessageBody>{message.content}</MessageBody>
                 </Row>
@@ -23,7 +25,7 @@ const TrailingMessage = ({ message }) => {
 const MessageContent = styled(Col)`
     box-sizing: border-box;
     overflow: hidden;
-    padding: 0px 0px 0px 70px;
+    padding: 0px 10px 0px 70px;
 `;
 
 const MessageBody = styled.p`
