@@ -4,6 +4,7 @@ import axios from "axios";
 import styled from "styled-components";
 import autosize from "autosize";
 // Contexts
+import { useUser } from '../../contexts/UserProvider';
 import { useSocket } from "../../contexts/SocketProvider";
 import { useConversations } from "../../contexts/ConversationsProvider";
 // BS Components
@@ -11,13 +12,15 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 
-const MessageInput = ({ selectedConversation, localUser }) => {
+const MessageInput = () => {
 
     // get socket from socket provider
     const socket = useSocket();
-
+    // deconstructed user context
+    const { localUser } = useUser();
     // destructured from conversations context
     const {
+        selectedConversation,
         setSelectedConversation,
         setSelectedConversationMessages,
         selectedConversationMessages,
@@ -27,6 +30,11 @@ const MessageInput = ({ selectedConversation, localUser }) => {
     const [inputMessage, setInputMessage] = useState("");
     // loading state for message input
     const [loading, setLoading] = useState(false);
+
+    // clear the input when a different conversation selected
+    useEffect(() => {
+        setInputMessage("")
+    }, [selectedConversation])
 
     // handle the change of input message
     const handleChange = (e) => {

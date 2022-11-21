@@ -1,6 +1,4 @@
 // Packages
-import { useEffect } from "react";
-import { DateTime } from "luxon";
 import styled from "styled-components";
 // Contexts
 import { useConversations } from "../../contexts/ConversationsProvider";
@@ -8,7 +6,6 @@ import { useConversations } from "../../contexts/ConversationsProvider";
 import Message from "./Message";
 import TrailingMessage from "./TrailingMessage";
 // BS Components
-import Stack from "react-bootstrap/Stack";
 import Col from "react-bootstrap/Col";
 
 const MessageList = () => {
