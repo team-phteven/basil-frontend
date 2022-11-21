@@ -62,11 +62,7 @@ export const ConversationSlab = ({ conversation, selected }) => {
             <Col className="flex-grow-1">
                 {conversation?.isGroupConversation ? (
                     <Row>
-                        {conversation &&
-                            conversation.users.map((user, index) => {
-                                if (user.email === localUser.email) return;
-                                return `${user.firstName}, `;
-                            })}
+                        {conversation.groupName}
                     </Row>
                 ) : (
                     <Row>

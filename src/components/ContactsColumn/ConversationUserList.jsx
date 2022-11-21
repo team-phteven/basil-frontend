@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useInsertionEffect } from "react";
 import { useConversations } from "../../contexts/ConversationsProvider";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -11,6 +11,8 @@ import { allContacts } from "../../utils/getAllContacts";
 import { useUser } from "../../contexts/UserProvider";
 import IconButton from "../GlobalComponents/IconButton";
 import styled from "styled-components";
+import Form from "react-bootstrap/Form";
+import axios from "axios";
 
 import {
     MdTimelapse,
@@ -27,6 +29,23 @@ export const ConversationUserList = () => {
         getConversations,
     } = useConversations();
 
+    const [editMode, setEditMode] = useState(false);
+    const [groupName, setGroupName] = useState("");
+
+    useEffect(() => {
+        if (selectedConversation?.groupName) {
+            setGroupName(selectedConversation.groupName);
+        } else {
+            setGroupName(" ");
+        }
+    }, [selectedConversation]);
+
+    const handleChange = (e) => {
+        setGroupName(e.target.value);
+    };
+
+    const { localUser } = useUser();
+
     // invite modal logic
     const [inviteModalOpen, setInviteModalOpen] = useState(false);
     const closeInviteModal = () => {
@@ -39,8 +58,87 @@ export const ConversationUserList = () => {
         setTimeModalOpen(false);
     };
 
+    const submitEdit = async (e) => {
+        e.preventDefault();
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${localUser.token}`,
+            },
+        };
+
+        const { data } = await axios
+            .put(
+                `${process.env.REACT_APP_BASE_URL}/api/conversations/rename`,
+                {
+                    conversationId: selectedConversation._id,
+                    groupName: groupName,
+                },
+                config
+            )
+            .catch((error) => {
+                const error_code = JSON.stringify(error.response.data.error);
+                console.log(error_code);
+                return;
+            });
+
+        getConversations();
+        setEditMode(false);
+    };
+
+    const leaveGroup = async () => {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${localUser.token}`,
+            },
+        };
+
+        const { data } = await axios
+            .put(
+                `${process.env.REACT_APP_BASE_URL}/api/conversations/remove`,
+                {
+                    conversationId: selectedConversation._id,
+                },
+                config
+            )
+            .catch((error) => {
+                const error_code = JSON.stringify(error.response.data.error);
+                console.log(error_code);
+                return;
+            });
+
+        getConversations();
+        setSelectedConversation(null);
+    };
+
     return (
         <Col style={{ backgroundColor: "var(--midgrey)" }}>
+            {editMode ? (
+                <Form onSubmit={submitEdit}>
+                    <Form.Group className="p-0 mb-4 mt-4">
+                        <Form.FloatingLabel label="Group Name">
+                            <Form.Control
+                                className="border-0"
+                                id="name"
+                                type="text"
+                                value={groupName}
+                                onChange={handleChange}
+                                placeholder="Group Name"
+                                required
+                            />
+                        </Form.FloatingLabel>
+                    </Form.Group>
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        className="w-100 text-white"
+                    >
+                        Submit
+                    </Button>
+                </Form>
+            ) : (
+                <h2 className="m-2">{groupName}</h2>
+            )}
             <Row className="m-0 p-2 gap-2 d-flex flex-row justify-content-start">
                 <IconButton
                     action={() => setTimeModalOpen(true)}
@@ -53,19 +151,28 @@ export const ConversationUserList = () => {
                 </Modal>
 
                 {selectedConversation?.isGroupConversation && (
+                    <>
+                        <IconButton
+                            icon={MdPersonAdd}
+                            action={() => {
+                                setInviteModalOpen(true);
+                            }}
+                            color="var(--darkgrey)"
+                        />
+                        <Modal show={inviteModalOpen} onHide={closeInviteModal}>
+                            <InviteModal closeModal={closeInviteModal} />
+                        </Modal>
+                    </>
+                )}
+                {selectedConversation?.isGroupConversation && (
                     <IconButton
-                        icon={MdPersonAdd}
-                        action={() => {
-                            setInviteModalOpen(true);
-                        }}
+                        action={() => setEditMode(true)}
+                        icon={MdModeEdit}
                         color="var(--darkgrey)"
                     />
                 )}
                 {selectedConversation?.isGroupConversation && (
-                    <IconButton icon={MdModeEdit} color="var(--darkgrey)" />
-                )}
-                {selectedConversation?.isGroupConversation && (
-                    <IconButton icon={MdMeetingRoom} color="var(--darkgrey)" />
+                    <IconButton icon={MdMeetingRoom} color="var(--darkgrey)" action={() => {leaveGroup()}}/>
                 )}
             </Row>
             <Row className="m-0 p-0">
@@ -80,23 +187,6 @@ export const ConversationUserList = () => {
                             />
                         ))}
                 </Col>
-            </Row>
-            <Row className="m-0 p-0">
-                {selectedConversation?.isGroupConversation && (
-                    <Col xs="auto" className="m-2 p-0">
-                        <Button
-                            onClick={() => {
-                                setInviteModalOpen(true);
-                            }}
-                        >
-                            Invite Contacts
-                        </Button>
-
-                        <Modal show={inviteModalOpen} onHide={closeInviteModal}>
-                            <InviteModal closeModal={closeInviteModal} />
-                        </Modal>
-                    </Col>
-                )}
             </Row>
         </Col>
     );

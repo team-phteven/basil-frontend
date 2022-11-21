@@ -4,11 +4,13 @@ import { useConversations } from "../../contexts/ConversationsProvider";
 import { useUser } from "../../contexts/UserProvider";
 import { CheckContactSlab } from "../GlobalComponents/CheckContactSlab";
 import axios from "axios";
+import styled from "styled-components";
 
 export default function NewConversationModal({ closeCreateGroupModal }) {
     const { conversations, getConversations } = useConversations();
     const [selectedUserIds, setSelectedUserIds] = useState([]);
     const { localUser } = useUser();
+    const [input, setInput] = useState('');
 
     // filter out group conversations
     const getDirectConversations = (conversations) => {
@@ -35,7 +37,7 @@ export default function NewConversationModal({ closeCreateGroupModal }) {
         const { data } = await axios
             .post(
                 `${process.env.REACT_APP_BASE_URL}/api/conversations`,
-                { users: selectedUserIds },
+                { users: selectedUserIds, groupName: input },
                 config
             )
             .catch((error) => {
@@ -67,10 +69,14 @@ export default function NewConversationModal({ closeCreateGroupModal }) {
         });
     };
 
+    const handleInput = (e) => {
+        setInput(e.target.value);
+    };
+
     return (
         <>
-            <Modal.Header closeButton>Create Group Conversation</Modal.Header>
-            <Modal.Body>
+            <ModalHeader closeButton>Create Group Conversation</ModalHeader>
+            <ModalBody>
                 <Form onSubmit={handleSubmit}>
                     {conversations &&
                         getDirectConversations(conversations).map(
@@ -87,11 +93,32 @@ export default function NewConversationModal({ closeCreateGroupModal }) {
                                 </>
                             )
                         )}
+                    <Form.Group className="p-0 mb-4 mt-4">
+                        <Form.FloatingLabel label="Group Name">
+                            <Form.Control
+                                className="border-0"
+                                id="name"
+                                type="text"
+                                value={input}
+                                onChange={handleInput}
+                                placeholder="Group Name"
+                                required
+                            />
+                        </Form.FloatingLabel>
+                    </Form.Group>
                     <Button disabled={selectedUserIds.length < 2} type="submit">
                         Create Conversation
                     </Button>
                 </Form>
-            </Modal.Body>
+            </ModalBody>
         </>
     );
 }
+
+const ModalBody = styled(Modal.Body)`
+    background-color: var(--lightgrey);
+`
+
+const ModalHeader = styled(Modal.Header)`
+    background-color: var(--lightgrey);
+`;
