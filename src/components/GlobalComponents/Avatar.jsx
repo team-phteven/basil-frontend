@@ -1,4 +1,3 @@
-import { Popover } from "bootstrap";
 import styled from "styled-components"
 
 const Avatar = ({ url, bgc, size, hideStatus = false }) => {
