@@ -1,32 +1,42 @@
-import React, { useEffect } from "react";
-import Stack from "react-bootstrap/Stack";
-import Message from "./Message";
-import Col from "react-bootstrap/Col";
-import styled from "styled-components";
-import { useConversations } from "../../contexts/ConversationsProvider";
-import TrailingMessage from "./TrailingMessage";
+// Packages
+import { useEffect } from "react";
 import { DateTime } from "luxon";
-
+import styled from "styled-components";
+// Contexts
+import { useConversations } from "../../contexts/ConversationsProvider";
+// Custom Components
+import Message from "./Message";
+import TrailingMessage from "./TrailingMessage";
+// BS Components
+import Stack from "react-bootstrap/Stack";
+import Col from "react-bootstrap/Col";
 
 const MessageList = () => {
+
+    // imports from conversations provider
     const {
         selectedConversationMessages,
     } = useConversations();
 
-    let lastMessage = selectedConversationMessages[1];
-
+    // compare a message with the one that came before it:
     const isTrailing = (message, lastMessage) => {
         let trailing = true;
+        // not trailing if message senders don't match
         if (message.sender._id !== lastMessage.sender._id) trailing = false;
+        // not trailing if last message was more than 60 seconds ago
         var x = new Date(message.createdAt);
         var y = new Date(lastMessage.createdAt);
         let seconds = Math.abs(x.getTime() - y.getTime()) / 1000;
         if (seconds > 60) trailing = false;
         return trailing;
     }
-
+    // define the first 'last message' to be compared
+    // since the map will start at [0], the first 'lastMessage' is at [1]
+    let lastMessage = selectedConversationMessages[1];
+    
     return (
-        <StyledCol>
+        <MessageCol>
+            {/* map through messages and return either trailing or regular message */}
             {selectedConversationMessages?.map((message, index) => {
                 const render = lastMessage && isTrailing(message, lastMessage) ?
                     <TrailingMessage key={index} message={message} /> :
@@ -34,9 +44,10 @@ const MessageList = () => {
                 lastMessage = selectedConversationMessages[index + 2];
                 return render;
             })}
-            <Line></Line>
+            {/* Marks the start of conversation */}
+            <Line />
             <Starter>Start of Conversation</Starter>
-        </StyledCol>
+        </MessageCol>
     );
 };
 
@@ -51,7 +62,7 @@ const Starter = styled.p`
     margin: 10px 0px 0px 0px;
 `
 
-const StyledCol = styled(Col)`
+const MessageCol = styled(Col)`
     display: flex;
     flex-direction: column-reverse;
     flex-wrap: reverse-wrap;
