@@ -81,7 +81,6 @@ export default function NewConversationModal({ closeCreateGroupModal }) {
                     {conversations &&
                         getDirectConversations(conversations).map(
                             (conversation, index) => (
-                                <>
                                     <CheckContactSlab
                                         key={index}
                                         contact={getContactInfo(conversation)}
@@ -90,7 +89,6 @@ export default function NewConversationModal({ closeCreateGroupModal }) {
                                         }
                                         selectedUserIds={selectedUserIds}
                                     />
-                                </>
                             )
                         )}
                     <Form.Group className="p-0 mb-4 mt-4">

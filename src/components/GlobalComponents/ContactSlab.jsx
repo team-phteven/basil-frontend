@@ -1,7 +1,10 @@
+// Packages
 import styled from "styled-components";
+// Custom Components
+import Avatar from "./Avatar";
+// BS Components
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Avatar from "./Avatar";
 
 const ContactSlab = ({ contact, size = "60px", fontSize = "16px" }) => {
     return (

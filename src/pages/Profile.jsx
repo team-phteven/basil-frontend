@@ -25,9 +25,6 @@ const Profile = () => {
     const conversationsBreakpoint = 1300;
     const contactsBreakpoint = 1600;
     
-    useEffect(() => {
-        console.log(width)
-    }, [width])
 
      const [conversationsShow, setConversationsShow] = useState(false);
      const handleConversationsClose = () => setConversationsShow(false);
