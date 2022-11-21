@@ -54,36 +54,31 @@ function LogInForm() {
         e.preventDefault();
         // start loading state
         setLoading(true);
-        // try catch block for axios request
-        try {
-            // create new user session
-            const { data } = await axios
-                .post(`${process.env.REACT_APP_BASE_URL}/api/users/log-in`, {
-                    email,
-                    password,
-                })
-                .catch((error) => {
-                    const error_code = JSON.stringify(
-                        error.response.data.error
-                    );
-                    console.log(error_code);
-                    setLoading(false);
-                    return;
-                });
-            // store new user session in local storage
-            localStorage.setItem("storedUser", JSON.stringify(data));
-            // store new welcome back data in local storage
-            localStorage.setItem(
-                "welcomeBack",
-                JSON.stringify({ email: email, name: data.name })
-            );
-            // end loading state
-            setLoading(false);
-            // refresh page
-            navigate(0);
-        } catch (error) {
-            setLoading(false);
-        }
+        // create new user session
+        const { data } = await axios
+            .post(`${process.env.REACT_APP_BASE_URL}/api/users/log-in`, {
+                email,
+                password,
+            })
+            .catch((error) => {
+                const error_code = JSON.stringify(
+                    error.response.data.error
+                );
+                console.log(error_code);
+                setLoading(false);
+                return;
+            });
+        // store new user session in local storage
+        localStorage.setItem("storedUser", JSON.stringify(data));
+        // store new welcome back data in local storage
+        localStorage.setItem(
+            "welcomeBack",
+            JSON.stringify({ email: email, name: data.name })
+        );
+        // end loading state
+        setLoading(false);
+        // refresh page
+        navigate(0);
     };
 
     // controlled inputs for form

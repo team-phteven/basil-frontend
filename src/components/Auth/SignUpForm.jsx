@@ -56,27 +56,30 @@ function SignUpForm() {
             setLoading(false);
             return;
         }
-        try {
-            // create new user
-            const { data } = await axios.post(
-                `${process.env.REACT_APP_BASE_URL}/api/users/sign-up`,
-                { firstName, lastName, email, password, avatar }
-            );
-            // store new user in local storage
-            localStorage.setItem("storedUser", JSON.stringify(data));
-            // store welcome back data in local storage
-            localStorage.setItem(
-                "welcomeBack",
-                JSON.stringify({ email: email, name: data.name })
-            );
-            // set loading state
-            setLoading(false);
-            // refresh page
-            navigate(0);
-        } catch (error) {
-            console.log("error: " + error.message);
-            setLoading(false);
-        }
+        // create new user
+        const { data } = await axios
+            .post(`${process.env.REACT_APP_BASE_URL}/api/users/sign-up`, {
+                firstName,
+                lastName,
+                email,
+                password,
+                avatar,
+            })
+            .catch((error) => {
+                console.log("error: " + error.message);
+                setLoading(false);
+            });
+        // store new user in local storage
+        localStorage.setItem("storedUser", JSON.stringify(data));
+        // store welcome back data in local storage
+        localStorage.setItem(
+            "welcomeBack",
+            JSON.stringify({ email: email, name: data.name })
+        );
+        // set loading state
+        setLoading(false);
+        // refresh page
+        navigate(0);
     };
 
     // handle the file upload to Cloudinary
@@ -87,7 +90,7 @@ function SignUpForm() {
         if (file === undefined) {
             console.log("file upload failed");
         }
-        // if file type excepted make upload 
+        // if file type excepted make upload
         if (["image/jpeg", "image/png", "image/jpeg"].includes(file.type)) {
             // create a new FormData instance (XMLHttpRequest Standard)
             // this format is required for Cloudinary upload API
@@ -95,11 +98,14 @@ function SignUpForm() {
             // add file to form data
             body.append("file", file);
             // add cloud preset to form data
-            body.append("upload_preset", process.env.REACT_APP_CLOUDINARY_PRESET);
+            body.append(
+                "upload_preset",
+                process.env.REACT_APP_CLOUDINARY_PRESET
+            );
             // add cloud name to form data
             body.append("cloud_name", process.env.REACT_APP_CLOUDINARY_NAME);
             // make post request
-            try {
+            
                 const config = {
                     headers: { "Content-Type": "multipart/form-data" },
                 };
@@ -107,16 +113,15 @@ function SignUpForm() {
                     `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_NAME}/image/upload`,
                     body,
                     config
-                );
-                // set the uploaded images url to form field
-                setFormFields({...formFields, avatar: data.data.url})
-                // end loading state
-                setLoading(false);
-            } catch (error) {
+                ).catch((error) => {
                     console.log(error);
                     setLoading(false);
-            };
+                });
 
+                // set the uploaded images url to form field
+                setFormFields({ ...formFields, avatar: data.data.url });
+                // end loading state
+                setLoading(false); 
         } else {
             console.log("Wrong file format");
         }
@@ -246,16 +251,15 @@ const FormContainer = styled(Row)`
     margin: 20px 0px;
 `;
 
-
 const FormRow = styled(Row)`
- padding: 0;
- margin: 0px 0px 0px 0px;
-`
+    padding: 0;
+    margin: 0px 0px 0px 0px;
+`;
 
 const FormCol = styled(Col)`
     padding: 0;
     margin: 0;
-`
+`;
 
 const FormGroup = styled(Form.Group)`
     padding: 0;
