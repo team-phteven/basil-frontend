@@ -3,9 +3,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Avatar from "./Avatar";
 
-const ContactSlab = ({ contact, size = '60px', fontSize = '16px' }) => {
-
-
+const ContactSlab = ({ contact, size = "60px", fontSize = "16px" }) => {
     return (
         <Slab>
             <Col xs="auto">
@@ -17,34 +15,28 @@ const ContactSlab = ({ contact, size = '60px', fontSize = '16px' }) => {
                     />
                 )}
             </Col>
-            <Col className="flex-grow-1 ms-2 flex-nowrap">
-                <Row
-                    className=""
-                    style={{
-                        fontSize,
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        width: "120px",
-                    }}
-                >
-                    <span
-                        style={{
-                            fontSize,
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            margin: "0px",
-                            padding: "0px"
-                        }}
-                    >
-                        {contact && `${contact.firstName} ${contact.lastName}`}
-                    </span>
-                </Row>
-            </Col>
+            <NameCol>
+                <NameRow as="span" fontSize={fontSize}>
+                    {contact && `${contact.firstName} ${contact.lastName}`}
+                </NameRow>
+            </NameCol>
         </Slab>
     );
 };
+
+const NameCol = styled(Col)`
+    padding: 10px;
+    margin: 0;
+`;
+
+const NameRow = styled(Row)`
+    font-size: ${(props) => props.fontSize};
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+`;
 
 const Slab = styled(Row)`
     cursor: pointer;
@@ -55,7 +47,7 @@ const Slab = styled(Row)`
     flex-direction: row;
     align-items: center;
     &:hover {
-        background: rgba(0,0,0,0.1);
+        background: rgba(0, 0, 0, 0.1);
     }
 `;
 
