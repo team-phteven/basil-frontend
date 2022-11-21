@@ -1,11 +1,14 @@
 /* Basil Styles */
 
 :root {
+  /* COLORS */
 --lightgrey: #F2F2F2;
 --midgrey: #D9D9D9;
 --darkgrey: #393939;
 --violet: #8a4fec;
 --green: #45EA56 ;
+/* FONT SIZES */
+--fs-display: 30px;
 }
 
 html {
