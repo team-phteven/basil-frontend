@@ -4,7 +4,7 @@ import axios from "axios";
 import styled from "styled-components";
 import autosize from "autosize";
 // Contexts
-import { useUser } from '../../contexts/UserProvider';
+import { useUser } from "../../contexts/UserProvider";
 import { useSocket } from "../../contexts/SocketProvider";
 import { useConversations } from "../../contexts/ConversationsProvider";
 // BS Components
@@ -14,13 +14,14 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Spinner from "react-bootstrap/Spinner";
 
 const MessageInput = () => {
-
     // get socket from socket provider
     const socket = useSocket();
     // deconstructed user context
     const { localUser } = useUser();
     // destructured from conversations context
     const {
+        messageStash,
+        setMessageStash,
         selectedConversation,
         setSelectedConversation,
         setSelectedConversationMessages,
@@ -31,11 +32,15 @@ const MessageInput = () => {
     const [inputMessage, setInputMessage] = useState("");
     // loading state for message input
     const [loading, setLoading] = useState(false);
+    // conversation stash
+    const [conversationStash, setConversationStash] = useState();
 
     // clear the input when a different conversation selected
     useEffect(() => {
-        setInputMessage("")
-    }, [selectedConversation])
+        if (selectedConversation) {
+            setInputMessage(messageStash[selectedConversation._id] || "");
+        }
+    }, [selectedConversation]);
 
     // handle the change of input message
     const handleChange = (e) => {
@@ -58,7 +63,7 @@ const MessageInput = () => {
 
     // API Send message request
     const sendMessage = async () => {
-        setLoading(true)
+        setLoading(true);
         // message object
         const newMessage = {
             content: inputMessage,
@@ -80,7 +85,7 @@ const MessageInput = () => {
             .catch((error) => {
                 const error_code = JSON.stringify(error.response.data.error);
                 console.log(error_code);
-                setLoading(false)
+                setLoading(false);
                 return;
             });
         // reset input
@@ -95,7 +100,7 @@ const MessageInput = () => {
         setLoading(false);
     };
 
-    // ---------- AUTOSIZE ---------- 
+    // ---------- AUTOSIZE ----------
 
     // initiate the autosize function on the textarea
     const ta = document.querySelector("textarea");
@@ -126,6 +131,8 @@ const MessageInput = () => {
         id.current = setInterval(() => {
             setActiveSeconds((prev) => prev + 1);
         }, 1000);
+        // set conversation stash
+        setConversationStash(selectedConversation._id)
     };
 
     // stop timer and send data to API
@@ -152,14 +159,18 @@ const MessageInput = () => {
                 console.log(error_code);
                 return;
             });
+
         // update selected conversation state with new time
-        setSelectedConversation({
-            ...selectedConversation,
-            billableSeconds: {
-                ...data.billableSeconds,
-                [localUser._id]: data.billableSeconds[localUser._id],
-            },
-        });
+        if (conversationStash._id === selectedConversation._id) {
+            setSelectedConversation({
+                ...selectedConversation,
+                billableSeconds: {
+                    ...data.billableSeconds,
+                    [localUser._id]: data.billableSeconds[localUser._id],
+                },
+            })
+        }
+
         // reset active seconds
         setActiveSeconds(0);
     };
@@ -174,7 +185,11 @@ const MessageInput = () => {
                             setFocusedInput(true);
                         }}
                         onBlur={() => {
-                            endTimer();
+                            setMessageStash({
+                                ...messageStash,
+                                [selectedConversation._id]: inputMessage,
+                            });
+                            endTimer(selectedConversation._id);
                             setFocusedInput(false);
                         }}
                         as="textarea"
@@ -190,9 +205,11 @@ const MessageInput = () => {
                     onClick={handleClick}
                     type="submit"
                 >
-                    {loading ?
-                    <Spinner animation="border" size="sm"/> :
-                    <span>Send</span>}
+                    {loading ? (
+                        <Spinner animation="border" size="sm" />
+                    ) : (
+                        <span>Send</span>
+                    )}
                 </SendButton>
             </InputWrapper>
         </Form>

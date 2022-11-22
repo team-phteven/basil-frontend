@@ -12,7 +12,7 @@ import styled from "styled-components";
 import UserMenu from "../components/MenuColumn/UserMenu";
 import axios from "axios";
 import { ConversationUserList } from "../components/ContactsColumn/ConversationUserList";
-import useViewport from '../hooks/useViewport'
+import useViewport from "../hooks/useViewport";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Button from "react-bootstrap/Button";
 import { MdMenu, MdGroups } from "react-icons/md";
@@ -24,16 +24,14 @@ const Profile = () => {
     const { width } = useViewport();
     const conversationsBreakpoint = 1300;
     const contactsBreakpoint = 1600;
-    
 
-     const [conversationsShow, setConversationsShow] = useState(false);
-     const handleConversationsClose = () => setConversationsShow(false);
-     const handleConversationsShow = () => setConversationsShow(true);
+    const [conversationsShow, setConversationsShow] = useState(false);
+    const handleConversationsClose = () => setConversationsShow(false);
+    const handleConversationsShow = () => setConversationsShow(true);
 
-     const [contactsShow, setContactsShow] = useState(false);
-     const handleContactsClose = () => setContactsShow(false);
-     const handleContactsShow = () => setContactsShow(true);
-
+    const [contactsShow, setContactsShow] = useState(false);
+    const handleContactsClose = () => setContactsShow(false);
+    const handleContactsShow = () => setContactsShow(true);
 
     return (
         <StyledContainer as="main" className="mx-0 p-0 bg-light" fluid>
@@ -54,8 +52,15 @@ const Profile = () => {
                         show={conversationsShow}
                         onHide={handleConversationsClose}
                     >
-                        <Offcanvas.Header style={{background: "var(--midgrey)"}} closeButton>
-                            <img src="BasilLogo.svg" width="60px" style={{margin: "0 auto"}}></img>
+                        <Offcanvas.Header
+                            style={{ background: "var(--midgrey)" }}
+                            closeButton
+                        >
+                            <img
+                                src="BasilLogo.svg"
+                                width="60px"
+                                style={{ margin: "0 auto" }}
+                            ></img>
                         </Offcanvas.Header>
                         <MobileConversationsColumn />
                     </Offcanvas>

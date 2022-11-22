@@ -74,7 +74,7 @@ const MessageContainer = styled(Row)`
     overflow: hidden;
     padding: 20px 10px 0px 10px;
     &:hover{
-        background: rgba(0,0,0,0.1);
+        background: rgba(0,0,0,0.05);
     }
 `
 
