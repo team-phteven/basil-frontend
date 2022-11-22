@@ -1,40 +1,34 @@
+// Packages
 import { useState } from "react";
+import styled from "styled-components";
+// Contexts
+import { useConversations } from "../../../contexts/ConversationsProvider";
+// Custom Components
+import ConversationSlab from "./ConversationSlab";
+import CreateGroupModal from "../CreateGroupModal";
+import CreateGroupButton from "./CreateGroupButton";
+// BS Components
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Stack from "react-bootstrap/Stack";
-import styled from 'styled-components'
-import { ConversationSlab } from "./ConversationSlab";
-import { useConversations } from "../../../contexts/ConversationsProvider";
-import { MdGroupAdd, MdOutlineChatBubble } from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
-import CreateGroupModal from "../CreateGroupModal";
 
 const ConversationList = () => {
+    // destructure conversation provider
+    const { selectedConversation, conversations } = useConversations();
 
-    const {
-        selectedConversation,
-        conversations,
-    } = useConversations();
+    // open state for create group modal
+    const [createGroupModalOpen, setCreateGroupModalOpen] = useState(false);
 
-        // logic for create convo modal
-        const [createGroupModalOpen, setCreateGroupModalOpen] = useState(false);
-
-        const closeCreateGroupModal = () => {
-            setCreateGroupModalOpen(false);
-        };
+    // handle closing create group modal
+    const closeCreateGroupModal = () => {
+        setCreateGroupModalOpen(false);
+    };
 
     return (
-        <Col
-            style={{ position: "relative" }}
-            className="d-flex flex-column p-0 m-0"
-        >
-            <Row
-                style={{
-                    overflow: "hidden",
-                }}
-                className="p-0 m-0 flex-grow-1"
-            >
-                <Stack className="p-0 m-0">
+        <StyledCol>
+            <UserList>
+                <SlabStack>
                     {conversations?.map((conversation, index) => (
                         <ConversationSlab
                             key={index}
@@ -44,17 +38,14 @@ const ConversationList = () => {
                             }
                         />
                     ))}
-                </Stack>
-            </Row>
+                </SlabStack>
+            </UserList>
             <AddButton as={Row} xs="auto">
-                <ButtonWrap onClick={() => setCreateGroupModalOpen(true)}>
-                    <MdOutlineChatBubble color="var(--violet)" size="60px" />
-                    <MdGroupAdd
-                        color="var(--lightgrey)"
-                        size="30px"
-                        style={{ marginTop: "10px", position: "fixed" }}
-                    />
-                </ButtonWrap>
+                <CreateGroupButton
+                    action={() => {
+                        setCreateGroupModalOpen(true);
+                    }}
+                />
             </AddButton>
 
             {/* GROUP CHAT MODAL */}
@@ -63,9 +54,29 @@ const ConversationList = () => {
                     closeCreateGroupModal={closeCreateGroupModal}
                 />
             </Modal>
-        </Col>
+        </StyledCol>
     );
 };
+
+const StyledCol = styled(Col)`
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+`;
+
+const SlabStack = styled(Stack)`
+    padding: 0;
+    margin: 0;
+`;
+
+const UserList = styled(Row)`
+    overflow: hidden;
+    flex-grow: 1;
+    padding: 0;
+    margin: 0;
+`;
 
 const AddButton = styled.div`
     pointer-events: none;
@@ -73,20 +84,6 @@ const AddButton = styled.div`
     bottom: 10px;
     right: 10px;
     justify-content: end;
-`;
-
-const ButtonWrap = styled.div`
-pointer-events: auto;
-    display: flex;
-    justify-content: center;
-    align-items: start;
-    cursor: pointer;
-    filter: drop-shadow(3px 3px 4px rgba(0, 0, 0, 0.5));
-    transition: 0.5s;
-    &:hover {
-        transform: translateY(-10px);
-        filter: drop-shadow(10px 10px 6px rgba(0, 0, 0, 0.5));
-    }
 `;
 
 export default ConversationList;

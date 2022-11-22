@@ -19,7 +19,7 @@ export const MobileConversationsColumn = () => {
                 boxSizing: "border-box",
                 overflow: "hidden",
             }}
-            className="p-0 m-0 m-0 p-0 d-flex flex-column vh-100 conversationColumn"
+            className="conversationColumn"
         >
             <Conversations className="flex-grow-1 m-0 p-0">
                 {menu === "Conversations" && <ConversationList />}
@@ -33,6 +33,13 @@ export const MobileConversationsColumn = () => {
 
 const ConversationsColumn = styled(Col)`
     background: var(--midgrey);
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 `;
 const Conversations = styled(Row)`
     overflow-y: auto;
