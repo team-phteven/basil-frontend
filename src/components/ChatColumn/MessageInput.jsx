@@ -23,7 +23,6 @@ const MessageInput = () => {
         messageStash,
         setMessageStash,
         selectedConversation,
-        setSelectedConversation,
         setSelectedConversationMessages,
         selectedConversationMessages,
     } = useConversations();
@@ -32,8 +31,6 @@ const MessageInput = () => {
     const [inputMessage, setInputMessage] = useState("");
     // loading state for message input
     const [loading, setLoading] = useState(false);
-    // conversation stash
-    const [conversationStash, setConversationStash] = useState();
 
     // clear the input when a different conversation selected
     useEffect(() => {
@@ -52,6 +49,10 @@ const MessageInput = () => {
         e.preventDefault();
         sendMessage();
     };
+
+    // input focus state for enter-send
+    const [focusedInput, setFocusedInput] = useState(false);
+
     // handle pressing enter on the keyboard
     // hold shift to create new line instead of send
     const enterSend = (event) => {
@@ -113,8 +114,6 @@ const MessageInput = () => {
 
     //---------- TIMER ----------
 
-    // input focus state for timer
-    const [focusedInput, setFocusedInput] = useState(false);
     // active seconds state for timer
     const [activeSeconds, setActiveSeconds] = useState(0);
 
@@ -128,11 +127,10 @@ const MessageInput = () => {
 
     // start timer by setting interval
     const startTimer = () => {
+        // set conversation stash
         id.current = setInterval(() => {
             setActiveSeconds((prev) => prev + 1);
         }, 1000);
-        // set conversation stash
-        setConversationStash(selectedConversation._id)
     };
 
     // stop timer and send data to API
@@ -160,17 +158,6 @@ const MessageInput = () => {
                 return;
             });
 
-        // update selected conversation state with new time
-        if (conversationStash._id === selectedConversation._id) {
-            setSelectedConversation({
-                ...selectedConversation,
-                billableSeconds: {
-                    ...data.billableSeconds,
-                    [localUser._id]: data.billableSeconds[localUser._id],
-                },
-            })
-        }
-
         // reset active seconds
         setActiveSeconds(0);
     };
@@ -189,7 +176,7 @@ const MessageInput = () => {
                                 ...messageStash,
                                 [selectedConversation._id]: inputMessage,
                             });
-                            endTimer(selectedConversation._id);
+                            endTimer();
                             setFocusedInput(false);
                         }}
                         as="textarea"

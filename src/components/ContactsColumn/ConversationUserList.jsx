@@ -154,7 +154,10 @@ export const ConversationUserList = () => {
             )}
             <Menu>
                 <IconButton
-                    action={() => setTimeModalOpen(true)}
+                    action={() => {
+                        getConversations();
+                        setTimeModalOpen(true);
+                    }}
                     icon={MdTimelapse}
                     color="var(--darkgrey)"
                 />
