@@ -15,9 +15,13 @@ import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 
 const TimeModal = () => {
+
     // destructure conversation provider
-    const { selectedConversation, selectedConversationMessages } =
-        useConversations();
+    const { setSelectedConversation, selectedConversation, selectedConversationMessages, conversations} = useConversations();
+    
+    useEffect(() => {
+        setSelectedConversation(conversations.find(conversation => conversation._id == selectedConversation._id));
+    }, [conversations])
 
     // state for billable seconds
     const [billableSeconds, setBillableSeconds] = useState();
