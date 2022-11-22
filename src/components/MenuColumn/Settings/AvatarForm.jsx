@@ -1,7 +1,7 @@
 // Packages
 import { useState } from "react";
 import axios from "axios";
-import styled from 'styled-components';
+import styled from "styled-components";
 import { useUser } from "../../../contexts/UserProvider";
 // Custom Components
 import Avatar from "../../GlobalComponents/Avatar";
@@ -22,73 +22,71 @@ export const AvatarForm = () => {
 
     // validity state of form
     const [validity, setValidity] = useState("untouched");
-
     // file upload form validity
     const [fileValidity, setFileValidity] = useState("untouched");
-
     // Error state of form
     const [error, setError] = useState("");
-
     // Error state of form
     const [fileError, setFileError] = useState("");
-
     // loading state of form
     const [loading, setLoading] = useState(false);
-
     // Avatar URL state
     const [avatar, setAvatar] = useState(localUser.avatar);
 
     // This handles the uploading to Cloudinary
-    const handleFile = (file) => {
+    const handleFile = async (file) => {
+        // start loading state
         setLoading(true);
-        //  file upload error
+        // check for missing file
         if (file === undefined) {
-            setError("File upload failed.");
-            setFileValidity("Invalid");
-            setLoading(false);
+            console.log("file upload failed");
         }
-        //  Check supported file type
+        // if file type excepted make upload
         if (["image/jpeg", "image/png", "image/jpeg"].includes(file.type)) {
-            // Create XMLHttp FormData
-            const data = new FormData();
-            // Add uploaded file
-            data.append("file", file);
-            //  attach the Cloudinary preset
-            data.append(
+            // create a new FormData instance (XMLHttpRequest Standard)
+            // this format is required for Cloudinary upload API
+            const body = new FormData();
+            // add file to form data
+            body.append("file", file);
+            // add cloud preset to form data
+            body.append(
                 "upload_preset",
                 process.env.REACT_APP_CLOUDINARY_PRESET
             );
-            //  attach cloud name
-            data.append("cloud_name", process.env.REACT_APP_CLOUDINARY_NAME);
-            //  make post request to cloudinary upload API
-            fetch(
-                `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_NAME}/image/upload`,
-                {
-                    method: "post",
-                    body: data,
-                }
-            )
-                .then((res) => res.json())
-                .then((data) => {
-                    //  setting avatar URL
-                    // note, this just save it to forms state
-                    // user still needs to press update
-                    setAvatar(data.url.toString());
-
-                    //  Clean Up
-                    setFileValidity("Valid");
-                    setFileError("");
-                    setLoading(false);
-                })
-                .catch((error) => {
-                    setFileError("File upload failed, check requirements.");
-                    setLoading(false);
+            // add cloud name to form data
+            body.append("cloud_name", process.env.REACT_APP_CLOUDINARY_NAME);
+            // make post request
+            const config = {
+                headers: { "Content-Type": "multipart/form-data" },
+            };
+            const data = await axios
+                .post(
+                    `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_NAME}/image/upload`,
+                    body,
+                    config
+                ).catch((error) => {
+                    setFileError("File upload failed, check requirements");
                     setFileValidity("Invalid");
+                    setLoading(false);
+                    return;
                 });
-        } else {
-            setFileError("Wrong file format");
+
+            if (!data) {
+                setFileError("File upload failed, check requirements");
+                setFileValidity("Invalid");
+                setLoading(false);
+                return;
+            }
+
+            setFileValidity("Valid");
+            // set the uploaded images url to form field
+            setAvatar(data.data.url);
+            // end loading state
             setLoading(false);
+        } else {
+            setFileError("Incorrect file format");
             setFileValidity("Invalid");
+            setLoading(false);
         }
     };
 
@@ -103,143 +101,127 @@ export const AvatarForm = () => {
             setLoading(false);
             return;
         }
-
         // try to set users new av avatar
-        try {
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${localUser.token}`,
-                },
-            };
-
-            // update user
-            const { data } = await axios.put(
+        const config = {
+            headers: {
+                Authorization: `Bearer ${localUser.token}`,
+            },
+        };
+        // update user
+        const { data } = await axios
+            .put(
                 `${process.env.REACT_APP_BASE_URL}/api/users/update-avatar`,
                 { avatar },
                 config
-            );
-
-            // set new user details in local storage
-            localStorage.setItem("storedUser", JSON.stringify(data));
-            // set user data context
-            const userData = JSON.parse(localStorage.getItem("storedUser"));
-            setLocalUser(userData);
-
-            // Clean Up
-            setError("");
-            setValidity("Valid");
-            setLoading(false);
-        } catch (error) {
-            setError(error.message);
-            setValidity("Invalid");
-            setLoading(false);
-        }
+            )
+            .catch((error) => {
+                setError(error.message);
+                setValidity("Invalid");
+                setLoading(false);
+                return;
+            });
+        // set new user details in local storage
+        localStorage.setItem("storedUser", JSON.stringify(data));
+        // set user data context
+        const userData = JSON.parse(localStorage.getItem("storedUser"));
+        setLocalUser(userData);
+        setValidity("Valid");
+        // Clean Up
+        setError("");
+        setLoading(false);
     };
 
     const deleteAvatar = async () => {
         setLoading(true);
-        try {
             const config = {
                 headers: {
                     Authorization: `Bearer ${localUser.token}`,
                 },
             };
-
             // update user
             const { data } = await axios.put(
                 `${process.env.REACT_APP_BASE_URL}/api/users/delete-avatar`,
                 {},
                 config
-            );
-
+            ).catch((error) => {
+                setError("Could not delete Avatar");
+                setValidity("Invalid");
+                setLoading(false);
+            })
             // set new user data to local storage
             localStorage.setItem("storedUser", JSON.stringify(data));
             // Set user context
             const userData = JSON.parse(localStorage.getItem("storedUser"));
             setLocalUser(userData);
-
             // Clean up
             setLoading(false);
-        } catch (error) {
-            setError("Could not delete Avatar");
-            setValidity("Invalid");
-            setLoading(false);
-            return;
-        }
     };
 
     return (
         <>
-            <h3 className="text-white">Change Avatar</h3>
-            <Row className="d-flex flex-row justify-content-center p-4">
-                <Col className="p-0 m-0 d-flex flex-column justify-content-end align-items-end">
+            <Heading>Change Avatar</Heading>
+            <PreviewRow>
+                <AvatarCol>
                     <Avatar
                         url={localUser.avatar}
                         bgc={"black"}
                         size="100px"
                         hideStatus
                     />
-                </Col>
-                <Col className="p-0 m-0 d-flex flex-column justify-content-end">
+                </AvatarCol>
+                <ButtonCol>
                     {/* if it's a default avatar use dice icon otherwise trashcan */}
-                    {localUser.avatar.match('.svg') ?
-                    <IconButton icon={FaDice} action={deleteAvatar} />
-                    : <IconButton icon={MdDelete} action={deleteAvatar} />
-                    }
-                </Col>
-            </Row>
-            <Row
-                as={Form}
-                onSubmit={handleSubmit}
-                name="avatarForm"
-                className="p-0 mb-5"
-            >
+                    {localUser.avatar.match(".svg") ? (
+                        <IconButton icon={FaDice} action={deleteAvatar} />
+                    ) : (
+                        <IconButton icon={MdDelete} action={deleteAvatar} />
+                    )}
+                </ButtonCol>
+            </PreviewRow>
+            <FileUploadRow as={Form} onSubmit={handleSubmit} name="avatarForm">
                 <Col>
-                    <Form.Group
-                        as={Col}
-                        className="p-0 mb-4"
+                    <FormGroup
+                        as={Row}
                         onChange={(e) => handleFile(e.target.files[0])}
                     >
                         <Form.Control
                             id="password"
                             type="file"
                             accept="image/*"
-                            isValid={fileValidity === "Valid" ? true : null}
-                            isInvalid={fileValidity === "Invalid" ? true : null}
+                            isValid={fileValidity === "Valid" ? true : false}
+                            isInvalid={fileValidity === "Invalid" ? true : false}
                         />
-                        <span className="m-0 p-0 text-white">
+                        <Specifications>
                             .jpg .jpeg .png - 10mb max
-                        </span>
+                        </Specifications>
                         {fileValidity === "Invalid" && (
-                            <p className="m-0 p-0 mb-2 text-danger">
-                                {fileError}
-                            </p>
+                            <ErrorText>{fileError}</ErrorText>
                         )}
-                    </Form.Group>
+                    </FormGroup>
                     <Row className="p-0 m-0">
                         {validity === "Invalid" && (
-                            <span className="m-0 p-0 mb-2 text-danger">
-                                {error}
-                            </span>
+                            <ErrorText>{error}</ErrorText>
                         )}
                         <Col
                             as={Button}
                             xs="auto"
                             variant="primary"
                             type="submit"
-                            className="text-white"
-                            disabled={loading}
+                            // disable update button if file is loading or no uploads
+                            disabled={loading || fileValidity !== "Valid"}
                         >
                             {loading && (
-                                <Spinner
-                                    as="span"
-                                    animation="grow"
-                                    size="sm"
-                                    role="status"
-                                    aria-hidden="true"
-                                />
+                                <>
+                                    <Spinner
+                                        as="span"
+                                        animation="grow"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                    />{" "}
+                                </>
                             )}
-                            <span className="ms-2">Update Avatar</span>
+                            <span>Update Avatar</span>
                         </Col>
                         <Col className="d-flex flex-column justify-content-end">
                             {validity === "Valid" && (
@@ -251,8 +233,54 @@ export const AvatarForm = () => {
                         </Col>
                     </Row>
                 </Col>
-            </Row>
+            </FileUploadRow>
         </>
     );
 };
 
+const Heading = styled.h3`
+    color: white;
+`
+
+const Specifications = styled.span`
+    color: var(--lightgrey);
+    padding: 0;
+    margin: 0;
+`
+
+const ErrorText = styled.span`
+    color: red;
+    padding: 0;
+    margin: 0;
+`;
+
+const PreviewRow = styled(Row)`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 40px;
+`
+const FileUploadRow = styled(Row)`
+    padding: 0;
+    margin: 0;
+`
+const FormGroup = styled(Row)`
+    padding: 0;
+    margin: 0 0 20px 0;
+`
+
+const AvatarCol = styled(Col)`
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: end;
+`
+const ButtonCol = styled(Col)`
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+`;

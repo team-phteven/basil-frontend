@@ -8,7 +8,7 @@ import { useConversations } from "../../../contexts/ConversationsProvider";
 import { useEffect, useState } from "react";
 
 
-export const ConversationSlab = ({ conversation, selected }) => {
+const ConversationSlab = ({ conversation, selected }) => {
     const { localUser } = useUser();
 
     const {
@@ -102,3 +102,5 @@ const Slab = styled(Row)`
         background-color: rgba(0, 0, 0, 0.1);
     }
 `;
+
+export default ConversationSlab

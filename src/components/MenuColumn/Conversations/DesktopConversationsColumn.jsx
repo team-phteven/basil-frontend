@@ -1,4 +1,4 @@
-// libraries
+// Packages
 import {useState} from "react";
 import styled from "styled-components"
 // BS Components
@@ -12,19 +12,18 @@ import UserMenu from "../UserMenu";
 
 export const DesktopConversationsColumn = () => {
     
+    // state for which menu is open
     const [menu, setMenu] = useState("Conversations");
 
     return (
         <ConversationsColumn
             xs={4}
             lg={2}
-            style={{
-                boxSizing: "border-box",
-                overflow: "hidden",
-            }}
-            className="p-0 m-0 m-0 p-0 d-flex flex-column vh-100 conversationColumn"
+            // overide scroll styles
+            className="conversationColumn"
         >
-            <Conversations className="flex-grow-1 m-0 p-0">
+            <Conversations>
+                {/* show menu component depending on menu state */}
                 {menu === "Conversations" && <ConversationList />}
                 {menu === "Settings" && <Settings />}
                 {menu === "Contacts" && <Contacts />}
@@ -36,8 +35,18 @@ export const DesktopConversationsColumn = () => {
 
 const ConversationsColumn = styled(Col)`
     background: var(--midgrey);
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 `;
 const Conversations = styled(Row)`
     overflow-y: auto;
     overflow-x: hidden;
+    flex-grow: 1;
+    margin: 0;
+    padding: 0;
 `;
