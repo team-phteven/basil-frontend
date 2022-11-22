@@ -6,7 +6,6 @@ import ConversationList from "../components/MenuColumn/Conversations/Conversatio
 import OpenConversation from "../components/ChatColumn/OpenConversation";
 import { useEffect, useState } from "react";
 import Contacts from "../components/MenuColumn/Contacts/Contacts";
-import Timer from "../components/RightColumn/Timer";
 import Settings from "../components/MenuColumn/Settings/Settings";
 import styled from "styled-components";
 import UserMenu from "../components/MenuColumn/UserMenu";
@@ -18,12 +17,14 @@ import Button from "react-bootstrap/Button";
 import { MdMenu, MdGroups } from "react-icons/md";
 import { DesktopConversationsColumn } from "../components/MenuColumn/Conversations/DesktopConversationsColumn";
 import { MobileConversationsColumn } from "../components/MenuColumn/Conversations/MobileCoversationsColumn";
+import { useConversations } from '../contexts/ConversationsProvider'
 
 const Profile = () => {
     const { localUser } = useUser();
     const { width } = useViewport();
     const conversationsBreakpoint = 1300;
     const contactsBreakpoint = 1600;
+    const { selectedConversation } = useConversations();
 
     const [conversationsShow, setConversationsShow] = useState(false);
     const handleConversationsClose = () => setConversationsShow(false);
@@ -44,9 +45,11 @@ const Profile = () => {
                             position: "absolute",
                             backgroundColor: "transparent",
                             border: "none",
+                            zIndex: "1",
+                            background: "var(--midgrey)",
                         }}
                     >
-                        <MdMenu color="var(--darkgrey)" size="50px" />
+                        <MdMenu color="var(--darkgrey)" size="35px" />
                     </Button>
                     <Offcanvas
                         show={conversationsShow}
@@ -62,7 +65,9 @@ const Profile = () => {
                                 style={{ margin: "0 auto" }}
                             ></img>
                         </Offcanvas.Header>
-                        <MobileConversationsColumn />
+                        <MobileConversationsColumn
+                            onHide={handleConversationsClose}
+                        />
                     </Offcanvas>
                 </>
             )}
@@ -72,20 +77,18 @@ const Profile = () => {
                     <DesktopConversationsColumn />
                 )}
 
-                <ChatColumn
-                    xs={8}
-                    className="d-flex flex-column vh-100 flex-grow-1"
-                >
+                <ChatColumn xs={8}>
                     <OpenConversation className="vh-100" />
                     {/* <ConvoInfo /> */}
                 </ChatColumn>
-                {width > contactsBreakpoint && (
-                    <ChatContacts xs={2} className="m-0 p-0 vh-100">
+                    {width > contactsBreakpoint && (
+                        <ChatContacts xs={2} className="m-0 p-0 vh-100">
                         <ConversationUserList />
-                    </ChatContacts>
-                )}
+                        </ChatContacts>
+                        )}
             </Row>
-            {width <= contactsBreakpoint && (
+            {selectedConversation && (
+            width <= contactsBreakpoint && (
                 <>
                     <Button
                         className="m-1 p-0"
@@ -98,7 +101,7 @@ const Profile = () => {
                             border: "none",
                         }}
                     >
-                        <MdGroups color="var(--darkgrey)" size="40px" />
+                        <MdGroups color="var(--darkgrey)" size="35px" />
                     </Button>
                     <Offcanvas
                         placement="end"
@@ -111,6 +114,7 @@ const Profile = () => {
                         <ConversationUserList />
                     </Offcanvas>
                 </>
+                )
             )}
         </StyledContainer>
     );
@@ -123,10 +127,14 @@ const Conversations = styled(Row)`
     overflow-y: auto;
     overflow-x: hidden;
 `;
-
+// className = "d-flex flex-column vh-100 flex-grow-1";
 const ChatColumn = styled(Col)`
     background: var(--lightgrey);
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    flex-grow: 1;
 `;
 
 const ChatContacts = styled(Col)`

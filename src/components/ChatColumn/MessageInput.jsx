@@ -180,6 +180,7 @@ const MessageInput = () => {
                             setFocusedInput(false);
                         }}
                         as="textarea"
+                        disabled={!selectedConversation}
                         onKeyDown={enterSend}
                         value={inputMessage}
                         onChange={handleChange}
@@ -188,7 +189,7 @@ const MessageInput = () => {
                     />
                 </InputGroup>
                 <SendButton
-                    disabled={loading}
+                    disabled={loading || !selectedConversation}
                     onClick={handleClick}
                     type="submit"
                 >

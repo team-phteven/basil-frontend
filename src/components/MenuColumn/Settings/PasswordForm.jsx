@@ -1,6 +1,8 @@
 // Packages
-import { useState } from 'react'
+import { useState } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
+// Contexts
 import { useUser } from "../../../contexts/UserProvider";
 // Custom Components
 import PasswordFloatingLabelToggle from '../../Auth/PasswordFloatingLabelToggle';
@@ -9,9 +11,9 @@ import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import Spinner from 'react-bootstrap/Spinner'
+import Spinner from 'react-bootstrap/Spinner';
 // Icons
-import { MdCheckCircle } from 'react-icons/md'
+import { MdCheckCircle } from 'react-icons/md';
 
 
 export const PasswordForm = () => {
@@ -109,61 +111,88 @@ export const PasswordForm = () => {
     };
 
     return (
-        <Row as={Form} className="p-0 mb-5" onSubmit={handleSubmit}>
-            <h3 className="text-white">Change Password</h3>
+        <StyledRow as={Form} onSubmit={handleSubmit}>
+            <Heading>Change Password</Heading>
             <Col>
-                <Form.Group as={Row} className="p-0 mb-4">
+                <FormGroup as={Row}>
                     <PasswordFloatingLabelToggle
                         label="Current Password"
                         uniqueId="oldPassword"
                         handleChange={handleInput}
                         value={oldPassword}
                     />
-                </Form.Group>
-                <Form.Group as={Row} className="p-0 mb-4">
+                </FormGroup>
+                <FormGroup as={Row}>
                     <PasswordFloatingLabelToggle
                         label="New Password"
                         uniqueId="newPassword"
                         handleChange={handleInput}
                         value={newPassword}
                     />
-                </Form.Group>
-                <Form.Group as={Row} className="p-0 mb-4">
+                </FormGroup>
+                <FormGroup as={Row}>
                     <PasswordFloatingLabelToggle
                         label="Confirm New Password"
                         uniqueId="confirmPassword"
                         handleChange={handleInput}
                         value={confirmPassword}
                     />
-                </Form.Group>
-                <Row className="p-0 m-0">
-                {validity === "Invalid" && <span className="m-0 p-0 mb-2 text-danger">{error}</span>}
+                </FormGroup>
+                <StyledRow>
+                    {validity === "Invalid" && <ErrorText>{error}</ErrorText>}
                     <Col
                         as={Button}
                         xs="auto"
                         variant="primary"
                         type="submit"
-                        className="text-white"
                         disabled={loading}
                     >
                         {loading && (
-                            <Spinner
-                                as="span"
-                                animation="grow"
-                                size="sm"
-                                role="status"
-                                aria-hidden="true"
-                            />
+                            <>
+                                <Spinner
+                                    as="span"
+                                    animation="grow"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                />{" "}
+                            </>
                         )}
-                        <span className="ms-2">Update Password</span>
+                        <span>Update Password</span>
                     </Col>
-                    <Col className="d-flex flex-column justify-content-end">
-                    {
-                        validity === "Valid" && <MdCheckCircle size="20px" color="var(--green)" />
-                    }
-                    </Col>
-                </Row>
+                    <Check>
+                        {validity === "Valid" && (
+                            <MdCheckCircle size="20px" color="var(--green)" />
+                        )}
+                    </Check>
+                </StyledRow>
             </Col>
-        </Row>
+        </StyledRow>
     );
 }
+
+const Heading = styled.h3`
+    color: white;
+`
+
+const Check = styled(Col)`
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+`
+
+const ErrorText = styled.span`
+    margin: 0 0 20px 0;
+    padding: 0;
+    color: red
+`
+
+const FormGroup = styled(Form.Group)`
+ padding: 0;
+ margin-bottom: 20px;
+`
+
+const StyledRow = styled(Row)`
+    padding: 0;
+    margin: 0 0 40px 0;
+`;
