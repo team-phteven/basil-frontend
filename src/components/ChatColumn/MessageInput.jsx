@@ -99,6 +99,10 @@ const MessageInput = () => {
         // send message over socket
         socket.emit("new message", data);
         setLoading(false);
+        setMessageStash({
+            ...messageStash,
+            [selectedConversation._id]: "",
+        });
     };
 
     // ---------- AUTOSIZE ----------
