@@ -1,26 +1,24 @@
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import { useUser } from "../contexts/UserProvider";
-import ConversationList from "../components/MenuColumn/Conversations/ConversationList";
-import OpenConversation from "../components/ChatColumn/OpenConversation";
-import { useEffect, useState } from "react";
-import Contacts from "../components/MenuColumn/Contacts/Contacts";
-import Settings from "../components/MenuColumn/Settings/Settings";
+// Packages
+import { useState } from "react";
 import styled from "styled-components";
-import UserMenu from "../components/MenuColumn/UserMenu";
-import axios from "axios";
-import { ConversationUserList } from "../components/ContactsColumn/ConversationUserList";
+// Contexts
+import { useConversations } from "../contexts/ConversationsProvider";
 import useViewport from "../hooks/useViewport";
-import Offcanvas from "react-bootstrap/Offcanvas";
-import Button from "react-bootstrap/Button";
-import { MdMenu, MdGroups } from "react-icons/md";
+// Custom Components
+import OpenConversation from "../components/ChatColumn/OpenConversation";
+import { ConversationUserList } from "../components/ContactsColumn/ConversationUserList";
 import { DesktopConversationsColumn } from "../components/MenuColumn/Conversations/DesktopConversationsColumn";
 import { MobileConversationsColumn } from "../components/MenuColumn/Conversations/MobileCoversationsColumn";
-import { useConversations } from '../contexts/ConversationsProvider'
+// BS Components
+import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+import Offcanvas from "react-bootstrap/Offcanvas";
+import Row from "react-bootstrap/Row";
+// Icons
+import { MdMenu, MdGroups } from "react-icons/md";
 
 const Profile = () => {
-    const { localUser } = useUser();
     const { width } = useViewport();
     const conversationsBreakpoint = 1300;
     const contactsBreakpoint = 1600;
@@ -35,74 +33,47 @@ const Profile = () => {
     const handleContactsShow = () => setContactsShow(true);
 
     return (
-        <StyledContainer as="main" className="mx-0 p-0 bg-light" fluid>
+        <StyledContainer as="main" fluid>
             {width <= conversationsBreakpoint && (
                 <>
-                    <Button
-                        className="m-1 p-0"
-                        onClick={handleConversationsShow}
-                        style={{
-                            position: "absolute",
-                            backgroundColor: "transparent",
-                            border: "none",
-                            zIndex: "1",
-                            background: "var(--midgrey)",
-                        }}
-                    >
+                    <MenuButton onClick={handleConversationsShow}>
                         <MdMenu color="var(--darkgrey)" size="35px" />
-                    </Button>
+                    </MenuButton>
                     <Offcanvas
                         show={conversationsShow}
                         onHide={handleConversationsClose}
                     >
-                        <Offcanvas.Header
-                            style={{ background: "var(--midgrey)" }}
-                            closeButton
-                        >
-                            <img
+                        <OffcanvasHeader closeButton>
+                            <BasilLogo
                                 src="BasilLogo.svg"
                                 width="60px"
-                                style={{ margin: "0 auto" }}
-                            ></img>
-                        </Offcanvas.Header>
+                            ></BasilLogo>
+                        </OffcanvasHeader>
                         <MobileConversationsColumn
                             onHide={handleConversationsClose}
                         />
                     </Offcanvas>
                 </>
             )}
-            <Row className="h-100 m-0 p-0 d-flex flex-row vh-100">
-                {/* CONVERSATIONS COLUMN */}
+            <StyledRow>
                 {width > conversationsBreakpoint && (
                     <DesktopConversationsColumn />
                 )}
 
                 <ChatColumn xs={8}>
-                    <OpenConversation className="vh-100" />
-                    {/* <ConvoInfo /> */}
+                    <OpenConversation />
                 </ChatColumn>
-                    {width > contactsBreakpoint && (
-                        <ChatContacts xs={2} className="m-0 p-0 vh-100">
+                {width > contactsBreakpoint && (
+                    <ChatContacts xs={2}>
                         <ConversationUserList />
-                        </ChatContacts>
-                        )}
-            </Row>
-            {selectedConversation && (
-            width <= contactsBreakpoint && (
+                    </ChatContacts>
+                )}
+            </StyledRow>
+            {selectedConversation && width <= contactsBreakpoint && (
                 <>
-                    <Button
-                        className="m-1 p-0"
-                        onClick={handleContactsShow}
-                        style={{
-                            position: "absolute",
-                            top: "0",
-                            right: "20px",
-                            backgroundColor: "transparent",
-                            border: "none",
-                        }}
-                    >
+                    <ChatContactsButton onClick={handleContactsShow}>
                         <MdGroups color="var(--darkgrey)" size="35px" />
-                    </Button>
+                    </ChatContactsButton>
                     <Offcanvas
                         placement="end"
                         show={contactsShow}
@@ -114,20 +85,49 @@ const Profile = () => {
                         <ConversationUserList />
                     </Offcanvas>
                 </>
-                )
             )}
         </StyledContainer>
     );
 };
 
-const ConversationsColumn = styled(Col)`
+const MenuButton = styled(Button)`
+    position: absolute;
+    background-color: var(--midgrey);
+    border: none;
+    z-index: 1;
+    margin: 8px;
+    padding: 0;
+    top: 0;
+`;
+
+const ChatContactsButton = styled(Button)`
+    position: absolute;
+    background-color: var(--midgrey);
+    border: none;
+    z-index: 1;
+    margin: 8px;
+    padding: 0;
+    top: 0;
+    right: 20px;
+`;
+
+const StyledRow = styled(Row)`
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+`;
+
+const BasilLogo = styled.img`
+    margin: 0 auto;
+`;
+
+const OffcanvasHeader = styled(Offcanvas.Header)`
     background: var(--midgrey);
-`;
-const Conversations = styled(Row)`
-    overflow-y: auto;
-    overflow-x: hidden;
-`;
-// className = "d-flex flex-column vh-100 flex-grow-1";
+`
+
 const ChatColumn = styled(Col)`
     background: var(--lightgrey);
     padding: 0;
@@ -138,6 +138,8 @@ const ChatColumn = styled(Col)`
 `;
 
 const ChatContacts = styled(Col)`
+    padding: 0;
+    margin: 0;
     background: var(--midgrey);
 `;
 
@@ -147,6 +149,9 @@ const StyledContainer = styled(Container)`
     box-sizing: border-box;
     overflow: hidden;
     position: "relative";
+    margin: 0;
+    padding: 0;
+    background: var(--lightgrey);
 `;
 
 export default Profile;

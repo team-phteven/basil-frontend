@@ -1,5 +1,7 @@
+// Packages
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
+// Custom Components
 import { useUser } from "../contexts/UserProvider";
 
 const ConversationsContext = React.createContext();
