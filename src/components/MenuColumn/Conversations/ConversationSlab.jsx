@@ -1,14 +1,18 @@
+// Packages
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Avatar from "../../GlobalComponents/Avatar";
-import GroupAvatar from "../../GlobalComponents/GroupAvatar";
+// Contexts
 import { useUser } from "../../../contexts/UserProvider";
 import { useConversations } from "../../../contexts/ConversationsProvider";
-import { useEffect, useState } from "react";
+// Custom Components
+import Avatar from "../../GlobalComponents/Avatar";
+import GroupAvatar from "../../GlobalComponents/GroupAvatar";
+// BS Components
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 
 
-const ConversationSlab = ({ conversation, selected }) => {
+const ConversationSlab = ({ conversation, selected, onHide }) => {
     const { localUser } = useUser();
 
     const {
@@ -35,11 +39,11 @@ const ConversationSlab = ({ conversation, selected }) => {
         const key = conversation._id;
         setMessageNotifications({ ...messageNotifications, [key]: 0 });
         setNotifications(0);
+        onHide && onHide();
     }
 
     return (
         <Slab
-            className="p-0 m-0"
             onClick={selectConversation}
             background={selected ? "rgba(0, 0, 0, 0.1)" : "transparent"}
         >
@@ -59,7 +63,7 @@ const ConversationSlab = ({ conversation, selected }) => {
                     )}
                 </Col>
             )}
-            <Col className="flex-grow-1">
+            <NameCol>
                 {conversation?.isGroupConversation ? (
                     <Row>
                         {conversation.groupName}
@@ -73,10 +77,14 @@ const ConversationSlab = ({ conversation, selected }) => {
                         )}
                     </Row>
                 )}
-            </Col>
+            </NameCol>
         </Slab>
     );
 };
+
+const NameCol = styled(Col)`
+    flex-grow: 1;
+`
 
 const Notification = styled.div`
     width: 20px;
@@ -92,6 +100,8 @@ const Notification = styled.div`
 `;
 
 const Slab = styled(Row)`
+    margin: 0;
+    padding: 0;
     cursor: pointer;
     background: ${(props) => props.background};
     height: 100px;

@@ -1,4 +1,4 @@
-// libraries
+// Packages
 import { useState } from "react";
 import styled from "styled-components";
 // BS Components
@@ -10,19 +10,15 @@ import Settings from "../Settings/Settings";
 import Contacts from "../Contacts/Contacts";
 import UserMenu from "../UserMenu";
 
-export const MobileConversationsColumn = () => {
+export const MobileConversationsColumn = ({ onHide }) => {
     const [menu, setMenu] = useState("Conversations");
 
     return (
         <ConversationsColumn
-            style={{
-                boxSizing: "border-box",
-                overflow: "hidden",
-            }}
             className="conversationColumn"
         >
-            <Conversations className="flex-grow-1 m-0 p-0">
-                {menu === "Conversations" && <ConversationList />}
+            <Conversations>
+                {menu === "Conversations" && <ConversationList onHide={onHide} />}
                 {menu === "Settings" && <Settings />}
                 {menu === "Contacts" && <Contacts />}
             </Conversations>
@@ -44,4 +40,7 @@ const ConversationsColumn = styled(Col)`
 const Conversations = styled(Row)`
     overflow-y: auto;
     overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    flex-grow: 1;
 `;

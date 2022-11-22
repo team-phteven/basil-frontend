@@ -153,6 +153,7 @@ export const ConversationUserList = () => {
                 <h2>{groupName}</h2>
             )}
             <Menu>
+                { selectedConversation && 
                 <IconButton
                     action={() => {
                         getConversations();
@@ -160,7 +161,7 @@ export const ConversationUserList = () => {
                     }}
                     icon={MdTimelapse}
                     color="var(--darkgrey)"
-                />
+                />}
 
                 <Modal show={timeModalOpen} onHide={closeTimeModal}>
                     <TimeModal closeTimeModal={closeTimeModal} />

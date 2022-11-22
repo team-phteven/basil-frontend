@@ -13,7 +13,7 @@ import Row from "react-bootstrap/Row";
 import Stack from "react-bootstrap/Stack";
 import Modal from "react-bootstrap/Modal";
 
-const ConversationList = () => {
+const ConversationList = ({ onHide }) => {
     // destructure conversation provider
     const { selectedConversation, conversations } = useConversations();
 
@@ -31,6 +31,7 @@ const ConversationList = () => {
                 <SlabStack>
                     {conversations?.map((conversation, index) => (
                         <ConversationSlab
+                            onHide={onHide}
                             key={index}
                             conversation={conversation}
                             selected={

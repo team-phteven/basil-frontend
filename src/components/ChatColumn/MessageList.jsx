@@ -12,6 +12,7 @@ const MessageList = () => {
 
     // imports from conversations provider
     const {
+        selectedConversation,
         selectedConversationMessages,
     } = useConversations();
 
@@ -42,8 +43,8 @@ const MessageList = () => {
                 return render;
             })}
             {/* Marks the start of conversation */}
-            <Line />
-            <Starter>Start of Conversation</Starter>
+            {selectedConversation && <Line />}
+            {selectedConversation && <Starter>Start of Conversation</Starter>}
         </MessageCol>
     );
 };
