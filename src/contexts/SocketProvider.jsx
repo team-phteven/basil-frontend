@@ -1,4 +1,6 @@
+// Packages
 import React, { useContext, useEffect } from "react";
+// Custom Components
 import { useUser } from "./UserProvider";
 import { useConversations } from "./ConversationsProvider";
 const io = require("socket.io-client");

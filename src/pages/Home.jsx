@@ -1,4 +1,5 @@
 // packages
+import styled from 'styled-components'
 // custom components
 import FormTabs from "../components/Auth/FormTabs";
 // BS components

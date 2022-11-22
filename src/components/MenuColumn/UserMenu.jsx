@@ -1,19 +1,24 @@
-import React, { useState } from "react";
+// Packages
+import { useState } from "react";
+import styled from "styled-components";
+// Contexts
+import { useUser } from "../../contexts/UserProvider";
+import { useNavigate } from "react-router-dom";
+// Custom Components
+import CreateGroupModal from "./CreateGroupModal";
+import IconButton from "../GlobalComponents/IconButton";
+// BS Components
+import Avatar from "../GlobalComponents/Avatar";
+import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
+import Modal from "react-bootstrap/Modal";
+import Row from "react-bootstrap/Row";
+// Icons
 import {
     MdOutlineLogout,
     MdSettings,
     MdGroup,
-    MdGroupAdd
 } from "react-icons/md";
-import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
-import Avatar from "../GlobalComponents/Avatar";
-import { useUser } from "../../contexts/UserProvider";
-import Row from "react-bootstrap/Row";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import Modal from "react-bootstrap/Modal";
-import CreateGroupModal from "./CreateGroupModal";
 
 const UserMenu = ({ menu, setMenu }) => {
     const { localUser } = useUser();
@@ -39,47 +44,37 @@ const UserMenu = ({ menu, setMenu }) => {
 
 
     return (
-        <UserMenuContainer className="m-0 p-2 d-flex flex-row align-items-center">
-            <Col xs="auto" className="m-0 p-0">
+        <UserMenuContainer>
+            <StyledCol xs="auto">
                 <Avatar url={localUser.avatar} bgc={"black"} size="50px" />
-            </Col>
-            <Col xs="auto" className="m-2 p-0">
-                <p className="m-0 p-0 text-white">{localUser.name}</p>
-            </Col>
-            <Col xs="auto" className="ms-auto p-0">
-                <Button
-                    className="m-1 p-0 bg-transparent border-0"
-                    onClick={toggleContacts}
-                    id="contacts"
-                >
-                    <MdGroup
-                        color={menu === "Contacts" ? "var(--violet)" : "white"}
-                        onClick={toggleContacts}
-                        size="1.5em"
+            </StyledCol>
+            <NameCol xs="auto">
+                <Name>{localUser.name}</Name>
+            </NameCol>
+            <StyledCol>
+                <StyledRow>
+                    <IconButton
+                        icon={MdGroup}
+                        action={() => {
+                            toggleContacts();
+                        }}
+                        color="var(--lightgrey)"
                     />
-                </Button>
-
-                <Button
-                    id="settings"
-                    className="m-1 p-0 bg-transparent border-0"
-                    onClick={toggleSettings}
-                >
-                    <MdSettings
-                        color={menu === "Settings" ? "var(--violet)" : "white"}
-                        onClick={toggleSettings}
-                        size="1.5em"
+                    <IconButton
+                        icon={MdSettings}
+                        action={() => {
+                            toggleSettings();
+                        }}
+                        color="var(--lightgrey)"
                     />
-                </Button>
-
-                <Button
-                    className="m-1 p-0 bg-transparent border-0"
-                    onClick={handleShow}
-                >
-                    <MdOutlineLogout
-                        size="1.5em"
-                        color={show ? "var(--violet)" : "white"}
+                    <IconButton
+                        icon={MdOutlineLogout}
+                        action={() => {
+                            handleShow();
+                        }}
+                        color="var(--lightgrey)"
                     />
-                </Button>
+                </StyledRow>
 
                 {/* LOG OUT MODAL */}
                 <Modal show={show} onHide={handleClose} centered>
@@ -95,13 +90,24 @@ const UserMenu = ({ menu, setMenu }) => {
                         </StyledButton>
                     </LogOutModal>
                 </Modal>
-            </Col>
+            </StyledCol>
         </UserMenuContainer>
     );
 };
 
+const Name = styled.span`
+    margin: 0;
+    padding: 0;
+    color: white;
+`
+
 const UserMenuContainer = styled(Row)`
     background: var(--darkgrey);
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 `;
 
 const LogOutTitle = styled(Modal.Title)`
@@ -115,6 +121,25 @@ const LogOutModal = styled(Modal.Body)`
 
 const StyledButton = styled(Button)`
     margin: 10px;
+`
+
+const StyledRow = styled(Row)`
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 `;
+
+const StyledCol = styled(Col)`
+    padding: 0;
+    margin: 0;
+`
+
+const NameCol = styled(Col)`
+    padding: 0;
+    margin: 10px;
+`;
+
 
 export default UserMenu;

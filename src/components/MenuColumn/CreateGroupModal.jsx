@@ -1,10 +1,17 @@
-import React, { useState } from "react";
-import { Modal, Form, Button } from "react-bootstrap";
-import { useConversations } from "../../contexts/ConversationsProvider";
-import { useUser } from "../../contexts/UserProvider";
-import CheckContactSlab from "../GlobalComponents/CheckContactSlab";
+// Packages
+import { useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
+// Contexts
+import { useUser } from "../../contexts/UserProvider";
+import { useConversations } from "../../contexts/ConversationsProvider";
+// Custom Components
+import CheckContactSlab from "../GlobalComponents/CheckContactSlab";
+// BS Components
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
+
 
 export default function NewConversationModal({ closeCreateGroupModal }) {
     const { conversations, getConversations } = useConversations();
@@ -23,11 +30,8 @@ export default function NewConversationModal({ closeCreateGroupModal }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (selectedUserIds.length == 0) {
-            console.log("returnedd!!");
             return;
         }
-        console.log("handle submit hit!!====>");
-        console.log("conversation ids passed in====>  " + selectedUserIds);
         const config = {
             headers: {
                 Authorization: `Bearer ${localUser.token}`,
@@ -91,10 +95,9 @@ export default function NewConversationModal({ closeCreateGroupModal }) {
                                     />
                             )
                         )}
-                    <Form.Group className="p-0 mb-4 mt-4">
+                    <FormGroup>
                         <Form.FloatingLabel label="Group Name">
-                            <Form.Control
-                                className="border-0"
+                            <FormControl
                                 id="name"
                                 type="text"
                                 value={input}
@@ -103,7 +106,7 @@ export default function NewConversationModal({ closeCreateGroupModal }) {
                                 required
                             />
                         </Form.FloatingLabel>
-                    </Form.Group>
+                    </FormGroup>
                     <Button disabled={selectedUserIds.length < 2} type="submit">
                         Create Conversation
                     </Button>
@@ -119,4 +122,13 @@ const ModalBody = styled(Modal.Body)`
 
 const ModalHeader = styled(Modal.Header)`
     background-color: var(--lightgrey);
-`;
+`
+
+const FormGroup = styled(Form.Group)`
+    padding: 0;
+    margin: 20px 0 20px 0;
+`
+
+const FormControl = styled(Form.Control)`
+    border: none;
+`
