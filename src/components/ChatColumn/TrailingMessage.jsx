@@ -41,7 +41,7 @@ const MessageContainer = styled(Row)`
     flex-wrap: nowrap;
     overflow-wrap: break-word;
     &:hover{
-        background: rgba(0,0,0,0.1);
+        background: rgba(0,0,0,0.05);
     }
 `;
 

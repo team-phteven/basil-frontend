@@ -15,7 +15,7 @@ export function ConversationsProvider({ children }) {
     const [otherConversations, setOtherConversations] = useState(null);
     const [messageNotifications, setMessageNotifications] = useState({});
     const [selectedConversationUsers, setSelectedConversationUsers] = useState(null);
-
+    const [ messageStash, setMessageStash] = useState({});
 
     const { localUser } = useUser();
 
@@ -44,7 +44,9 @@ export function ConversationsProvider({ children }) {
 
     useEffect(() => {
         getMessages();
+
     }, [selectedConversation]) 
+    
     // Selecting conversation
     // TO-DO: CONVERSATION WITH MOST RECENT MESSAGE SHOULD BE SELECTED
     // useEffect(() => {
@@ -91,6 +93,8 @@ export function ConversationsProvider({ children }) {
         setSelectedConversationUsers,
         getConversations,
         getMessages,
+        messageStash,
+        setMessageStash
     };
 
     return (
