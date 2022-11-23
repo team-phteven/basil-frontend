@@ -138,7 +138,7 @@ function SignUpForm() {
 
     return (
         <FormContainer>
-            <FormCol as={Form} onSubmit={handleSubmit}>
+            <FormCol as={Form} onSubmit={handleSubmit} data-testid="form">
                 <FormRow>
                     <FormGroup
                         as={Col}
@@ -189,15 +189,17 @@ function SignUpForm() {
                 <FormRow>
                     <FormGroup as={Col}>
                         <PasswordFloatingLabelToggle
+                            data-testid="password"
                             uniqueId="up-password"
                             handleChange={handleInput}
                             value={formFields.password}
-                        />
+                            />
                     </FormGroup>
                 </FormRow>
                 <FormRow>
                     <FormGroup as={Col}>
                         <PasswordFloatingLabelToggle
+                            data-testid="confirm-password"
                             uniqueId="confirmPassword"
                             handleChange={handleInput}
                             value={formFields.confirmPassword}
@@ -234,7 +236,7 @@ function SignUpForm() {
                         variant="primary"
                         className="mt-4"
                         type="submit"
-                        disabled={loading ? true : false}
+                        disabled={loading}
                     >
                         Submit
                     </Col>

@@ -29,7 +29,7 @@ const PasswordFloatingLabelToggle = (props) => {
                     required
                 />
             </Form.FloatingLabel>
-            <InputGroup.Text onClick={toggleShowPassword}>
+            <InputGroup.Text data-testid="show" onClick={toggleShowPassword}>
                 {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
             </InputGroup.Text>
         </InputGroup>

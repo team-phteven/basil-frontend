@@ -1,8 +1,5 @@
 // Packages
 import styled from "styled-components";
-// Contexts
-import { useConversations } from "../../contexts/ConversationsProvider";
-import { useUser } from "../../contexts/UserProvider";
 // Custom Components
 import MessageInput from "./MessageInput";
 import MessageList from "./MessageList";
@@ -11,9 +8,6 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 
 const OpenConversation = () => {
-    // import contexts 
-    const { localUser } = useUser();
-    const { selectedConversation } = useConversations();
 
     return (
         <ConversationContainer>

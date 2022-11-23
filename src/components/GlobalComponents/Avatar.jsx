@@ -4,6 +4,7 @@ const Avatar = ({ url, bgc, size, hideStatus = false }) => {
     return (
         <AvatarWrapper size={size}>
             <ProfilePic
+                data-testid="avatar"
                 url={`url('${url ? url : "face.jpeg"}')`}
             ></ProfilePic>
             {hideStatus ? null : <StatusLight bgc={bgc} />}
