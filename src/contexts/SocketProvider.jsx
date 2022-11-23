@@ -29,7 +29,6 @@ export function SocketProvider({ children }) {
         
         if (localUser && selectedConversation) {
             socket.on("connect", () => {
-                console.log("socket connected");
                 // docs say to move this outside of the .on, however it fixes an error in the setup
                 localUser && socket.emit("setup", localUser.email);
             });
@@ -37,7 +36,6 @@ export function SocketProvider({ children }) {
             
             return () => {
                 socket.disconnect();
-                console.log("socket disconnected");
             };
         }
         

@@ -38,7 +38,6 @@ export function ConversationsProvider({ children }) {
             .get(`${process.env.REACT_APP_BASE_URL}/api/conversations`, config)
             .catch((error) => {
                 const error_code = JSON.stringify(error.response.data.error);
-                console.log(error_code);
                 return;
             });
         setConversations(data);
@@ -72,7 +71,6 @@ export function ConversationsProvider({ children }) {
             )
             .catch((error) => {
                 const error_code = JSON.stringify(error.response.data.error);
-                console.log(error_code);
                 return;
             });
         setSelectedConversationMessages(data);

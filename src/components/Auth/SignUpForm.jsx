@@ -44,14 +44,12 @@ function SignUpForm() {
             !password ||
             !confirmPassword
         ) {
-            console.log("missing field!");
             // end loading state
             setLoading(false);
             return;
         }
         // check passwords match
         if (password !== confirmPassword) {
-            console.log("passwords do not match!");
             // end loading state
             setLoading(false);
             return;
@@ -66,8 +64,8 @@ function SignUpForm() {
                 avatar,
             })
             .catch((error) => {
-                console.log("error: " + error.message);
                 setLoading(false);
+                return;
             });
         // store new user in local storage
         localStorage.setItem("storedUser", JSON.stringify(data));
@@ -88,7 +86,8 @@ function SignUpForm() {
         setLoading(true);
         // check for missing file
         if (file === undefined) {
-            console.log("file upload failed");
+            setLoading(false);
+            return
         }
         // if file type excepted make upload
         if (["image/jpeg", "image/png", "image/jpeg"].includes(file.type)) {
@@ -114,8 +113,8 @@ function SignUpForm() {
                     body,
                     config
                 ).catch((error) => {
-                    console.log(error);
                     setLoading(false);
+                    return;
                 });
 
                 // set the uploaded images url to form field
@@ -123,7 +122,8 @@ function SignUpForm() {
                 // end loading state
                 setLoading(false); 
         } else {
-            console.log("Wrong file format");
+            setLoading(false);
+            return;
         }
     };
 
@@ -149,6 +149,7 @@ function SignUpForm() {
                     >
                         <Form.FloatingLabel label="First Name">
                             <Form.Control
+                                required
                                 id="firstName"
                                 type="text"
                                 placeholder="First Name"
@@ -164,6 +165,7 @@ function SignUpForm() {
                     >
                         <Form.FloatingLabel label="Last Name">
                             <Form.Control
+                                required
                                 id="lastName"
                                 type="text"
                                 placeholder="Last Name"
@@ -179,6 +181,7 @@ function SignUpForm() {
                     >
                         <Form.FloatingLabel label="Email">
                             <Form.Control
+                                required
                                 id="up-email"
                                 type="email"
                                 placeholder="Email"

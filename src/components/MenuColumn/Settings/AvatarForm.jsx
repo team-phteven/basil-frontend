@@ -39,7 +39,8 @@ export const AvatarForm = () => {
         setLoading(true);
         // check for missing file
         if (file === undefined) {
-            console.log("file upload failed");
+            setLoading(false)
+            return;
         }
         // if file type excepted make upload
         if (["image/jpeg", "image/png", "image/jpeg"].includes(file.type)) {

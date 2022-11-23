@@ -58,7 +58,6 @@ export default function InviteModal({ closeModal }) {
             )
             .catch((error) => {
                 const error_code = JSON.stringify(error.response.data.error);
-                console.log(error_code);
                 return;
             });
         //  sets the selected conversation's users so

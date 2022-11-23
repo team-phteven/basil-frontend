@@ -87,7 +87,6 @@ export const ConversationUserList = () => {
                 config
             ).catch((error) => {
                 const error_code = JSON.stringify(error.response.data.error);
-                console.log(error_code);
                 return;
             });
         // get all conversation again to update name in all locations
@@ -113,7 +112,6 @@ export const ConversationUserList = () => {
                 config
             ).catch((error) => {
                 const error_code = JSON.stringify(error.response.data.error);
-                console.log(error_code);
                 return;
             });
         // refetch conversations

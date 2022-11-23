@@ -38,7 +38,6 @@ export function UserProvider({ children, storedUser }) {
             )
             .catch((error) => {
                 const error_code = JSON.stringify(error.response.data.error);
-                console.log(error_code);
                 return;
             });
         setContacts(data.contacts);
@@ -58,7 +57,6 @@ export function UserProvider({ children, storedUser }) {
             )
             .catch((error) => {
                 const error_code = JSON.stringify(error.response.data.error);
-                console.log(error_code);
                 return;
             });
         setMessageRequests(data);

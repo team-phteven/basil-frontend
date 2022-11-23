@@ -64,7 +64,6 @@ function LogInForm() {
                 const error_code = JSON.stringify(
                     error.response.data.error
                 );
-                console.log(error_code);
                 setLoading(false);
                 return;
             });
