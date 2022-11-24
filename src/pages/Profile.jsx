@@ -45,7 +45,7 @@ const Profile = () => {
                     >
                         <OffcanvasHeader closeButton>
                             <BasilLogo
-                                src="BasilLogo.svg"
+                                src="BasilLogo2.svg"
                                 width="60px"
                             ></BasilLogo>
                         </OffcanvasHeader>

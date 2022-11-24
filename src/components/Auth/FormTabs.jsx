@@ -39,4 +39,5 @@ const TabControl = styled(Tabs)`
     border: none;
     padding: 0;
     margin: 0;
+    margin-bottom: 20px;
 `
