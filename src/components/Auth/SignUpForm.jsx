@@ -29,6 +29,10 @@ function SignUpForm() {
         formFields;
     // component loading state
     const [loading, setLoading] = useState(false);
+    // state for error message
+    const [errorMessage, setErrorMessage] = useState("");
+    // state for error visibility
+    const [showError, setShowError] = useState(false);
 
     // handle form submit
     const handleSubmit = async (e) => {
@@ -44,40 +48,47 @@ function SignUpForm() {
             !password ||
             !confirmPassword
         ) {
-            // end loading state
+            setErrorMessage("Please fill all fields.");
+            setShowError(true);
             setLoading(false);
             return;
         }
         // check passwords match
         if (password !== confirmPassword) {
-            // end loading state
+            setErrorMessage("Passwords don't match.");
+            setShowError(true);
             setLoading(false);
             return;
         }
         // create new user
-        const { data } = await axios
-            .post(`${process.env.REACT_APP_BASE_URL}/api/users/sign-up`, {
-                firstName,
-                lastName,
-                email,
-                password,
-                avatar,
-            })
-            .catch((error) => {
-                setLoading(false);
-                return;
-            });
-        // store new user in local storage
-        localStorage.setItem("storedUser", JSON.stringify(data));
-        // store welcome back data in local storage
-        localStorage.setItem(
-            "welcomeBack",
-            JSON.stringify({ email: email, name: data.name })
-        );
-        // set loading state
-        setLoading(false);
-        // refresh page
-        navigate(0);
+        try {
+            const { data } = await axios.post(
+                `${process.env.REACT_APP_BASE_URL}/api/users/sign-up`,
+                {
+                    firstName,
+                    lastName,
+                    email,
+                    password,
+                    avatar,
+                }
+            );
+            // store new user in local storage
+            localStorage.setItem("storedUser", JSON.stringify(data));
+            // store welcome back data in local storage
+            localStorage.setItem(
+                "welcomeBack",
+                JSON.stringify({ email: email, name: data.name })
+            );
+            // set loading state
+            setLoading(false);
+            // refresh page
+            navigate(0);
+        } catch (error) {
+            const message = error.response.data.error;
+            setErrorMessage(message);
+            setShowError(true);
+            setLoading(false);
+        }
     };
 
     // handle the file upload to Cloudinary
@@ -87,7 +98,7 @@ function SignUpForm() {
         // check for missing file
         if (file === undefined) {
             setLoading(false);
-            return
+            return;
         }
         // if file type excepted make upload
         if (["image/jpeg", "image/png", "image/jpeg"].includes(file.type)) {
@@ -104,24 +115,31 @@ function SignUpForm() {
             // add cloud name to form data
             body.append("cloud_name", process.env.REACT_APP_CLOUDINARY_NAME);
             // make post request
-            
-                const config = {
-                    headers: { "Content-Type": "multipart/form-data" },
-                };
-                const data = await axios.post(
-                    `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_NAME}/image/upload`,
-                    body,
-                    config
-                ).catch((error) => {
-                    setLoading(false);
-                    return;
-                });
 
+            const config = {
+                headers: { "Content-Type": "multipart/form-data" },
+            };
+
+            try {
+                const data = await axios
+                    .post(
+                        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_NAME}/image/upload`,
+                        body,
+                        config
+                    )
                 // set the uploaded images url to form field
                 setFormFields({ ...formFields, avatar: data.data.url });
                 // end loading state
-                setLoading(false); 
+                setLoading(false);
+            } catch (error) {
+                const message = error.response.data.error.message;
+                setErrorMessage(message);
+                setShowError(true);
+                setLoading(false);
+            }
         } else {
+            setErrorMessage("Incorrect file type. Please upload .jpeg .jpg .png under 10mb");
+            setShowError(true);
             setLoading(false);
             return;
         }
@@ -196,7 +214,7 @@ function SignUpForm() {
                             uniqueId="up-password"
                             handleChange={handleInput}
                             value={formFields.password}
-                            />
+                        />
                     </FormGroup>
                 </FormRow>
                 <FormRow>
@@ -243,6 +261,7 @@ function SignUpForm() {
                     >
                         Submit
                     </Col>
+                    {showError && <ErrorMessage>{errorMessage}</ErrorMessage>}
                 </FormRow>
             </FormCol>
         </FormContainer>
@@ -250,6 +269,12 @@ function SignUpForm() {
 }
 
 export default SignUpForm;
+
+const ErrorMessage = styled.span`
+    color: red;
+    margin: 20px 0;
+    padding: 0;
+`;
 
 const FormContainer = styled(Row)`
     padding: 0;

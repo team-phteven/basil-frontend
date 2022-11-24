@@ -51,13 +51,14 @@ const UserMenu = ({ menu, setMenu }) => {
             <NameCol xs="auto">
                 <Name>{localUser.name}</Name>
             </NameCol>
-            <StyledCol>
+            <StyledCol xs="auto">
                 <StyledRow>
                     <IconButton
                         icon={MdGroup}
                         action={() => {
                             toggleContacts();
                         }}
+                        size="25px"
                         color="var(--lightgrey)"
                     />
                     <IconButton
@@ -66,6 +67,7 @@ const UserMenu = ({ menu, setMenu }) => {
                             toggleSettings();
                         }}
                         color="var(--lightgrey)"
+                        size="25px"
                     />
                     <IconButton
                         icon={MdOutlineLogout}
@@ -73,6 +75,7 @@ const UserMenu = ({ menu, setMenu }) => {
                             handleShow();
                         }}
                         color="var(--lightgrey)"
+                        size="25px"
                     />
                 </StyledRow>
 
@@ -104,9 +107,13 @@ const Name = styled.span`
 const UserMenuContainer = styled(Row)`
     background: var(--darkgrey);
     margin: 0;
+    box-sizing: border-box;
+    overflow: hidden;
     padding: 10px;
     display: flex;
     flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
     align-items: center;
 `;
 
@@ -128,7 +135,9 @@ const StyledRow = styled(Row)`
     padding: 0;
     display: flex;
     flex-direction: row;
+    flex-wrap: nowrap;
     justify-content: space-around;
+    gap: 10px;
 `;
 
 const StyledCol = styled(Col)`
@@ -139,6 +148,7 @@ const StyledCol = styled(Col)`
 const NameCol = styled(Col)`
     padding: 0;
     margin: 10px;
+    flex-shrink: 1;
 `;
 
 
