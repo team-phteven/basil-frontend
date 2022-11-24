@@ -11,6 +11,7 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
+import Spinner from "react-bootstrap/Spinner"
 
 function SignUpForm() {
     // navigate instance (for page reload)
@@ -259,6 +260,17 @@ function SignUpForm() {
                         type="submit"
                         disabled={loading}
                     >
+                        {loading && (
+                            <>
+                                <Spinner
+                                    as="span"
+                                    animation="grow"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                />{" "}
+                            </>
+                        )}
                         Submit
                     </Col>
                     {showError && <ErrorMessage>{errorMessage}</ErrorMessage>}
