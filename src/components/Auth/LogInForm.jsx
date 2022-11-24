@@ -29,6 +29,10 @@ function LogInForm() {
 
     // state for component loading
     const [loading, setLoading] = useState(false);
+    // state for error message
+    const [errorMessage, setErrorMessage] = useState("");
+    // state for error visibility
+    const [showError, setShowError] = useState(false);
 
     // load welcome back data
     useEffect(() => {
@@ -55,29 +59,32 @@ function LogInForm() {
         // start loading state
         setLoading(true);
         // create new user session
-        const { data } = await axios
-            .post(`${process.env.REACT_APP_BASE_URL}/api/users/log-in`, {
-                email,
-                password,
-            })
-            .catch((error) => {
-                const error_code = JSON.stringify(
-                    error.response.data.error
-                );
-                setLoading(false);
-                return;
-            });
-        // store new user session in local storage
-        localStorage.setItem("storedUser", JSON.stringify(data));
-        // store new welcome back data in local storage
-        localStorage.setItem(
-            "welcomeBack",
-            JSON.stringify({ email: email, name: data.name })
-        );
-        // end loading state
-        setLoading(false);
-        // refresh page
-        navigate(0);
+        try {
+            const { data } = await axios.post(
+                `${process.env.REACT_APP_BASE_URL}/api/users/log-in`,
+                {
+                    email,
+                    password,
+                }
+            );
+            // store new user session in local storage
+            localStorage.setItem("storedUser", JSON.stringify(data));
+            // store new welcome back data in local storage
+            localStorage.setItem(
+                "welcomeBack",
+                JSON.stringify({ email: email, name: data.name })
+            );
+            // end loading state
+            setLoading(false);
+            // refresh page
+            navigate(0);
+        } catch(error) {
+            const message = error.response.data.error;
+            console.log(message)
+            setErrorMessage(message);
+            setShowError(true);
+            setLoading(false);
+        };
     };
 
     // controlled inputs for form
@@ -132,9 +139,10 @@ function LogInForm() {
                         variant="primary"
                         type="submit"
                         disabled={loading ? true : false}
-                    >
+                        >
                         Submit
                     </Col>
+                        {showError && <ErrorMessage>{errorMessage}</ErrorMessage>}
                 </Row>
             </Col>
         </FormContainer>
@@ -142,6 +150,12 @@ function LogInForm() {
 }
 
 export default LogInForm;
+
+const ErrorMessage = styled.span`
+    color: red;
+    margin: 20px 0;
+    padding: 0;
+`
 
 const FormContainer = styled(Row)`
     padding: 0;
